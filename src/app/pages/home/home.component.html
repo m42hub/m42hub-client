@@ -1,0 +1,57 @@
+<div class="p-4">
+  <h1 class="text-3xl font-bold mb-6 text-primary">M42Hub - Tema Personalizado</h1>
+
+
+  <h1 class="text-primary">Teste do Tema PrimeNG</h1>
+  <p class="text-secondary">Este é um teste para verificar se o tema está funcionando.</p>
+
+  <div class="p-3 surface-0 border-round">
+    <p class="text-900">Surface 0 - Fundo claro</p>
+  </div>
+
+  <div class="p-3 surface-100 border-round mt-2">
+    <p class="text-900">Surface 100 - Fundo mais claro</p>
+  </div>
+
+  <div class="grid gap-4">
+    <!-- Botões -->
+    <div class="card p-4">
+      <h2 class="text-xl font-semibold mb-4">Botões</h2>
+      <div class="flex gap-2 flex-wrap">
+        <p-button label="Primário" />
+        <p-button label="Secundário" severity="secondary" />
+        <p-button label="Sucesso" severity="success" />
+        <p-button label="Aviso" severity="warn" />
+        <p-button label="Perigo" severity="danger" />
+      </div>
+    </div>
+
+    <!-- Inputs -->
+    <div class="card p-4">
+      <h2 class="text-xl font-semibold mb-4">Inputs</h2>
+      <div class="flex flex-column gap-3">
+        <p-password placeholder="Senha" />
+        <p-calendar placeholder="Selecione uma data" />
+      </div>
+    </div>
+
+    <!-- Cards -->
+    <div class="card p-4">
+      <h2 class="text-xl font-semibold mb-4">Cards</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <p-card header="Card 1" subheader="Subtítulo">
+          <p>Conteúdo do card com tema personalizado.</p>
+          <p-footer>
+            <p-button label="Ação" />
+          </p-footer>
+        </p-card>
+        <p-card header="Card 2" subheader="Subtítulo">
+          <p>Outro card para demonstrar o tema.</p>
+          <p-footer>
+            <p-button label="Ação" severity="secondary" />
+          </p-footer>
+        </p-card>
+      </div>
+    </div>
+  </div>
+</div>

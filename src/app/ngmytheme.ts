@@ -1,0 +1,92 @@
+import { definePreset } from '@primeng/themes';
+import Lara from '@primeng/themes/lara';
+
+export const NgMyTheme = definePreset(Lara, {
+  semantic: {
+    primary: {
+      50: '#E8EEFF',
+      100: '#BFCBEE',
+      200: '#7891EC',
+      300: '#4455EE',
+      400: '#435EB8',
+      500: '#34416A',
+      600: '#1E212C',
+      700: '#1F1F1F',
+      800: '#1F1F1F',
+      900: '#1F1F1F',
+      950: '#1F1F1F',
+    },
+    surface: {
+      0: '#FFFFFF',
+      50: '#EFEFEE',
+      100: '#E8EEFF',
+      200: '#BFCBEE',
+      300: '#7891EC',
+      400: '#4455EE',
+      500: '#34416A',
+      600: '#1E212C',
+      700: '#1F1F1F',
+      800: '#1F1F1F',
+      900: '#1F1F1F',
+      950: '#000000',
+    },
+    colorScheme: {
+      light: {
+        primary: {
+          color: '#4455EE',
+          inverseColor: '#FFFFFF',
+          hoverColor: '#7891EC',
+          activeColor: '#34416A',
+        },
+        highlight: {
+          background: '#E8EEFF',
+          focusBackground: '#BFCBEE',
+          color: '#1E212C',
+          focusColor: '#1E212C',
+        },
+        surface: {
+          0: '#FFFFFF',
+          50: '#EFEFEE',
+          100: '#E8EEFF',
+          200: '#BFCBEE',
+          300: '#7891EC',
+          400: '#4455EE',
+          500: '#34416A',
+          600: '#1E212C',
+          700: '#1F1F1F',
+          800: '#1F1F1F',
+          900: '#1F1F1F',
+          950: '#000000',
+        },
+      },
+      dark: {
+        primary: {
+          color: '#E8EEFF',
+          inverseColor: '#1F1F1F',
+          hoverColor: '#BFCBEE',
+          activeColor: '#7891EC',
+        },
+        highlight: {
+          background: 'rgba(250, 250, 250, .08)',
+          focusBackground: 'rgba(250, 250, 250, .12)',
+          color: 'rgba(255, 255, 255, .87)',
+          focusColor: 'rgba(255, 255, 255, .87)',
+        },
+        surface: {
+          0: '#1F1F1F',
+          50: '#1E212C',
+          100: '#34416A',
+          200: '#435EB8',
+          300: '#4455EE',
+          400: '#7891EC',
+          500: '#BFCBEE',
+          600: '#E8EEFF',
+          700: '#EFEFEE',
+          800: '#FFFFFF',
+          900: '#FFFFFF',
+          950: '#FFFFFF',
+        },
+      },
+    },
+  },
+});
