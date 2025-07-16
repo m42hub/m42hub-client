@@ -19,7 +19,10 @@ export const appConfig: ApplicationConfig = {
         preset: NgMyTheme,
         options: {
           darkModeSelector: 'html.my-app-dark',
-          cssLayer: true,
+          cssLayer: {
+            name: 'primeng',
+            order: 'theme, base, primeng',
+          },
         },
       },
     }),

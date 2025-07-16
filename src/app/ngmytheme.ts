@@ -1,40 +1,60 @@
 import { definePreset } from '@primeng/themes';
 import Lara from '@primeng/themes/lara';
+import { text } from 'stream/consumers';
 
-export const NgMyTheme = definePreset(Lara, {
+const lightSurface = {
+  0: '#EFEFEE',   // darkSurface[950]
+  50: '#EEF3FF',   // darkSurface[900]
+  100: '#E8EEFF',   // darkSurface[800]
+  200: '#BFCBEE',   // darkSurface[700]
+  300: '#7891EC',   // darkSurface[600]
+  400: '#4455EE',   // darkSurface[500]
+  500: '#4455EE',   // darkSurface[400]
+  600: '#435EB8',   // darkSurface[300]
+  700: '#34416A',   // darkSurface[200]
+  800: '#39497A',   // darkSurface[100]
+  900: '#1E212C',   // darkSurface[50]
+  950: '#1F1F1F',   // darkSurface[0]
+}
+
+const darkSurface = {
+  0: '#1F1F1F',
+  50: '#1E212C',
+  100: '#39497A',
+  200: '#34416A',
+  300: '#435EB8',
+  400: '#4455EE',
+  500: '#4455EE',
+  600: '#7891EC',
+  700: '#BFCBEE',
+  800: '#E8EEFF',
+  900: '#EEF3FF',
+  950: '#EFEFEE',
+}
+
+const primary = {
+  50: '#EFEFEE',   // darkSurface[900]
+  100: '#EEF3FF',   // darkSurface[800]
+  200: '#E8EEFF',   // darkSurface[700]
+  300: '#BFCBEE',   // darkSurface[600]
+  400: '#7891EC',   // darkSurface[500]
+  500: '#4455EE',   // darkSurface[400]
+  600: '#435EB8',   // darkSurface[300]
+  700: '#34416A',   // darkSurface[200]
+  800: '#39497A',   // darkSurface[100]
+  900: '#1E212C',   // darkSurface[50]
+  950: '#1F1F1F',   // darkSurface[0]
+}
+
+let theme = {
   semantic: {
-    primary: {
-      50: '#E8EEFF',
-      100: '#BFCBEE',
-      200: '#7891EC',
-      300: '#4455EE',
-      400: '#435EB8',
-      500: '#34416A',
-      600: '#1E212C',
-      700: '#1F1F1F',
-      800: '#1F1F1F',
-      900: '#1F1F1F',
-      950: '#1F1F1F',
-    },
-    surface: {
-      0: '#FFFFFF',
-      50: '#EFEFEE',
-      100: '#E8EEFF',
-      200: '#BFCBEE',
-      300: '#7891EC',
-      400: '#4455EE',
-      500: '#34416A',
-      600: '#1E212C',
-      700: '#1F1F1F',
-      800: '#1F1F1F',
-      900: '#1F1F1F',
-      950: '#000000',
-    },
+    primary: primary,
+    surface: lightSurface,
     colorScheme: {
       light: {
         primary: {
           color: '#4455EE',
-          inverseColor: '#FFFFFF',
+          inverseColor: '#1F1F1F',
           hoverColor: '#7891EC',
           activeColor: '#34416A',
         },
@@ -44,27 +64,14 @@ export const NgMyTheme = definePreset(Lara, {
           color: '#1E212C',
           focusColor: '#1E212C',
         },
-        surface: {
-          0: '#FFFFFF',
-          50: '#EFEFEE',
-          100: '#E8EEFF',
-          200: '#BFCBEE',
-          300: '#7891EC',
-          400: '#4455EE',
-          500: '#34416A',
-          600: '#1E212C',
-          700: '#1F1F1F',
-          800: '#1F1F1F',
-          900: '#1F1F1F',
-          950: '#000000',
-        },
+        surface: lightSurface,
       },
       dark: {
         primary: {
-          color: '#E8EEFF',
+          color: '#4455EE',
           inverseColor: '#1F1F1F',
-          hoverColor: '#BFCBEE',
-          activeColor: '#7891EC',
+          hoverColor: '#7891EC',
+          activeColor: '#34416A',
         },
         highlight: {
           background: 'rgba(250, 250, 250, .08)',
@@ -72,21 +79,10 @@ export const NgMyTheme = definePreset(Lara, {
           color: 'rgba(255, 255, 255, .87)',
           focusColor: 'rgba(255, 255, 255, .87)',
         },
-        surface: {
-          0: '#1F1F1F',
-          50: '#1E212C',
-          100: '#34416A',
-          200: '#435EB8',
-          300: '#4455EE',
-          400: '#7891EC',
-          500: '#BFCBEE',
-          600: '#E8EEFF',
-          700: '#EFEFEE',
-          800: '#FFFFFF',
-          900: '#FFFFFF',
-          950: '#FFFFFF',
-        },
+        surface: darkSurface,
       },
     },
   },
-});
+};
+
+export const NgMyTheme = definePreset(Lara, theme);
