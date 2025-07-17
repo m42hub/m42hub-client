@@ -1,1 +1,48 @@
-<p>projects works!</p>
+<div class="container mx-8 py-6 min-h-screen">
+  <!-- Header com título e botão de criar projeto -->
+  <div class="mb-6 flex justify-between items-center">
+    <div>
+      <h1 class="text-3xl font-bold text-surface-900 mb-2">Projetos</h1>
+      <p class="text-surface-600">Encontre projetos para colaborar</p>
+    </div>
+    <div>
+      <p-button
+        label="Criar Projeto"
+        icon="pi pi-plus"
+        severity="primary"
+        class="font-medium">
+      </p-button>
+    </div>
+  </div>
+
+  <!-- Grid de projetos -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6 items-stretch">
+    <app-project-card
+      *ngFor="let project of paginatedProjects; let i = index"
+      [project]="project"
+      class="animate-fade-in-up"
+      [style.animation-delay]="(i * 0.1) + 's'">
+    </app-project-card>
+  </div>
+
+  <!-- Controles de paginação -->
+  <div *ngIf="totalPages > 1" class="flex justify-center items-center gap-2 mt-4 text-sm">
+    <button pButton type="button" name="" icon="pi pi-angle-left" (click)="prevPage()" [disabled]="currentPage === 1" class="!w-8 !h-8 !min-w-0 !p-0"></button>
+    <span class="mx-1">Página {{ currentPage }} de {{ totalPages }}</span>
+    <button pButton type="button" icon="pi pi-angle-right" (click)="nextPage()" [disabled]="currentPage === totalPages" class="!w-8 !h-8 !min-w-0 !p-0"></button>
+  </div>
+
+  <!-- Estado vazio -->
+  <div *ngIf="projects.length === 0" class="text-center py-12">
+    <div class="max-w-md mx-auto">
+      <i class="pi pi-briefcase text-6xl text-surface-300 mb-4"></i>
+      <h3 class="text-xl font-semibold text-surface-600 mb-2">Nenhum projeto encontrado</h3>
+      <p-button
+        label="Criar Projeto"
+        icon="pi pi-plus"
+        severity="primary"
+        class="font-medium">
+      </p-button>
+    </div>
+  </div>
+</div>

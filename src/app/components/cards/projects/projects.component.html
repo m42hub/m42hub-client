@@ -1,0 +1,96 @@
+<p-card
+  class="max-w-sm mx-auto shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 cursor-pointer"
+  styleClass="border-round-lg shadow-lg"
+  (click)="onCardClick()">
+
+  <!-- Header com imagem do projeto -->
+  <ng-template pTemplate="header">
+    <div class="relative h-32 bg-gradient-to-br from-primary-500 to-primary-700">
+      <img
+        *ngIf="project.image"
+        [src]="getImageUrl(project.image)"
+        [alt]="project.name"
+        class="w-full h-full object-cover"
+        (error)="onImageError($event)"
+      />
+      <div *ngIf="!project.image" class="w-full h-full flex items-center justify-center">
+        <i class="pi pi-briefcase text-white text-4xl opacity-50"></i>
+      </div>
+
+      <!-- Status badge -->
+      <div class="absolute top-2 right-2">
+        <p-tag
+          *ngIf="project.status"
+          [value]="project.status"
+          [severity]="getStatusSeverity(project.status)"
+          class="text-xs font-semibold">
+        </p-tag>
+      </div>
+    </div>
+  </ng-template>
+
+  <!-- Conteúdo do card -->
+  <ng-template pTemplate="content">
+    <!-- Descrição em cima -->
+    <div class="mb-2 h-32 max-w-sm">
+      <h3 class="text-lg font-bold text-gray-900 mb-1 overflow-hidden text-ellipsis whitespace-nowrap">{{ project.name }}</h3>
+      <p class="text-surface-600 text-sm leading-relaxed overflow-hidden line-clamp-3 break-words">{{ project.description }}</p>
+    </div>
+
+    <!-- Equipe e Tags lado a lado -->
+    <div class="grid px-2 grid-cols-3 gap-4">
+      <!-- Coluna da esquerda - Tags -->
+      <div class="col-span-1 w-46">
+        <h4 class="text-sm font-semibold text-surface-700 uppercase tracking-wide mb-2">Tags</h4>
+        <div class="flex flex-wrap gap-1">
+          <p-tag
+            *ngFor="let tag of project.tags"
+            [value]="tag.name"
+            [severity]="getTagSeverity(tag)"
+            class="text-xs font-medium cursor-help"
+            [pTooltip]="getTagTooltip(tag)"
+            tooltipPosition="top"
+            tooltipStyleClass="text-xs">
+          </p-tag>
+        </div>
+
+        <!-- Data logo abaixo das tags -->
+        <div class="mt-3 pt-2 text-xs text-surface-500">
+          <i class="pi pi-calendar mr-1"></i>
+          {{ project.createdAt | date:'dd/MM/yyyy' }}
+        </div>
+      </div>
+
+      <!-- Coluna da direita - Equipe -->
+      <div class="col-span-2">
+        <h4 class="text-sm font-semibold text-surface-700 uppercase tracking-wide mb-2">Equipe</h4>
+        <div class="space-y-2 h-96 overflow-y-auto">
+          <!-- Membros da equipe (incluindo manager) -->
+          <div *ngFor="let member of project.team" class="flex items-center space-x-2 p-2 bg-surface-50 rounded-lg">
+            <div class="flex-shrink-0">
+              <img
+                [src]="getImageUrl(member.photo)"
+                [alt]="member.name"
+                class="w-12 h-12 rounded-full object-cover border border-white shadow-sm"
+                (error)="onImageError($event)"
+              />
+            </div>
+            <div class="flex-1 min-w-0">
+              <p class="text-xs font-medium text-surface-800 truncate"
+                 [pTooltip]="member.name"
+                 tooltipPosition="top"
+                 tooltipStyleClass="text-xs">{{ member.name }}</p>
+              <p class="text-xs text-surface-500 truncate"
+                 [pTooltip]="member.role"
+                 tooltipPosition="top"
+                 tooltipStyleClass="text-xs">{{ member.role }}</p>
+            </div>
+            <!-- Tag de Manager apenas se isManager for true -->
+            <p-tag *ngIf="member.isManager" value="M" severity="primary" class="text-xs"></p-tag>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+</p-card>
