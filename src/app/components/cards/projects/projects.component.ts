@@ -14,7 +14,7 @@ import { Project } from '../../../interfaces/project.interface';
     CardModule,
     TagModule,
     ButtonModule,
-    TooltipModule
+    TooltipModule,
   ],
   templateUrl: './projects.component.html',
   styleUrl: './projects.component.css'

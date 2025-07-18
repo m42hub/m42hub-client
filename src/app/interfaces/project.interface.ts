@@ -16,6 +16,7 @@ export interface ProjectTag {
 export interface Project {
   id: string;
   name: string;
+  summary?: string; // Resumo do projeto
   description: string;
   team: TeamMember[];
   tags: ProjectTag[];
@@ -23,4 +24,7 @@ export interface Project {
   status?: 'active' | 'completed' | 'on-hold';
   createdAt: Date;
   updatedAt: Date;
+  startDate?: Date; // Data de início
+  expectedDate?: Date; // Data prevista
+  unfilledRoles?: string[]; // Roles/vagas necessárias
 }

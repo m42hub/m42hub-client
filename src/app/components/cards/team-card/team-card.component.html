@@ -1,0 +1,26 @@
+<h4 class="text-sm font-semibold text-surface-700 uppercase tracking-wide mb-2">Equipe</h4>
+<div class="space-y-2 h-96 overflow-y-auto">
+  <!-- Membros da equipe (incluindo manager) -->
+  <div *ngFor="let member of team" class="flex items-center space-x-2 p-2 bg-surface-50 rounded-lg">
+    <div class="flex-shrink-0">
+      <img
+        [src]="getImageUrl(member.photo)"
+        [alt]="member.name"
+        class="w-12 h-12 rounded-full object-cover border border-white shadow-sm"
+        (error)="onImageError($event)"
+      />
+    </div>
+    <div class="flex-1 min-w-0">
+      <p class="text-xs font-medium text-surface-800 truncate"
+         [pTooltip]="member.name"
+         tooltipPosition="top"
+         tooltipStyleClass="text-xs">{{ member.name }}</p>
+      <p class="text-xs text-surface-500 truncate"
+         [pTooltip]="member.role"
+         tooltipPosition="top"
+         tooltipStyleClass="text-xs">{{ member.role }}</p>
+    </div>
+    <!-- Tag de Manager apenas se isManager for true -->
+    <p-tag *ngIf="member.isManager" value="M" severity="primary" class="text-xs"></p-tag>
+  </div>
+</div>
