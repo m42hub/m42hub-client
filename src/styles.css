@@ -2,3 +2,141 @@
 @import "primeflex/primeflex.css";
 @import "tailwindcss";
 @plugin "tailwindcss-primeui";
+
+/* Markdown Styles - Using PrimeNG theme colors */
+.prose {
+  color: var(--surface-900);
+  line-height: 1.7;
+}
+
+html.my-app-dark .prose {
+  color: var(--surface-0);
+}
+
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4,
+.prose h5,
+.prose h6 {
+  color: var(--surface-900);
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+}
+
+html.my-app-dark .prose h1,
+html.my-app-dark .prose h2,
+html.my-app-dark .prose h3,
+html.my-app-dark .prose h4,
+html.my-app-dark .prose h5,
+html.my-app-dark .prose h6 {
+  color: var(--surface-0);
+}
+
+.prose h1 {
+  font-size: 2rem;
+  border-bottom: 2px solid var(--surface-200);
+  padding-bottom: 0.5rem;
+}
+
+html.my-app-dark .prose h1 {
+  border-bottom-color: var(--surface-700);
+}
+
+.prose h2 {
+  font-size: 1.75rem;
+  border-bottom: 1px solid var(--surface-200);
+  padding-bottom: 0.25rem;
+}
+
+html.my-app-dark .prose h2 {
+  border-bottom-color: var(--surface-700);
+}
+
+.prose h3 {
+  font-size: 1.5rem;
+}
+
+.prose p {
+  margin-bottom: 1rem;
+}
+
+.prose ul,
+.prose ol {
+  margin-bottom: 1rem;
+  padding-left: 2rem;
+}
+
+.prose li {
+  margin-bottom: 0.5rem;
+}
+
+.prose code {
+  background-color: var(--surface-100);
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9em;
+}
+
+html.my-app-dark .prose code {
+  background-color: var(--surface-800);
+}
+
+.prose pre {
+  background-color: var(--surface-100);
+  padding: 1rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin: 1rem 0;
+}
+
+html.my-app-dark .prose pre {
+  background-color: var(--surface-800);
+}
+
+.prose pre code {
+  background: none;
+  padding: 0;
+}
+
+.prose blockquote {
+  border-left: 4px solid var(--primary-500);
+  padding-left: 1rem;
+  margin: 1rem 0;
+  color: var(--surface-600);
+  font-style: italic;
+}
+
+html.my-app-dark .prose blockquote {
+  border-left-color: var(--primary-400);
+  color: var(--surface-300);
+}
+
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+}
+
+.prose th,
+.prose td {
+  border: 1px solid var(--surface-200);
+  padding: 0.75rem;
+  text-align: left;
+}
+
+html.my-app-dark .prose th,
+html.my-app-dark .prose td {
+  border-color: var(--surface-700);
+}
+
+.prose th {
+  background-color: var(--surface-100);
+  font-weight: 600;
+}
+
+html.my-app-dark .prose th {
+  background-color: var(--surface-800);
+}

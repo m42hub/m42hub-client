@@ -1,0 +1,65 @@
+<p-card>
+  <ng-template pTemplate="header">
+    <div class="p-4 flex items-center gap-4">
+      <h1 class="text-3xl font-bold text-700 dark:text-surface-0">{{ project.name }}</h1>
+      <p-tag
+        [value]="project.status === 'active' ? 'Ativo' : project.status === 'completed' ? 'Concluído' : 'Em Pausa'"
+        [severity]="project.status === 'active' ? 'success' : project.status === 'completed' ? 'info' : 'warning'">
+      </p-tag>
+    </div>
+
+    <!-- Project Meta -->
+    <div class="flex flex-wrap gap-4 mx-4 text-sm text-600 dark:text-surface-200">
+      <div class="flex items-center gap-2">
+        <i class="pi pi-calendar text-primary"></i>
+        <span>Criado em: {{ formatDate(project.createdAt) }}</span>
+      </div>
+      <div class="flex items-center gap-2" *ngIf="project.startDate">
+        <i class="pi pi-play text-primary"></i>
+        <span>Início: {{ formatDate(project.startDate) }}</span>
+      </div>
+      <div class="flex items-center gap-2" *ngIf="project.expectedDate">
+        <i class="pi pi-flag text-primary"></i>
+        <span>Previsão: {{ formatDate(project.expectedDate) }}</span>
+      </div>
+    </div>
+
+    <!-- Tags -->
+    <div class="space-y-3 mx-4 mt-4">
+      <!-- Tech Tags -->
+      <div *ngIf="getTechTags().length > 0">
+        <h4 class="text-xs font-bold text-800 dark:text-surface-0 uppercase tracking-wide mb-2">Tecnologias</h4>
+        <div class="flex flex-wrap gap-2">
+          <p-tag
+            *ngFor="let tag of getTechTags()"
+            [value]="tag.name"
+            [style]="{'background-color': tag.color, 'color': 'white'}"
+            [pTooltip]="getTagTooltip(tag)"
+            tooltipPosition="top">
+          </p-tag>
+        </div>
+      </div>
+
+      <!-- General Tags -->
+      <div *ngIf="getGeneralTags().length > 0">
+        <h4 class="text-xs font-bold text-800 dark:text-surface-0 uppercase tracking-wide mb-2">Informações</h4>
+        <div class="flex flex-wrap gap-2">
+          <p-tag
+            *ngFor="let tag of getGeneralTags()"
+            [value]="tag.name"
+            [severity]="tag.type === 'dificuldade' ? 'warning' : tag.type === 'tempoEstimado' ? 'info' : 'secondary'"
+            [pTooltip]="getTagTooltip(tag)"
+            tooltipPosition="top">
+          </p-tag>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="content">
+    <div class="p-2 max-w-4xl">
+      <!-- Project Description -->
+      <div class="prose prose-lg overflow-x-auto" [innerHTML]="descriptionHtml"></div>
+    </div>
+  </ng-template>
+</p-card>

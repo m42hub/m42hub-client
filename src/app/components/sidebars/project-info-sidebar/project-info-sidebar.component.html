@@ -1,0 +1,20 @@
+<div class="flex flex-col gap-6">
+  <app-team-card [team]="project.team"></app-team-card>
+  <p-card *ngIf="project.unfilledRoles && project.unfilledRoles.length > 0">
+    <ng-template pTemplate="header">
+      <div class="pt-4 px-4">
+        <h4 class="text-md font-bold text-800 dark:text-surface-0 text-center uppercase tracking-wide">Vagas Abertas</h4>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="content">
+      <div class="space-y-2 px-2 pb-2">
+        <p-tag
+          *ngFor="let role of project.unfilledRoles"
+          [value]="role"
+          severity="primary"
+          class="w-full justify-center">
+        </p-tag>
+      </div>
+    </ng-template>
+  </p-card>
+</div>

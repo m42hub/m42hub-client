@@ -8,7 +8,7 @@ import { Project, TeamMember, ProjectTag } from '../../interfaces/project.interf
 @Component({
   selector: 'app-projects-page',
   standalone: true,
-  imports: [CommonModule, ButtonModule, ProjectCardComponent, ProjectSummaryCardComponent],
+  imports: [CommonModule, ButtonModule, ProjectSummaryCardComponent],
   templateUrl: './projects.component.html',
   styleUrl: './projects.component.css'
 })
