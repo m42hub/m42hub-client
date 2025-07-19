@@ -28,10 +28,24 @@
     <div class="space-y-3 mx-4 mt-4">
       <!-- Tech Tags -->
       <div *ngIf="getTechTags().length > 0">
-        <h4 class="text-xs font-bold text-800 dark:text-surface-0 uppercase tracking-wide mb-2">Tecnologias</h4>
+        <h4 class="text-xs font-bold text-800 dark:text-surface-0 uppercase tracking-wide mb-2">Tecnologias/Ferramentas</h4>
         <div class="flex flex-wrap gap-2">
           <p-tag
             *ngFor="let tag of getTechTags()"
+            [value]="tag.name"
+            [style]="{'background-color': tag.color, 'color': 'white'}"
+            [pTooltip]="getTagTooltip(tag)"
+            tooltipPosition="top">
+          </p-tag>
+        </div>
+      </div>
+
+      <!-- Assuntos Tags -->
+      <div *ngIf="getAssuntosTags().length > 0">
+        <h4 class="text-xs font-bold text-800 dark:text-surface-0 uppercase tracking-wide mb-2">Assuntos/Temas</h4>
+        <div class="flex flex-wrap gap-2">
+          <p-tag
+            *ngFor="let tag of getAssuntosTags()"
             [value]="tag.name"
             [style]="{'background-color': tag.color, 'color': 'white'}"
             [pTooltip]="getTagTooltip(tag)"
@@ -47,7 +61,7 @@
           <p-tag
             *ngFor="let tag of getGeneralTags()"
             [value]="tag.name"
-            [severity]="tag.type === 'dificuldade' ? 'warning' : tag.type === 'tempoEstimado' ? 'info' : 'secondary'"
+            [severity]="tag.type === 'tempoEstimado' ? 'info' : 'secondary'"
             [pTooltip]="getTagTooltip(tag)"
             tooltipPosition="top">
           </p-tag>

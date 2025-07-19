@@ -92,7 +92,7 @@ export class ProjectFormComponent implements OnInit, OnChanges {
 
   // Tags padronizadas por categoria
   tagOptions = {
-    assunto: [
+    'tecnologias/ferramentas': [
       { label: 'Angular', value: 'Angular', color: '#dd0031' },
       { label: 'React', value: 'React', color: '#61dafb' },
       { label: 'Vue.js', value: 'Vue.js', color: '#42b883' },
@@ -123,6 +123,27 @@ export class ProjectFormComponent implements OnInit, OnChanges {
       { label: 'Mobile', value: 'Mobile', color: '#fd79a8' },
       { label: 'Web', value: 'Web', color: '#74b9ff' },
       { label: 'Desktop', value: 'Desktop', color: '#55a3ff' }
+    ],
+    assuntos: [
+      { label: 'Educação', value: 'Educação', color: '#4caf50' },
+      { label: 'Saúde', value: 'Saúde', color: '#f44336' },
+      { label: 'Finanças', value: 'Finanças', color: '#2196f3' },
+      { label: 'E-commerce', value: 'E-commerce', color: '#ff9800' },
+      { label: 'Redes Sociais', value: 'Redes Sociais', color: '#9c27b0' },
+      { label: 'Produtividade', value: 'Produtividade', color: '#607d8b' },
+      { label: 'Entretenimento', value: 'Entretenimento', color: '#e91e63' },
+      { label: 'Transporte', value: 'Transporte', color: '#795548' },
+      { label: 'Turismo', value: 'Turismo', color: '#00bcd4' },
+      { label: 'Esportes', value: 'Esportes', color: '#8bc34a' },
+      { label: 'Música', value: 'Música', color: '#ff5722' },
+      { label: 'Jogos', value: 'Jogos', color: '#673ab7' },
+      { label: 'Notícias', value: 'Notícias', color: '#3f51b5' },
+      { label: 'Tecnologia', value: 'Tecnologia', color: '#009688' },
+      { label: 'Sustentabilidade', value: 'Sustentabilidade', color: '#4caf50' },
+      { label: 'Inovação', value: 'Inovação', color: '#ff4081' },
+      { label: 'Acessibilidade', value: 'Acessibilidade', color: '#ffc107' },
+      { label: 'Segurança', value: 'Segurança', color: '#d32f2f' },
+      { label: 'Comunicação', value: 'Comunicação', color: '#1976d2' }
     ],
     tempoEstimado: [
       { label: '1-2 semanas', value: '1-2 semanas', color: '#00b894' },
@@ -226,7 +247,8 @@ export class ProjectFormComponent implements OnInit, OnChanges {
       expectedDate: [null],
       unfilledRoles: [[], [this.maxItemsValidator(8)]],
       // Controles para os selects
-      selectedAssunto: [[]],
+      selectedTecnologiasFerramentas: [[]],
+      selectedAssuntos: [[]],
       selectedTempoEstimado: [null],
       selectedComplexidade: [null]
     });
@@ -269,7 +291,8 @@ export class ProjectFormComponent implements OnInit, OnChanges {
     tagsArray.clear();
 
         // Resetar seleções
-    const selectedAssunto: string[] = [];
+    const selectedTecnologiasFerramentas: string[] = [];
+    const selectedAssuntos: string[] = [];
     let selectedTempoEstimado: string | null = null;
     let selectedComplexidade: string | null = null;
 
@@ -282,8 +305,10 @@ export class ProjectFormComponent implements OnInit, OnChanges {
       }));
 
       // Sincronizar com as propriedades dos selects
-      if (tag.type === 'assunto') {
-        selectedAssunto.push(tag.name);
+      if (tag.type === 'tecnologias/ferramentas') {
+        selectedTecnologiasFerramentas.push(tag.name);
+      } else if (tag.type === 'assuntos') {
+        selectedAssuntos.push(tag.name);
       } else if (tag.type === 'tempoEstimado') {
         selectedTempoEstimado = tag.name;
       } else if (tag.type === 'complexidade') {
@@ -293,14 +318,15 @@ export class ProjectFormComponent implements OnInit, OnChanges {
 
     // Patch dos controles dos selects
     this.projectForm.patchValue({
-      selectedAssunto: selectedAssunto,
+      selectedTecnologiasFerramentas: selectedTecnologiasFerramentas,
+      selectedAssuntos: selectedAssuntos,
       selectedTempoEstimado: selectedTempoEstimado,
       selectedComplexidade: selectedComplexidade
     });
   }
 
   // Métodos para gerenciar tags
-  addTag(type: 'assunto' | 'tempoEstimado' | 'complexidade', value: string): void {
+  addTag(type: 'tecnologias/ferramentas' | 'assuntos' | 'tempoEstimado' | 'complexidade', value: string): void {
     const tagsArray = this.projectForm.get('tags') as FormArray;
     const newTag = {
       id: this.generateId(),
@@ -333,7 +359,11 @@ export class ProjectFormComponent implements OnInit, OnChanges {
 
 
 
-      onAssuntoChange(event: any): void {
+      onTecnologiasFerramentasChange(event: any): void {
+    this.updateTagsFromSelects();
+  }
+
+  onAssuntosChange(event: any): void {
     this.updateTagsFromSelects();
   }
 
@@ -347,19 +377,31 @@ export class ProjectFormComponent implements OnInit, OnChanges {
 
   private updateTagsFromSelects(): void {
     const tagsArray = this.projectForm.get('tags') as FormArray;
-    const selectedAssunto = this.projectForm.get('selectedAssunto')?.value || [];
+    const selectedTecnologiasFerramentas = this.projectForm.get('selectedTecnologiasFerramentas')?.value || [];
+    const selectedAssuntos = this.projectForm.get('selectedAssuntos')?.value || [];
     const selectedTempoEstimado = this.projectForm.get('selectedTempoEstimado')?.value;
     const selectedComplexidade = this.projectForm.get('selectedComplexidade')?.value;
 
     tagsArray.clear();
 
-    // Adicionar tags de assunto
-    selectedAssunto.forEach((value: string) => {
+    // Adicionar tags de tecnologias/ferramentas
+    selectedTecnologiasFerramentas.forEach((value: string) => {
       const newTag = {
         id: this.generateId(),
         name: value,
-        type: 'assunto',
-        color: this.getTagColor(value, 'assunto')
+        type: 'tecnologias/ferramentas',
+        color: this.getTagColor(value, 'tecnologias/ferramentas')
+      };
+      tagsArray.push(this.fb.group(newTag));
+    });
+
+    // Adicionar tags de assuntos
+    selectedAssuntos.forEach((value: string) => {
+      const newTag = {
+        id: this.generateId(),
+        name: value,
+        type: 'assuntos',
+        color: this.getTagColor(value, 'assuntos')
       };
       tagsArray.push(this.fb.group(newTag));
     });
@@ -394,7 +436,7 @@ export class ProjectFormComponent implements OnInit, OnChanges {
 
   getTagColor(tagName: string, type: string): string {
     const colorMap: { [key: string]: { [key: string]: string } } = {
-      assunto: {
+      'tecnologias/ferramentas': {
         'Angular': '#dd0031',
         'TypeScript': '#3178c6',
         'Node.js': '#339933',
@@ -405,6 +447,27 @@ export class ProjectFormComponent implements OnInit, OnChanges {
         'C#': '#68217a',
         'PHP': '#777bb4',
         'Ruby': '#cc342d'
+      },
+      assuntos: {
+        'Educação': '#4caf50',
+        'Saúde': '#f44336',
+        'Finanças': '#2196f3',
+        'E-commerce': '#ff9800',
+        'Redes Sociais': '#9c27b0',
+        'Produtividade': '#607d8b',
+        'Entretenimento': '#e91e63',
+        'Transporte': '#795548',
+        'Turismo': '#00bcd4',
+        'Esportes': '#8bc34a',
+        'Música': '#ff5722',
+        'Jogos': '#673ab7',
+        'Notícias': '#3f51b5',
+        'Tecnologia': '#009688',
+        'Sustentabilidade': '#4caf50',
+        'Inovação': '#ff4081',
+        'Acessibilidade': '#ffc107',
+        'Segurança': '#d32f2f',
+        'Comunicação': '#1976d2'
       },
       tempoEstimado: {
         '1-2 semanas': '#4caf50',
@@ -470,7 +533,7 @@ export class ProjectFormComponent implements OnInit, OnChanges {
       // Converter tags do formato de grupo para array de ProjectTag
       const tags: ProjectTag[] = [];
 
-      // Tags de assunto (múltiplas)
+      // Tags de tecnologias/ferramentas (múltiplas)
       formValue.tags.forEach((tag: any) => {
         tags.push({
           id: tag.id,

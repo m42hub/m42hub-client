@@ -299,24 +299,43 @@
     <p-card header="Tags do Projeto" styleClass="mb-4" *ngIf="isFormReady && projectForm && projectForm.get('tags')">
       <div class="space-y-6">
         <div class="space-y-4">
-          <!-- Tecnologias/Assuntos -->
-          <div class="space-y-2">
-            <label class="block font-semibold">
-              <i class="pi pi-tags mr-2 text-primary"></i>
-              Tecnologias/Assuntos
-            </label>
-            <p-multiSelect
-              [options]="tagOptions.assunto"
-              placeholder="Selecione as tecnologias"
-              class="w-full"
-              optionLabel="label"
-              optionValue="value"
-              display="chip"
-              [maxSelectedLabels]="10"
-              (onChange)="onAssuntoChange($event)"
-              formControlName="selectedAssunto"
-            ></p-multiSelect>
-          </div>
+                  <!-- Tecnologias/Ferramentas -->
+        <div class="space-y-2">
+          <label class="block font-semibold">
+            <i class="pi pi-cog mr-2 text-primary"></i>
+            Tecnologias/Ferramentas
+          </label>
+          <p-multiSelect
+            [options]="tagOptions['tecnologias/ferramentas']"
+            placeholder="Selecione as tecnologias"
+            class="w-full"
+            optionLabel="label"
+            optionValue="value"
+            display="chip"
+            [maxSelectedLabels]="10"
+            (onChange)="onTecnologiasFerramentasChange($event)"
+            formControlName="selectedTecnologiasFerramentas"
+          ></p-multiSelect>
+        </div>
+
+        <!-- Assuntos (Temas do Projeto) -->
+        <div class="space-y-2">
+          <label class="block font-semibold">
+            <i class="pi pi-tags mr-2 text-primary"></i>
+            Assuntos (Temas do Projeto)
+          </label>
+          <p-multiSelect
+            [options]="tagOptions.assuntos"
+            placeholder="Selecione os temas do projeto"
+            class="w-full"
+            optionLabel="label"
+            optionValue="value"
+            display="chip"
+            [maxSelectedLabels]="5"
+            (onChange)="onAssuntosChange($event)"
+            formControlName="selectedAssuntos"
+          ></p-multiSelect>
+        </div>
 
           <!-- Tempo Estimado e Complexidade -->
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">

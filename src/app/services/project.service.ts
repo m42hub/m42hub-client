@@ -118,11 +118,12 @@ Para mais informações sobre o projeto, entre em contato conosco através dos c
         }
       ],
       tags: [
-        { id: '1', name: 'Angular', type: 'assunto', color: '#dd0031' },
-        { id: '2', name: 'TypeScript', type: 'assunto', color: '#3178c6' },
-        { id: '3', name: 'Node.js', type: 'assunto', color: '#339933' },
-        { id: '4', name: 'Intermediário', type: 'dificuldade', color: '#ffa726' },
-        { id: '5', name: '3-6 meses', type: 'tempoEstimado', color: '#42a5f5' }
+        { id: '1', name: 'Angular', type: 'tecnologias/ferramentas', color: '#dd0031' },
+        { id: '2', name: 'TypeScript', type: 'tecnologias/ferramentas', color: '#3178c6' },
+        { id: '3', name: 'Node.js', type: 'tecnologias/ferramentas', color: '#339933' },
+        { id: '4', name: 'Tecnologia', type: 'assuntos', color: '#009688' },
+        { id: '5', name: 'Inovação', type: 'assuntos', color: '#ff4081' },
+        { id: '6', name: '3-6 meses', type: 'tempoEstimado', color: '#42a5f5' }
       ],
       status: 'active',
       createdAt: new Date('2024-01-15'),

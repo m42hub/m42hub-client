@@ -35,9 +35,6 @@ export class ProjectsComponent {
 
   getTagSeverity(tag: any): string {
     switch (tag.type) {
-      case 'dificuldade':
-        return tag.name.toLowerCase() === 'difícil' ? 'danger' :
-               tag.name.toLowerCase() === 'médio' ? 'warning' : 'success';
       case 'complexidade':
         return tag.name.toLowerCase() === 'alta' ? 'danger' :
                tag.name.toLowerCase() === 'média' ? 'warning' : 'success';
@@ -58,8 +55,8 @@ export class ProjectsComponent {
 
   getTagTooltip(tag: any): string {
     const typeLabels: { [key: string]: string } = {
-      'assunto': 'Tecnologia/Assunto',
-      'dificuldade': 'Dificuldade',
+      'tecnologias/ferramentas': 'Tecnologia/Ferramenta',
+      'assuntos': 'Assunto/Tema',
       'tempoEstimado': 'Tempo Estimado',
       'complexidade': 'Complexidade'
     };

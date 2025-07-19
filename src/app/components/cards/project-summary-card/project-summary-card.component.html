@@ -9,7 +9,7 @@
         {{ project.summary }}
       </p>
 
-      <!-- Tecnologias/ferramentas (tags tipo 'assunto') -->
+      <!-- Tecnologias/ferramentas (tags tipo 'tecnologias/ferramentas') -->
       <div class="mb-4 min-h-18">
         <span class="text-sm font-bold text-surface-500 uppercase tracking-wide">Tecnologias/Ferramentas</span>
         <div class="flex flex-wrap gap-1 mt-1">
@@ -22,6 +22,22 @@
             tooltipStyleClass="text-xs">
           </p-tag>
           <span *ngIf="getTechTags().length === 0" class="text-sm text-surface-500">Nenhuma</span>
+        </div>
+      </div>
+
+      <!-- Assuntos (Temas do Projeto) -->
+      <div class="mb-4 min-h-18">
+        <span class="text-sm font-bold text-surface-500 uppercase tracking-wide">Assuntos/Temas</span>
+        <div class="flex flex-wrap gap-1 mt-1">
+          <p-tag
+            *ngFor="let tag of getAssuntosTags()"
+            [value]="tag.name"
+            class="text-sm font-medium bg-surface-300 cursor-help"
+            [pTooltip]="getTagTooltip(tag)"
+            tooltipPosition="top"
+            tooltipStyleClass="text-xs">
+          </p-tag>
+          <span *ngIf="getAssuntosTags().length === 0" class="text-sm text-surface-500">Nenhum</span>
         </div>
       </div>
 

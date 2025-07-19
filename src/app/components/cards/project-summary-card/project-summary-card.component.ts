@@ -17,7 +17,11 @@ export class ProjectSummaryCardComponent {
   @Input() project!: Project;
 
   getTechTags() {
-    return this.project.tags?.filter(tag => tag.type === 'assunto') || [];
+    return this.project.tags?.filter(tag => tag.type === 'tecnologias/ferramentas') || [];
+  }
+
+  getAssuntosTags() {
+    return this.project.tags?.filter(tag => tag.type === 'assuntos') || [];
   }
 
   getGeneralTags() {
@@ -35,8 +39,8 @@ export class ProjectSummaryCardComponent {
 
   getTagTooltip(tag: any): string {
     const typeLabels: { [key: string]: string } = {
-      'assunto': 'Tecnologia/Assunto',
-      'dificuldade': 'Dificuldade',
+      'tecnologias/ferramentas': 'Tecnologia/Ferramenta',
+      'assuntos': 'Assunto/Tema',
       'tempoEstimado': 'Tempo Estimado',
       'complexidade': 'Complexidade'
     };

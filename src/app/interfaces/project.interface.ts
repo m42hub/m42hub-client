@@ -9,7 +9,7 @@ export interface TeamMember {
 export interface ProjectTag {
   id: string;
   name: string;
-  type: 'assunto' | 'dificuldade' | 'tempoEstimado' | 'complexidade';
+  type: 'tecnologias/ferramentas' | 'assuntos' | 'tempoEstimado' | 'complexidade';
   color?: string;
 }
 

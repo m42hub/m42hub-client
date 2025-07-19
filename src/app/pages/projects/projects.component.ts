@@ -41,9 +41,9 @@ export class ProjectsComponent {
         }
       ],
       tags: [
-        { id: '1', name: 'React', type: 'assunto' },
-        { id: '2', name: 'Node.js', type: 'assunto' },
-        { id: '3', name: 'Médio', type: 'dificuldade' },
+        { id: '1', name: 'React', type: 'tecnologias/ferramentas' },
+        { id: '2', name: 'Node.js', type: 'tecnologias/ferramentas' },
+        { id: '3', name: 'E-commerce', type: 'assuntos' },
         { id: '4', name: '3 meses', type: 'tempoEstimado' },
         { id: '5', name: 'Alta', type: 'complexidade' }
       ],
@@ -79,9 +79,9 @@ export class ProjectsComponent {
         }
       ],
       tags: [
-        { id: '6', name: 'React Native', type: 'assunto' },
-        { id: '7', name: 'Firebase', type: 'assunto' },
-        { id: '8', name: 'Difícil', type: 'dificuldade' },
+        { id: '6', name: 'React Native', type: 'tecnologias/ferramentas' },
+        { id: '7', name: 'Firebase', type: 'tecnologias/ferramentas' },
+        { id: '8', name: 'Mobile', type: 'assuntos' },
         { id: '9', name: '6 meses', type: 'tempoEstimado' },
         { id: '10', name: 'Muito Alta', type: 'complexidade' }
       ],
@@ -111,9 +111,9 @@ export class ProjectsComponent {
         }
       ],
       tags: [
-        { id: '11', name: 'Angular', type: 'assunto' },
-        { id: '12', name: 'Java', type: 'assunto' },
-        { id: '13', name: 'Fácil', type: 'dificuldade' },
+        { id: '11', name: 'Angular', type: 'tecnologias/ferramentas' },
+        { id: '12', name: 'Java', type: 'tecnologias/ferramentas' },
+        { id: '13', name: 'Educação', type: 'assuntos' },
         { id: '14', name: '2 meses', type: 'tempoEstimado' },
         { id: '15', name: 'Média', type: 'complexidade' }
       ],
@@ -143,10 +143,10 @@ export class ProjectsComponent {
         }
       ],
       tags: [
-        { id: '16', name: 'Vue.js', type: 'assunto' },
-        { id: '17', name: 'Socket.io', type: 'assunto' },
-        { id: '18', name: 'MongoDB', type: 'assunto' },
-        { id: '19', name: 'Difícil', type: 'dificuldade' },
+        { id: '16', name: 'Vue.js', type: 'tecnologias/ferramentas' },
+        { id: '17', name: 'Socket.io', type: 'tecnologias/ferramentas' },
+        { id: '18', name: 'MongoDB', type: 'tecnologias/ferramentas' },
+        { id: '19', name: 'Redes Sociais', type: 'assuntos' },
         { id: '20', name: '8 meses', type: 'tempoEstimado' },
         { id: '21', name: 'Muito Alta', type: 'complexidade' }
       ],
@@ -176,9 +176,9 @@ export class ProjectsComponent {
         }
       ],
       tags: [
-        { id: '22', name: 'Flutter', type: 'assunto' },
-        { id: '23', name: 'Firebase', type: 'assunto' },
-        { id: '24', name: 'Médio', type: 'dificuldade' },
+        { id: '22', name: 'Flutter', type: 'tecnologias/ferramentas' },
+        { id: '23', name: 'Firebase', type: 'tecnologias/ferramentas' },
+        { id: '24', name: 'Finanças', type: 'assuntos' },
         { id: '25', name: '4 meses', type: 'tempoEstimado' },
         { id: '26', name: 'Alta', type: 'complexidade' }
       ],
@@ -214,10 +214,10 @@ export class ProjectsComponent {
         }
       ],
       tags: [
-        { id: '27', name: 'React', type: 'assunto' },
-        { id: '28', name: 'Python', type: 'assunto' },
-        { id: '29', name: 'PostgreSQL', type: 'assunto' },
-        { id: '30', name: 'Médio', type: 'dificuldade' },
+        { id: '27', name: 'React', type: 'tecnologias/ferramentas' },
+        { id: '28', name: 'Python', type: 'tecnologias/ferramentas' },
+        { id: '29', name: 'PostgreSQL', type: 'tecnologias/ferramentas' },
+        { id: '30', name: 'Produtividade', type: 'assuntos' },
         { id: '31', name: '5 meses', type: 'tempoEstimado' },
         { id: '32', name: 'Alta', type: 'complexidade' }
       ],
@@ -253,10 +253,10 @@ export class ProjectsComponent {
         }
       ],
       tags: [
-        { id: '33', name: 'Next.js', type: 'assunto' },
-        { id: '34', name: 'Stripe', type: 'assunto' },
-        { id: '35', name: 'AWS', type: 'assunto' },
-        { id: '36', name: 'Difícil', type: 'dificuldade' },
+        { id: '33', name: 'Next.js', type: 'tecnologias/ferramentas' },
+        { id: '34', name: 'Stripe', type: 'tecnologias/ferramentas' },
+        { id: '35', name: 'AWS', type: 'tecnologias/ferramentas' },
+        { id: '36', name: 'Educação', type: 'assuntos' },
         { id: '37', name: '10 meses', type: 'tempoEstimado' },
         { id: '38', name: 'Muito Alta', type: 'complexidade' }
       ],
@@ -286,9 +286,9 @@ export class ProjectsComponent {
         }
       ],
       tags: [
-        { id: '39', name: 'Svelte', type: 'assunto' },
-        { id: '40', name: 'Supabase', type: 'assunto' },
-        { id: '41', name: 'Fácil', type: 'dificuldade' },
+        { id: '39', name: 'Svelte', type: 'tecnologias/ferramentas' },
+        { id: '40', name: 'Supabase', type: 'tecnologias/ferramentas' },
+        { id: '41', name: 'Produtividade', type: 'assuntos' },
         { id: '42', name: '2 meses', type: 'tempoEstimado' },
         { id: '43', name: 'Média', type: 'complexidade' }
       ],
