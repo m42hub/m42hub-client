@@ -193,45 +193,25 @@
           <div class="space-y-4">
             <div class="flex justify-between items-center">
               <h4 class="text-lg font-semibold">Membros da Equipe ({{ teamArray.length }})</h4>
+              <p-button
+                label="Adicionar Membro"
+                icon="pi pi-plus"
+                severity="success"
+                size="small"
+                (onClick)="onAddMember()"
+                pTooltip="Adicionar novo membro à equipe">
+              </p-button>
             </div>
 
-            <div class="space-y-4" *ngIf="teamArray.length > 0">
-              <div
-                class="flex items-start gap-4 p-4 border border-surface-border rounded-lg bg-surface-card"
-                *ngFor="let member of teamArray.controls; let i = index"
-                [formGroupName]="i"
-              >
-                <div class="flex-shrink-0">
-                  <p-avatar
-                    [image]="getImageUrl(member.get('photo')?.value)"
-                    (onImageError)="onImageError($event)"
-                    size="large"
-                  ></p-avatar>
-                </div>
-                <div class="flex-1 space-y-2">
-                  <div class="font-semibold text-lg">{{ member.get('name')?.value }}</div>
-                            <p-select
-            formControlName="role"
-            [options]="roleOptions"
-            placeholder="Selecione o cargo"
-            class="w-full"
-          ></p-select>
-                </div>
-                <div class="flex-shrink-0">
-                  <p-button
-                    icon="pi pi-trash"
-                    severity="danger"
-                    size="small"
-                    (onClick)="removeTeamMember(i)"
-                    pTooltip="Remover da equipe"
-                  ></p-button>
-                </div>
-              </div>
-            </div>
-
-            <div class="text-center p-8 text-surface-600 bg-surface-ground border-2 border-dashed border-surface-border rounded-lg" *ngIf="teamArray.length === 0">
-              <p class="italic">Nenhum membro na equipe ainda.</p>
-            </div>
+            <!-- Team Card Component -->
+            <app-team-card
+              [team]="getTeamForCard()"
+              mode="edit"
+              [showHeader]="false"
+              [maxHeight]="'400px'"
+              (removeMember)="onTeamCardRemoveMember($event)"
+              (editMember)="onTeamCardEditMember($event)">
+            </app-team-card>
           </div>
         </p-tabPanel>
 
@@ -242,54 +222,14 @@
               <h4 class="text-lg font-semibold">Solicitações ({{ pendingRequests.length }})</h4>
             </div>
 
-            <div class="space-y-4" *ngIf="pendingRequests.length > 0">
-              <div
-                class="p-4 border border-surface-border rounded-lg bg-surface-card"
-                *ngFor="let request of pendingRequests"
-              >
-                <div class="flex items-start gap-4">
-                  <div class="flex-shrink-0">
-                    <p-avatar
-                      [image]="getImageUrl(request.userPhoto)"
-                      (onImageError)="onImageError($event)"
-                      size="large"
-                    ></p-avatar>
-                  </div>
-                  <div class="flex-1 space-y-2">
-                    <div class="flex justify-between items-start">
-                      <div>
-                        <div class="font-semibold text-lg">{{ request.userName }}</div>
-                        <div class="text-surface-600">Solicitou: {{ request.requestedRole }}</div>
-                        <div class="text-sm text-surface-500">{{ formatDate(request.requestedAt) }}</div>
-                      </div>
-                      <div class="flex gap-2">
-                        <p-button
-                          label="Aceitar"
-                          icon="pi pi-check"
-                          severity="success"
-                          size="small"
-                          (onClick)="acceptRequest(request)"
-                        ></p-button>
-                        <p-button
-                          label="Recusar"
-                          icon="pi pi-times"
-                          severity="danger"
-                          size="small"
-                          (onClick)="rejectRequest(request)"
-                        ></p-button>
-                      </div>
-                    </div>
-                    <div class="text-surface-600 text-sm" *ngIf="request.message">
-                      <strong>Mensagem:</strong> {{ request.message }}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="text-center p-8 text-surface-600 bg-surface-ground border-2 border-dashed border-surface-border rounded-lg" *ngIf="pendingRequests.length === 0">
-              <p class="italic">Nenhuma solicitação pendente.</p>
-            </div>
+            <!-- Request Card Component -->
+            <app-request-card
+              [requests]="pendingRequests"
+              [showHeader]="false"
+              [maxHeight]="'400px'"
+              (acceptRequest)="onRequestCardAcceptRequest($event)"
+              (rejectRequest)="onRequestCardRejectRequest($event)">
+            </app-request-card>
           </div>
         </p-tabPanel>
       </p-tabView>
@@ -452,4 +392,198 @@
     </div>
 
   </form>
+
+  <!-- Dialog para editar membro -->
+  <p-dialog
+    header="Editar Membro da Equipe"
+    [(visible)]="showEditMemberDialog"
+    [modal]="true"
+    [style]="{ width: '500px' }"
+    [draggable]="false"
+    [resizable]="false"
+    (onHide)="onCancelEditMember()">
+
+    <form [formGroup]="editingMemberForm" class="space-y-4">
+      <div class="space-y-2">
+        <label for="editName" class="block font-semibold">
+          <i class="pi pi-user mr-2 text-primary"></i>
+          Nome *
+        </label>
+        <input
+          id="editName"
+          type="text"
+          formControlName="name"
+          placeholder="Digite o nome do membro"
+          class="w-full p-3 border border-surface-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+          [class.ng-invalid]="editingMemberForm.get('name')?.invalid && editingMemberForm.get('name')?.touched"
+        />
+        <small
+          class="p-error block"
+          *ngIf="editingMemberForm.get('name')?.invalid && editingMemberForm.get('name')?.touched"
+        >
+          Nome é obrigatório e deve ter pelo menos 2 caracteres
+        </small>
+      </div>
+
+      <div class="space-y-2">
+        <label for="editRole" class="block font-semibold">
+          <i class="pi pi-briefcase mr-2 text-primary"></i>
+          Cargo *
+        </label>
+        <p-select
+          id="editRole"
+          formControlName="role"
+          [options]="roleOptions"
+          placeholder="Selecione o cargo"
+          class="w-full"
+        ></p-select>
+        <small
+          class="p-error block"
+          *ngIf="editingMemberForm.get('role')?.invalid && editingMemberForm.get('role')?.touched"
+        >
+          Cargo é obrigatório
+        </small>
+      </div>
+
+      <div class="space-y-2">
+        <label for="editPhoto" class="block font-semibold">
+          <i class="pi pi-image mr-2 text-primary"></i>
+          URL da Foto
+        </label>
+        <input
+          id="editPhoto"
+          type="url"
+          formControlName="photo"
+          placeholder="https://exemplo.com/foto.jpg"
+          class="w-full p-3 border border-surface-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+        />
+      </div>
+
+      <div class="flex items-center space-x-2">
+        <input
+          id="editIsManager"
+          type="checkbox"
+          formControlName="isManager"
+          class="w-4 h-4 text-primary bg-surface-card border-surface-border rounded focus:ring-primary focus:ring-2"
+        />
+        <label for="editIsManager" class="font-semibold">
+          <i class="pi pi-star mr-2 text-primary"></i>
+          É Manager
+        </label>
+      </div>
+    </form>
+
+    <ng-template pTemplate="footer">
+      <div class="flex justify-end gap-2">
+        <p-button
+          label="Cancelar"
+          severity="secondary"
+          (onClick)="onCancelEditMember()"
+        ></p-button>
+        <p-button
+          label="Salvar"
+          icon="pi pi-check"
+          (onClick)="onSaveEditMember()"
+          [disabled]="editingMemberForm.invalid"
+        ></p-button>
+      </div>
+    </ng-template>
+  </p-dialog>
+
+  <!-- Dialog para adicionar membro -->
+  <p-dialog
+    header="Adicionar Membro à Equipe"
+    [(visible)]="showAddMemberDialog"
+    [modal]="true"
+    [style]="{ width: '500px' }"
+    [draggable]="false"
+    [resizable]="false"
+    (onHide)="onCancelAddMember()">
+
+    <form [formGroup]="addMemberForm" class="space-y-4">
+      <div class="space-y-2">
+        <label for="addName" class="block font-semibold">
+          <i class="pi pi-user mr-2 text-primary"></i>
+          Nome *
+        </label>
+        <input
+          id="addName"
+          type="text"
+          formControlName="name"
+          placeholder="Digite o nome do membro"
+          class="w-full p-3 border border-surface-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+          [class.ng-invalid]="addMemberForm.get('name')?.invalid && addMemberForm.get('name')?.touched"
+        />
+        <small
+          class="p-error block"
+          *ngIf="addMemberForm.get('name')?.invalid && addMemberForm.get('name')?.touched"
+        >
+          Nome é obrigatório e deve ter pelo menos 2 caracteres
+        </small>
+      </div>
+
+      <div class="space-y-2">
+        <label for="addRole" class="block font-semibold">
+          <i class="pi pi-briefcase mr-2 text-primary"></i>
+          Cargo *
+        </label>
+        <p-select
+          id="addRole"
+          formControlName="role"
+          [options]="roleOptions"
+          placeholder="Selecione o cargo"
+          class="w-full"
+        ></p-select>
+        <small
+          class="p-error block"
+          *ngIf="addMemberForm.get('role')?.invalid && addMemberForm.get('role')?.touched"
+        >
+          Cargo é obrigatório
+        </small>
+      </div>
+
+      <div class="space-y-2">
+        <label for="addPhoto" class="block font-semibold">
+          <i class="pi pi-image mr-2 text-primary"></i>
+          URL da Foto
+        </label>
+        <input
+          id="addPhoto"
+          type="url"
+          formControlName="photo"
+          placeholder="https://exemplo.com/foto.jpg"
+          class="w-full p-3 border border-surface-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+        />
+      </div>
+
+      <div class="flex items-center space-x-2">
+        <input
+          id="addIsManager"
+          type="checkbox"
+          formControlName="isManager"
+          class="w-4 h-4 text-primary bg-surface-card border-surface-border rounded focus:ring-primary focus:ring-2"
+        />
+        <label for="addIsManager" class="font-semibold">
+          <i class="pi pi-star mr-2 text-primary"></i>
+          É Manager
+        </label>
+      </div>
+    </form>
+
+    <ng-template pTemplate="footer">
+      <div class="flex justify-end gap-2">
+        <p-button
+          label="Cancelar"
+          severity="secondary"
+          (onClick)="onCancelAddMember()"
+        ></p-button>
+        <p-button
+          label="Adicionar"
+          icon="pi pi-plus"
+          (onClick)="onSaveAddMember()"
+          [disabled]="addMemberForm.invalid"
+        ></p-button>
+      </div>
+    </ng-template>
+  </p-dialog>
 </div>

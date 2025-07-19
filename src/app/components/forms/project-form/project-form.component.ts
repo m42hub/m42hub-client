@@ -12,8 +12,11 @@ import { AvatarModule } from 'primeng/avatar';
 import { DialogModule } from 'primeng/dialog';
 import { TabViewModule } from 'primeng/tabview';
 import { MultiSelectModule } from 'primeng/multiselect';
+import { TooltipModule } from 'primeng/tooltip';
 import { marked } from 'marked';
 import { Project, TeamMember, ProjectTag } from '../../../interfaces/project.interface';
+import { TeamCardComponent } from '../../cards/team-card/team-card.component';
+import { RequestCardComponent } from '../../cards/request-card/request-card.component';
 
 // Interface para solicitações pendentes
 export interface TeamRequest {
@@ -43,7 +46,10 @@ export interface TeamRequest {
     AvatarModule,
     DialogModule,
     TabViewModule,
-    MultiSelectModule
+    MultiSelectModule,
+    TooltipModule,
+    TeamCardComponent,
+    RequestCardComponent
   ],
   templateUrl: './project-form.component.html',
   styleUrl: './project-form.component.css'
@@ -59,6 +65,15 @@ export class ProjectFormComponent implements OnInit, OnChanges {
   isBrowser = false;
   markdownPreview = '';
   isFormReady = false;
+
+  // Dialog para edição de membros
+  showEditMemberDialog = false;
+  editingMemberIndex = -1;
+  editingMemberForm!: FormGroup;
+
+  // Dialog para adicionar membros
+  showAddMemberDialog = false;
+  addMemberForm!: FormGroup;
 
 
 
@@ -194,6 +209,9 @@ export class ProjectFormComponent implements OnInit, OnChanges {
     // Inicializar formulário primeiro
     this.initForm();
 
+    // Inicializar formulários dos dialogs
+    this.initDialogForms();
+
     // Configurar marked apenas no browser para evitar erros SSR
     if (this.isBrowser) {
       marked.setOptions({
@@ -256,6 +274,24 @@ export class ProjectFormComponent implements OnInit, OnChanges {
     // Garantir que o formulário está marcado como inicializado
     this.projectForm.markAsPristine();
     this.projectForm.markAsUntouched();
+  }
+
+  private initDialogForms(): void {
+    // Inicializar formulário de edição de membros
+    this.editingMemberForm = this.fb.group({
+      name: ['', [Validators.required, Validators.minLength(2)]],
+      role: ['', [Validators.required]],
+      photo: [''],
+      isManager: [false]
+    });
+
+    // Inicializar formulário de adição de membros
+    this.addMemberForm = this.fb.group({
+      name: ['', [Validators.required, Validators.minLength(2)]],
+      role: ['', [Validators.required]],
+      photo: [''],
+      isManager: [false]
+    });
   }
 
   private patchFormWithProject(): void {
@@ -521,6 +557,88 @@ export class ProjectFormComponent implements OnInit, OnChanges {
   rejectRequest(request: TeamRequest): void {
     // Remover da lista de solicitações
     this.pendingRequests = this.pendingRequests.filter(r => r.id !== request.id);
+  }
+
+  // Métodos para integração com team-card
+  getTeamForCard(): any[] {
+    return this.teamArray.controls.map((control, index) => ({
+      id: control.get('id')?.value || `temp-${index}`,
+      name: control.get('name')?.value || '',
+      role: control.get('role')?.value || '',
+      photo: control.get('photo')?.value || '',
+      isManager: control.get('isManager')?.value || false
+    }));
+  }
+
+  onTeamCardRemoveMember(event: { index: number, member: any }): void {
+    this.removeTeamMember(event.index);
+  }
+
+  onTeamCardEditMember(event: { index: number, member: any }): void {
+    this.editingMemberIndex = event.index;
+    this.initEditMemberForm(event.member);
+    this.showEditMemberDialog = true;
+  }
+
+  private initEditMemberForm(member: any): void {
+    this.editingMemberForm.patchValue({
+      name: member.name,
+      role: member.role,
+      photo: member.photo || '',
+      isManager: member.isManager || false
+    });
+  }
+
+  onSaveEditMember(): void {
+    if (this.editingMemberForm.valid && this.editingMemberIndex >= 0) {
+      const memberControl = this.teamArray.at(this.editingMemberIndex);
+      memberControl.patchValue(this.editingMemberForm.value);
+      this.showEditMemberDialog = false;
+      this.editingMemberIndex = -1;
+    }
+  }
+
+  onCancelEditMember(): void {
+    this.showEditMemberDialog = false;
+    this.editingMemberIndex = -1;
+  }
+
+  // Métodos para adicionar membros
+  onAddMember(): void {
+    this.initAddMemberForm();
+    this.showAddMemberDialog = true;
+  }
+
+  private initAddMemberForm(): void {
+    this.addMemberForm.reset();
+  }
+
+  onSaveAddMember(): void {
+    if (this.addMemberForm.valid) {
+      const newMember = this.fb.group({
+        id: [this.generateId()],
+        name: [this.addMemberForm.value.name],
+        role: [this.addMemberForm.value.role],
+        photo: [this.addMemberForm.value.photo || ''],
+        isManager: [this.addMemberForm.value.isManager || false]
+      });
+
+      this.teamArray.push(newMember);
+      this.showAddMemberDialog = false;
+    }
+  }
+
+  onCancelAddMember(): void {
+    this.showAddMemberDialog = false;
+  }
+
+  // Métodos para integração com request-card
+  onRequestCardAcceptRequest(request: TeamRequest): void {
+    this.acceptRequest(request);
+  }
+
+  onRequestCardRejectRequest(request: TeamRequest): void {
+    this.rejectRequest(request);
   }
 
 

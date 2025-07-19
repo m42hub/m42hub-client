@@ -1,0 +1,68 @@
+<p-card class="w-full h-full">
+  <ng-template pTemplate="header" *ngIf="showHeader">
+    <div class="p-4">
+      <h4 class="text-sm sm:text-base font-bold text-800 dark:text-surface-0 text-center uppercase tracking-wide">Solicitações Pendentes</h4>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="content">
+    <div class="flex flex-col gap-3 overflow-y-auto" [style]="{'max-height': maxHeight !== 'auto' ? maxHeight : 'none'}">
+      <div *ngFor="let request of requests" class="p-4 border border-surface-border rounded-lg bg-surface-card dark:bg-surface-50">
+        <div class="flex items-start gap-3">
+          <div class="flex-shrink-0">
+            <p-avatar
+              [image]="getImageUrl(request.userPhoto)"
+              size="large"
+              shape="circle"
+              (onImageError)="onImageError($event)"
+              class="w-12 h-12">
+            </p-avatar>
+          </div>
+          <div class="flex-1 min-w-0 space-y-2">
+            <div class="flex justify-between items-start">
+              <div class="flex-1 min-w-0">
+                <p class="text-md font-bold text-surface-950 truncate"
+                   [pTooltip]="request.userName"
+                   tooltipPosition="top"
+                   tooltipStyleClass="text-xs">{{ request.userName }}</p>
+                <p class="text-sm text-surface-800 truncate"
+                   [pTooltip]="request.requestedRole"
+                   tooltipPosition="top"
+                   tooltipStyleClass="text-xs">Solicitou: {{ request.requestedRole }}</p>
+                <p class="text-xs text-surface-800">{{ formatDate(request.requestedAt) }}</p>
+              </div>
+              <div class="flex-shrink-0 flex flex-col sm:flex-row gap-1">
+                <p-button
+                  icon="pi pi-check"
+                  severity="success"
+                  size="small"
+                  (onClick)="onAcceptRequest(request)"
+                  pTooltip="Aceitar solicitação"
+                  class="text-xs">
+                </p-button>
+                <p-button
+                  icon="pi pi-times"
+                  severity="danger"
+                  size="small"
+                  (onClick)="onRejectRequest(request)"
+                  pTooltip="Recusar solicitação"
+                  class="text-xs">
+                </p-button>
+              </div>
+            </div>
+
+            <div class="text-surface-900 text-sm" *ngIf="request.message">
+              <strong>Mensagem:</strong> {{ request.message }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Empty State -->
+      <div *ngIf="requests.length === 0" class="text-center p-6 text-surface-500 dark:text-surface-800 border-2 border-dashed border-surface-border rounded-lg">
+        <i class="pi pi-inbox text-2xl mb-2 block"></i>
+        <p class="text-sm">Nenhuma solicitação pendente</p>
+      </div>
+    </div>
+  </ng-template>
+</p-card>

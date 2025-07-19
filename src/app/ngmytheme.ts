@@ -22,7 +22,7 @@ const darkSurface = {
   100: '#3A3A3A',  // Cinza escuro
   200: '#39497A',  // Cinza médio-escuro
   300: '#1E212C',  // Cinza médio
-  400: '#6A6A6A',  // Cinza médio-claro
+  400: '#20284C',  // Cinza médio-claro
   500: '#4455EE',  // Cor primária (mantida)
   600: '#5A6BFF',  // Primária mais clara
   700: '#7A8BFF',  // Primária ainda mais clara
