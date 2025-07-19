@@ -5,6 +5,9 @@ import { TagModule } from 'primeng/tag';
 import { ButtonModule } from 'primeng/button';
 import { TooltipModule } from 'primeng/tooltip';
 import { Project } from '../../../interfaces/project.interface';
+import { ProjectTag } from '../../../interfaces/project.interface';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-project-summary-card',
@@ -14,18 +17,22 @@ import { Project } from '../../../interfaces/project.interface';
   styleUrl: './project-summary-card.component.css'
 })
 export class ProjectSummaryCardComponent {
+
+  constructor(private router: Router) {}
+
   @Input() project!: Project;
+  showImage: boolean = true;
 
-  getTechTags() {
-    return this.project.tags?.filter(tag => tag.type === 'tecnologias/ferramentas') || [];
+  getTechTags(): ProjectTag[] {
+    return this.project.tags?.filter((tag: ProjectTag) => tag.type === 'tecnologias/ferramentas') || [];
   }
 
-  getAssuntosTags() {
-    return this.project.tags?.filter(tag => tag.type === 'assuntos') || [];
+  getAssuntosTags(): ProjectTag[] {
+    return this.project.tags?.filter((tag: ProjectTag) => tag.type === 'assuntos') || [];
   }
 
-  getGeneralTags() {
-    return this.project.tags || [];
+  getGeneralTags(): ProjectTag[] {
+    return this.project.tags as ProjectTag[] || [];
   }
 
   getUnfilledRoles() {
@@ -37,7 +44,7 @@ export class ProjectSummaryCardComponent {
     return new Date(date).toLocaleDateString('pt-BR');
   }
 
-  getTagTooltip(tag: any): string {
+  getTagTooltip(tag: ProjectTag): string {
     const typeLabels: { [key: string]: string } = {
       'tecnologias/ferramentas': 'Tecnologia/Ferramenta',
       'assuntos': 'Assunto/Tema',
@@ -51,5 +58,13 @@ export class ProjectSummaryCardComponent {
   onDetailsClick() {
     // TODO: Implementar navegação ou emissão de evento para detalhes
     console.log('Ver detalhes do projeto:', this.project.id);
+  }
+
+  onImageError() {
+    this.showImage = false;
+  }
+
+  viewProjectDetails(id: string): void {
+    this.router.navigate([`/projects/${id}`]);
   }
 }

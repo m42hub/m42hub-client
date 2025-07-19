@@ -1,4 +1,9 @@
 <p-card class="mx-auto shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
+  <ng-template pTemplate="header">
+    <div class="w-full h-32 rounded-t-lg overflow-hidden relative bg-gradient-to-r from-primary-400 to-primary-600">
+      <img *ngIf="showImage" src="/assets/project-banner-mock.jpg" alt="Banner do Projeto" class="absolute inset-0 w-full h-full object-cover" (error)="onImageError()" />
+    </div>
+  </ng-template>
   <ng-template pTemplate="content">
     <div class="max-w-md mx-auto">
       <!-- Nome do projeto -->
@@ -79,7 +84,7 @@
             tooltipStyleClass="text-xs">
           </p-tag>
         </div>
-        <button pButton type="button" label="Ver detalhes" icon="pi pi-eye" iconPos="left" size="small" class="p-button-md p-2 h-12 min-w-32 ml-2" (click)="onDetailsClick()"></button>
+        <button pButton type="button" label="Ver detalhes" icon="pi pi-eye" iconPos="left" size="small" class="p-button-md p-2 h-12 min-w-32 ml-2" (click)="viewProjectDetails(project.id)"></button>
       </div>
     </div>
   </ng-template>

@@ -141,4 +141,8 @@ export class ProjectEditorComponent implements OnInit {
   onCancel(): void {
     this.router.navigate(['/projects']);
   }
+
+  goBack(): void {
+    this.router.navigate(['/projects']);
+  }
 }

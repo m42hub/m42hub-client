@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { ProjectsComponent as ProjectCardComponent } from '../../components/cards/projects/projects.component';
 import { ProjectSummaryCardComponent } from '../../components/cards/project-summary-card/project-summary-card.component';
@@ -13,6 +14,8 @@ import { Project, TeamMember, ProjectTag } from '../../interfaces/project.interf
   styleUrl: './projects.component.css'
 })
 export class ProjectsComponent {
+  constructor(private router: Router) {}
+
   projects: Project[] = [
     {
       id: '1',
@@ -321,5 +324,9 @@ export class ProjectsComponent {
     if (this.currentPage > 1) {
       this.currentPage--;
     }
+  }
+
+  createNewProject(): void {
+    this.router.navigate(['/projects/new']);
   }
 }

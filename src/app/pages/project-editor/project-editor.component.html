@@ -1,13 +1,20 @@
 <div class="min-h-screen bg-surface-ground p-6">
   <div class="max-w-6xl mx-auto">
+    <!-- Back Button -->
+    <div class="mb-4">
+      <p-button
+        label="Voltar aos Projetos"
+        icon="pi pi-arrow-left"
+        severity="primary"
+        (onClick)="goBack()">
+      </p-button>
+    </div>
+
     <!-- Header -->
     <div class="text-center mb-8 p-6 bg-surface-card rounded-xl shadow-sm">
-      <h1 class="text-3xl font-bold mb-3 text-surface-900">
+      <h1 class="text-3xl font-bold text-surface-900">
         {{ isEditMode ? 'Editar Projeto' : 'Criar Novo Projeto' }}
       </h1>
-      <p class="text-lg text-surface-600">
-        {{ isEditMode ? 'Modifique as informações do projeto abaixo' : 'Preencha as informações para criar um novo projeto' }}
-      </p>
     </div>
 
     <!-- Content -->
