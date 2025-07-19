@@ -1,1 +1,436 @@
-<p>project-form works!</p>
+<div class="max-w-4xl mx-auto p-6">
+  <!-- Loading state -->
+  <div *ngIf="!isFormReady" class="text-center p-8">
+    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+    <p class="text-surface-600">Carregando formulário...</p>
+  </div>
+
+  <!-- Form content -->
+  <form [formGroup]="projectForm" (ngSubmit)="onSubmit()" class="space-y-6" *ngIf="isFormReady">
+
+    <!-- Informações Básicas -->
+    <p-card header="Informações Básicas" styleClass="mb-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="space-y-2">
+          <label for="name" class="block font-semibold">
+            <i class="pi pi-briefcase mr-2 text-primary"></i>
+            Nome do Projeto *
+          </label>
+          <input
+            id="name"
+            type="text"
+            formControlName="name"
+            placeholder="Digite o nome do projeto"
+            class="w-full p-3 border border-surface-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+            [class.ng-invalid]="projectForm.get('name')?.invalid && projectForm.get('name')?.touched"
+          />
+          <small
+            class="p-error block"
+            *ngIf="projectForm.get('name')?.invalid && projectForm.get('name')?.touched"
+          >
+            Nome é obrigatório e deve ter pelo menos 3 caracteres
+          </small>
+        </div>
+
+        <div class="space-y-2">
+          <label for="status" class="block font-semibold">
+            <i class="pi pi-info-circle mr-2 text-primary"></i>
+            Status
+          </label>
+          <p-select
+            id="status"
+            formControlName="status"
+            [options]="statusOptions"
+            placeholder="Selecione o status"
+            class="w-full"
+          ></p-select>
+        </div>
+      </div>
+
+      <div class="space-y-2 mt-4">
+        <label for="summary" class="block font-semibold">
+          <i class="pi pi-file-edit mr-2 text-primary"></i>
+          Resumo *
+        </label>
+        <textarea
+          id="summary"
+          formControlName="summary"
+          placeholder="Breve descrição do projeto (mínimo 10 caracteres)"
+          rows="3"
+          class="w-full p-3 border border-surface-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+          [class.ng-invalid]="projectForm.get('summary')?.invalid && projectForm.get('summary')?.touched"
+        ></textarea>
+        <small
+          class="p-error block"
+          *ngIf="projectForm.get('summary')?.invalid && projectForm.get('summary')?.touched"
+        >
+          <span *ngIf="projectForm.get('summary')?.errors?.['required']">Resumo é obrigatório</span>
+          <span *ngIf="projectForm.get('summary')?.errors?.['minlength']">Resumo deve ter pelo menos 10 caracteres</span>
+        </small>
+      </div>
+
+      <div class="space-y-2 mt-4">
+        <label for="description" class="block font-semibold">
+          <i class="pi pi-file-text mr-2 text-primary"></i>
+          Descrição *
+        </label>
+        <p-tabView *ngIf="isBrowser">
+          <p-tabPanel header="Editor">
+            <textarea
+              id="description"
+              formControlName="description"
+              placeholder="Descrição detalhada do projeto (suporta Markdown)
+
+# Título Principal
+## Subtítulo
+**Texto em negrito**
+*Texto em itálico*
+- Lista com marcadores
+1. Lista numerada
+[Link](https://exemplo.com)
+![Imagem](https://exemplo.com/imagem.jpg)"
+              rows="12"
+              class="w-full font-mono text-sm p-3 border border-surface-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+              [class.ng-invalid]="projectForm.get('description')?.invalid && projectForm.get('description')?.touched"
+            ></textarea>
+            <small
+              class="p-error block mt-2"
+              *ngIf="projectForm.get('description')?.invalid && projectForm.get('description')?.touched"
+            >
+              Descrição é obrigatória e deve ter pelo menos 10 caracteres
+            </small>
+          </p-tabPanel>
+          <p-tabPanel header="Preview">
+            <div class="border border-surface-border rounded-lg p-4 min-h-[300px] bg-surface-card">
+              <div
+                class="prose prose-sm max-w-none"
+                [innerHTML]="markdownPreview"
+                *ngIf="markdownPreview"
+              ></div>
+              <div
+                class="text-surface-500 italic text-center py-8"
+                *ngIf="!markdownPreview"
+              >
+                Digite algo no editor para ver o preview...
+              </div>
+            </div>
+          </p-tabPanel>
+        </p-tabView>
+
+        <!-- Fallback para SSR -->
+        <div *ngIf="!isBrowser" class="space-y-2">
+          <textarea
+            id="description"
+            formControlName="description"
+            placeholder="Descrição detalhada do projeto (suporta Markdown)"
+            rows="6"
+            class="w-full p-3 border border-surface-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+            [class.ng-invalid]="projectForm.get('description')?.invalid && projectForm.get('description')?.touched"
+          ></textarea>
+          <small
+            class="p-error block"
+            *ngIf="projectForm.get('description')?.invalid && projectForm.get('description')?.touched"
+          >
+            Descrição é obrigatória e deve ter pelo menos 10 caracteres
+          </small>
+        </div>
+      </div>
+
+      <div class="space-y-2 mt-4">
+        <label for="image" class="block font-semibold">
+          <i class="pi pi-image mr-2 text-primary"></i>
+          URL da Imagem
+        </label>
+        <input
+          id="image"
+          type="url"
+          formControlName="image"
+          placeholder="https://exemplo.com/imagem.jpg"
+          class="w-full p-3 border border-surface-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+        />
+      </div>
+    </p-card>
+
+    <!-- Datas -->
+    <p-card header="Datas do Projeto" styleClass="mb-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="space-y-2">
+          <label for="startDate" class="block font-semibold">
+            <i class="pi pi-calendar-plus mr-2 text-primary"></i>
+            Data de Início
+          </label>
+          <p-datepicker
+            id="startDate"
+            formControlName="startDate"
+            dateFormat="dd/mm/yy"
+            placeholder="Selecione a data de início"
+            class="w-full"
+            icon="pi pi-calendar"
+          ></p-datepicker>
+        </div>
+        <div class="space-y-2">
+          <label for="expectedDate" class="block font-semibold">
+            <i class="pi pi-calendar-times mr-2 text-primary"></i>
+            Data Prevista
+          </label>
+          <p-datepicker
+            id="expectedDate"
+            formControlName="expectedDate"
+            dateFormat="dd/mm/yy"
+            placeholder="Selecione a data prevista"
+            class="w-full"
+            icon="pi pi-calendar"
+          ></p-datepicker>
+        </div>
+      </div>
+    </p-card>
+
+    <!-- Equipe (apenas na edição) -->
+    <p-card header="Equipe do Projeto" styleClass="mb-4" *ngIf="isFormReady && isEditMode && isBrowser && projectForm && projectForm.get('team')">
+      <p-tabView>
+        <!-- Aba: Membros Atuais -->
+        <p-tabPanel header="Membros Atuais">
+          <div class="space-y-4">
+            <div class="flex justify-between items-center">
+              <h4 class="text-lg font-semibold">Membros da Equipe ({{ teamArray.length }})</h4>
+            </div>
+
+            <div class="space-y-4" *ngIf="teamArray.length > 0">
+              <div
+                class="flex items-start gap-4 p-4 border border-surface-border rounded-lg bg-surface-card"
+                *ngFor="let member of teamArray.controls; let i = index"
+                [formGroupName]="i"
+              >
+                <div class="flex-shrink-0">
+                  <p-avatar
+                    [image]="getImageUrl(member.get('photo')?.value)"
+                    (onImageError)="onImageError($event)"
+                    size="large"
+                  ></p-avatar>
+                </div>
+                <div class="flex-1 space-y-2">
+                  <div class="font-semibold text-lg">{{ member.get('name')?.value }}</div>
+                            <p-select
+            formControlName="role"
+            [options]="roleOptions"
+            placeholder="Selecione o cargo"
+            class="w-full"
+          ></p-select>
+                </div>
+                <div class="flex-shrink-0">
+                  <p-button
+                    icon="pi pi-trash"
+                    severity="danger"
+                    size="small"
+                    (onClick)="removeTeamMember(i)"
+                    pTooltip="Remover da equipe"
+                  ></p-button>
+                </div>
+              </div>
+            </div>
+
+            <div class="text-center p-8 text-surface-600 bg-surface-ground border-2 border-dashed border-surface-border rounded-lg" *ngIf="teamArray.length === 0">
+              <p class="italic">Nenhum membro na equipe ainda.</p>
+            </div>
+          </div>
+        </p-tabPanel>
+
+        <!-- Aba: Solicitações Pendentes -->
+        <p-tabPanel header="Solicitações Pendentes">
+          <div class="space-y-4">
+            <div class="flex justify-between items-center">
+              <h4 class="text-lg font-semibold">Solicitações ({{ pendingRequests.length }})</h4>
+            </div>
+
+            <div class="space-y-4" *ngIf="pendingRequests.length > 0">
+              <div
+                class="p-4 border border-surface-border rounded-lg bg-surface-card"
+                *ngFor="let request of pendingRequests"
+              >
+                <div class="flex items-start gap-4">
+                  <div class="flex-shrink-0">
+                    <p-avatar
+                      [image]="getImageUrl(request.userPhoto)"
+                      (onImageError)="onImageError($event)"
+                      size="large"
+                    ></p-avatar>
+                  </div>
+                  <div class="flex-1 space-y-2">
+                    <div class="flex justify-between items-start">
+                      <div>
+                        <div class="font-semibold text-lg">{{ request.userName }}</div>
+                        <div class="text-surface-600">Solicitou: {{ request.requestedRole }}</div>
+                        <div class="text-sm text-surface-500">{{ formatDate(request.requestedAt) }}</div>
+                      </div>
+                      <div class="flex gap-2">
+                        <p-button
+                          label="Aceitar"
+                          icon="pi pi-check"
+                          severity="success"
+                          size="small"
+                          (onClick)="acceptRequest(request)"
+                        ></p-button>
+                        <p-button
+                          label="Recusar"
+                          icon="pi pi-times"
+                          severity="danger"
+                          size="small"
+                          (onClick)="rejectRequest(request)"
+                        ></p-button>
+                      </div>
+                    </div>
+                    <div class="text-surface-600 text-sm" *ngIf="request.message">
+                      <strong>Mensagem:</strong> {{ request.message }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="text-center p-8 text-surface-600 bg-surface-ground border-2 border-dashed border-surface-border rounded-lg" *ngIf="pendingRequests.length === 0">
+              <p class="italic">Nenhuma solicitação pendente.</p>
+            </div>
+          </div>
+        </p-tabPanel>
+      </p-tabView>
+    </p-card>
+
+    <!-- Tags -->
+    <p-card header="Tags do Projeto" styleClass="mb-4" *ngIf="isFormReady && projectForm && projectForm.get('tags')">
+      <div class="space-y-6">
+        <div class="space-y-4">
+          <!-- Tecnologias/Assuntos -->
+          <div class="space-y-2">
+            <label class="block font-semibold">
+              <i class="pi pi-tags mr-2 text-primary"></i>
+              Tecnologias/Assuntos
+            </label>
+            <p-multiSelect
+              [options]="tagOptions.assunto"
+              placeholder="Selecione as tecnologias"
+              class="w-full"
+              optionLabel="label"
+              optionValue="value"
+              display="chip"
+              [maxSelectedLabels]="10"
+              (onChange)="onAssuntoChange($event)"
+              formControlName="selectedAssunto"
+            ></p-multiSelect>
+          </div>
+
+          <!-- Tempo Estimado e Complexidade -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Tempo Estimado -->
+            <div class="space-y-2">
+              <label class="block font-semibold">
+                <i class="pi pi-clock mr-2 text-primary"></i>
+                Tempo Estimado
+              </label>
+              <p-select
+                [options]="tagOptions.tempoEstimado"
+                placeholder="Selecione o tempo"
+                class="w-full"
+                optionLabel="label"
+                optionValue="value"
+                (onChange)="onTempoEstimadoChange($event)"
+                formControlName="selectedTempoEstimado"
+              ></p-select>
+            </div>
+
+            <!-- Complexidade -->
+            <div class="space-y-2">
+              <label class="block font-semibold">
+                <i class="pi pi-cog mr-2 text-primary"></i>
+                Complexidade
+              </label>
+              <p-select
+                [options]="tagOptions.complexidade"
+                placeholder="Selecione a complexidade"
+                class="w-full"
+                optionLabel="label"
+                optionValue="value"
+                (onChange)="onComplexidadeChange($event)"
+                formControlName="selectedComplexidade"
+              ></p-select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Preview das tags selecionadas -->
+        <div class="space-y-3" *ngIf="getTagsArray().length > 0">
+          <h5 class="font-semibold">Tags Selecionadas:</h5>
+          <div class="flex flex-wrap gap-2">
+            <p-tag
+              *ngFor="let tag of getTagsArray().value; let i = index"
+              [value]="tag.name"
+              [style]="{'background-color': tag.color}"
+            ></p-tag>
+          </div>
+        </div>
+      </div>
+    </p-card>
+
+    <!-- Vagas Não Preenchidas -->
+    <p-card header="Vagas Não Preenchidas" styleClass="mb-4" *ngIf="isFormReady && isBrowser && projectForm && projectForm.get('unfilledRoles')">
+              <div class="space-y-4">
+        <div class="space-y-2">
+          <label class="block font-semibold">
+            <i class="pi pi-users mr-2 text-primary"></i>
+            Vagas Necessárias
+          </label>
+          <p-multiSelect
+            formControlName="unfilledRoles"
+            [options]="roleOptions"
+            placeholder="Selecione as vagas necessárias"
+            class="w-full"
+            optionLabel="label"
+            optionValue="value"
+            display="chip"
+            [maxSelectedLabels]="8"
+          ></p-multiSelect>
+        </div>
+
+        <div class="text-sm text-surface-600">
+          <p>Selecione as vagas que ainda precisam ser preenchidas para o projeto (máximo 8 vagas).</p>
+        </div>
+
+        <small
+          class="p-error block"
+          *ngIf="projectForm.get('unfilledRoles')?.errors?.['maxItems']"
+        >
+          Máximo de 8 vagas permitidas. Você selecionou {{ projectForm.get('unfilledRoles')?.errors?.['maxItems']?.actual }} vagas.
+        </small>
+      </div>
+    </p-card>
+
+    <!-- Fallback para SSR - Equipe -->
+    <p-card header="Equipe do Projeto" styleClass="mb-4" *ngIf="isEditMode && !isBrowser">
+      <div class="text-center p-8 text-surface-600 bg-surface-ground border-2 border-dashed border-surface-border rounded-lg">
+        <p class="italic">Gerenciamento de equipe disponível apenas no navegador.</p>
+      </div>
+    </p-card>
+
+    <!-- Fallback para SSR - Vagas -->
+    <p-card header="Vagas Não Preenchidas" styleClass="mb-4" *ngIf="!isBrowser">
+      <div class="text-center p-8 text-surface-600 bg-surface-ground border-2 border-dashed border-surface-border rounded-lg">
+        <p class="italic">Seleção de vagas disponível apenas no navegador.</p>
+      </div>
+    </p-card>
+
+    <!-- Ações -->
+    <div class="flex justify-end gap-3 pt-6 border-t border-surface-border">
+      <p-button
+        label="Cancelar"
+        severity="secondary"
+        (onClick)="onCancel()"
+      ></p-button>
+      <p-button
+        type="submit"
+        [label]="isEditMode ? 'Atualizar Projeto' : 'Criar Projeto'"
+        [icon]="isEditMode ? 'pi pi-check' : 'pi pi-plus'"
+        [disabled]="projectForm.invalid"
+      ></p-button>
+    </div>
+
+  </form>
+</div>

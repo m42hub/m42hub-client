@@ -143,4 +143,27 @@ Para mais informações sobre o projeto, entre em contato conosco através dos c
   getAllProjects(): Observable<Project[]> {
     return of(this.projects);
   }
+
+  createProject(project: Project): Observable<Project> {
+    const newProject = { ...project, id: this.generateId() };
+    this.projects.push(newProject);
+    return of(newProject);
+  }
+
+  updateProject(project: Project): Observable<Project> {
+    const index = this.projects.findIndex(p => p.id === project.id);
+    if (index !== -1) {
+      this.projects[index] = { ...project, updatedAt: new Date() };
+      return of(this.projects[index]);
+    } else {
+      return new Observable(observer => {
+        observer.error(new Error('Projeto não encontrado'));
+      });
+    }
+  }
+
+  private generateId(): string {
+    // Usar timestamp + random para evitar colisões
+    return Date.now().toString(36) + Math.random().toString(36).substr(2, 9);
+  }
 }
