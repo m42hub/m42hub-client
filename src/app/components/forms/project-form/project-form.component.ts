@@ -10,7 +10,8 @@ import { ChipModule } from 'primeng/chip';
 import { TagModule } from 'primeng/tag';
 import { AvatarModule } from 'primeng/avatar';
 import { DialogModule } from 'primeng/dialog';
-import { TabViewModule } from 'primeng/tabview';
+import { TabsModule  } from 'primeng/tabs';
+import { TextareaModule } from 'primeng/textarea';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { TooltipModule } from 'primeng/tooltip';
 import { marked } from 'marked';
@@ -45,7 +46,8 @@ export interface TeamRequest {
     TagModule,
     AvatarModule,
     DialogModule,
-    TabViewModule,
+    TabsModule,
+    TextareaModule,
     MultiSelectModule,
     TooltipModule,
     TeamCardComponent,

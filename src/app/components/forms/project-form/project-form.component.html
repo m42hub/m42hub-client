@@ -1,27 +1,27 @@
-<div class="max-w-4xl mx-auto p-6">
+<div class="flex flex-col w-full mx-auto p-4 md:p-6">
   <!-- Loading state -->
-  <div *ngIf="!isFormReady" class="text-center p-8">
+  <div *ngIf="!isFormReady" class="flex flex-col items-center justify-center p-8">
     <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
     <p class="text-surface-600">Carregando formulário...</p>
   </div>
 
   <!-- Form content -->
-  <form [formGroup]="projectForm" (ngSubmit)="onSubmit()" class="space-y-6" *ngIf="isFormReady">
+  <form [formGroup]="projectForm" (ngSubmit)="onSubmit()" class="flex flex-col" *ngIf="isFormReady" styleClass="rounded-none">
 
     <!-- Informações Básicas -->
-    <p-card header="Informações Básicas" styleClass="mb-4">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div class="space-y-2">
-          <label for="name" class="block font-semibold">
+    <p-card header="Informações Básicas" styleClass="rounded-b-none">
+      <div class="flex flex-col md:flex-row gap-4">
+        <div class="flex flex-col gap-2 flex-2">
+          <label for="name" class="flex items-start font-semibold">
             <i class="pi pi-briefcase mr-2 text-primary"></i>
             Nome do Projeto *
           </label>
           <input
+            pInputText
             id="name"
             type="text"
             formControlName="name"
             placeholder="Digite o nome do projeto"
-            class="w-full p-3 border border-surface-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
             [class.ng-invalid]="projectForm.get('name')?.invalid && projectForm.get('name')?.touched"
           />
           <small
@@ -32,8 +32,8 @@
           </small>
         </div>
 
-        <div class="space-y-2">
-          <label for="status" class="block font-semibold">
+        <div class="flex flex-col gap-2 flex-1">
+          <label for="status" class="flex items-start font-semibold">
             <i class="pi pi-info-circle mr-2 text-primary"></i>
             Status
           </label>
@@ -47,18 +47,17 @@
         </div>
       </div>
 
-      <div class="space-y-2 mt-4">
-        <label for="summary" class="block font-semibold">
+      <div class="flex flex-col gap-2 mt-4">
+        <label for="summary" class="flex items-start font-semibold">
           <i class="pi pi-file-edit mr-2 text-primary"></i>
           Resumo *
         </label>
         <textarea
+          pTextarea
           id="summary"
           formControlName="summary"
           placeholder="Breve descrição do projeto (mínimo 10 caracteres)"
           rows="3"
-          class="w-full p-3 border border-surface-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-          [class.ng-invalid]="projectForm.get('summary')?.invalid && projectForm.get('summary')?.touched"
         ></textarea>
         <small
           class="p-error block"
@@ -69,29 +68,48 @@
         </small>
       </div>
 
-      <div class="space-y-2 mt-4">
-        <label for="description" class="block font-semibold">
-          <i class="pi pi-file-text mr-2 text-primary"></i>
-          Descrição *
+      <div class="flex flex-col gap-2 mt-4">
+        <label for="image" class="flex items-start font-semibold">
+          <i class="pi pi-image mr-2 text-primary"></i>
+          URL da Imagem
         </label>
-        <p-tabView *ngIf="isBrowser">
-          <p-tabPanel header="Editor">
+        <input
+          pInputText
+          id="image"
+          type="url"
+          formControlName="image"
+          placeholder="https://exemplo.com/imagem.jpg"
+        />
+      </div>
+    </p-card>
+
+    <p-card header="Descrição" styleClass="rounded-none">
+      <p-tabs value="0" size="small" *ngIf="isBrowser">
+        <div class="flex justify-between">
+          <p-tablist class="flex">
+            <p-tab value="0" class="p-2 text-sm">Editor</p-tab>
+            <p-tab value="1" class="p-2 text-sm">Preview</p-tab>
+          </p-tablist>
+        </div>
+        <p-tabpanels>
+          <p-tabpanel value="0">
             <textarea
+              pTextarea
               id="description"
               formControlName="description"
-              placeholder="Descrição detalhada do projeto (suporta Markdown)
-
-# Título Principal
-## Subtítulo
-**Texto em negrito**
-*Texto em itálico*
-- Lista com marcadores
-1. Lista numerada
-[Link](https://exemplo.com)
-![Imagem](https://exemplo.com/imagem.jpg)"
+              placeholder="
+                Descrição detalhada do projeto (suporta Markdown)
+                # Título Principal
+                ## Subtítulo
+                **Texto em negrito**
+                *Texto em itálico*
+                - Lista com marcadores
+                1. Lista numerada
+                [Link](https://exemplo.com)
+                ![Imagem](https://exemplo.com/imagem.jpg)
+              "
               rows="12"
-              class="w-full font-mono text-sm p-3 border border-surface-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-              [class.ng-invalid]="projectForm.get('description')?.invalid && projectForm.get('description')?.touched"
+              class="w-full font-mono text-sm p-3  border border-surface-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
             ></textarea>
             <small
               class="p-error block mt-2"
@@ -99,8 +117,8 @@
             >
               Descrição é obrigatória e deve ter pelo menos 10 caracteres
             </small>
-          </p-tabPanel>
-          <p-tabPanel header="Preview">
+          </p-tabpanel>
+          <p-tabpanel value="1">
             <div class="border border-surface-border rounded-lg p-4 min-h-[300px] bg-surface-card">
               <div
                 class="prose prose-sm max-w-none"
@@ -114,49 +132,35 @@
                 Digite algo no editor para ver o preview...
               </div>
             </div>
-          </p-tabPanel>
-        </p-tabView>
+        </p-tabpanel>
+        </p-tabpanels>
+      </p-tabs>
 
-        <!-- Fallback para SSR -->
-        <div *ngIf="!isBrowser" class="space-y-2">
-          <textarea
-            id="description"
-            formControlName="description"
-            placeholder="Descrição detalhada do projeto (suporta Markdown)"
-            rows="6"
-            class="w-full p-3 border border-surface-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-            [class.ng-invalid]="projectForm.get('description')?.invalid && projectForm.get('description')?.touched"
-          ></textarea>
-          <small
-            class="p-error block"
-            *ngIf="projectForm.get('description')?.invalid && projectForm.get('description')?.touched"
-          >
-            Descrição é obrigatória e deve ter pelo menos 10 caracteres
-          </small>
-        </div>
-      </div>
-
-      <div class="space-y-2 mt-4">
-        <label for="image" class="block font-semibold">
-          <i class="pi pi-image mr-2 text-primary"></i>
-          URL da Imagem
-        </label>
-        <input
-          id="image"
-          type="url"
-          formControlName="image"
-          placeholder="https://exemplo.com/imagem.jpg"
+      <!-- Fallback para SSR -->
+      <div *ngIf="!isBrowser" class="flex flex-col gap-2">
+        <textarea
+          pTextarea
+          id="description"
+          formControlName="description"
+          placeholder="Descrição detalhada do projeto (suporta Markdown)"
+          rows="6"
           class="w-full p-3 border border-surface-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-        />
+        ></textarea>
+        <small
+          class="p-error block"
+          *ngIf="projectForm.get('description')?.invalid && projectForm.get('description')?.touched"
+        >
+          Descrição é obrigatória e deve ter pelo menos 10 caracteres
+        </small>
       </div>
     </p-card>
 
     <!-- Datas -->
-    <p-card header="Datas do Projeto" styleClass="mb-4">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div class="space-y-2">
-          <label for="startDate" class="block font-semibold">
-            <i class="pi pi-calendar-plus mr-2 text-primary"></i>
+    <p-card header="Datas do Projeto" styleClass="rounded-none">
+      <div class="flex flex-col md:flex-row">
+        <div class="flex flex-col gap-2 ">
+          <label for="startDate" class="flex items-start font-semibold">
+            <i class="pi pi-calendar-plus mr-2 mt-1 text-primary"></i>
             Data de Início
           </label>
           <p-datepicker
@@ -168,9 +172,9 @@
             icon="pi pi-calendar"
           ></p-datepicker>
         </div>
-        <div class="space-y-2">
-          <label for="expectedDate" class="block font-semibold">
-            <i class="pi pi-calendar-times mr-2 text-primary"></i>
+        <div class="flex flex-col gap-2 ml-12">
+          <label for="expectedDate" class="flex items-start font-semibold">
+            <i class="pi pi-calendar-times mr-2 mt-1 text-primary"></i>
             Data Prevista
           </label>
           <p-datepicker
@@ -186,62 +190,60 @@
     </p-card>
 
     <!-- Equipe (apenas na edição) -->
-    <p-card header="Equipe do Projeto" styleClass="mb-4" *ngIf="isFormReady && isEditMode && isBrowser && projectForm && projectForm.get('team')">
-      <p-tabView>
+    <p-card header="Equipe do Projeto" *ngIf="isFormReady && isEditMode && isBrowser && projectForm && projectForm.get('team')" styleClass="rounded-none">
+      <p-tabs value="0" size="small" >
+        <div class="flex justify-center ">
+          <p-tablist class="flex">
+            <p-tab value="0" class="p-2 text-sm">Membros Atuais</p-tab>
+            <p-tab value="1" class="p-2 text-sm">Solicitações Pendentes</p-tab>
+          </p-tablist>
+        </div>
         <!-- Aba: Membros Atuais -->
-        <p-tabPanel header="Membros Atuais">
-          <div class="space-y-4">
-            <div class="flex justify-between items-center">
-              <h4 class="text-lg font-semibold">Membros da Equipe ({{ teamArray.length }})</h4>
-              <p-button
-                label="Adicionar Membro"
-                icon="pi pi-plus"
-                severity="success"
-                size="small"
-                (onClick)="onAddMember()"
-                pTooltip="Adicionar novo membro à equipe">
-              </p-button>
+        <p-tabpanels>
+          <p-tabpanel value="0">
+            <div class="flex flex-col gap-4">
+              <div class="flex justify-center items-center">
+                <h4 class="text-lg font-semibold">Membros da Equipe ({{ teamArray.length }})</h4>
+              </div>
+
+              <!-- Team Card Component -->
+              <app-team-card
+                [team]="getTeamForCard()"
+                mode="edit"
+                [showHeader]="false"
+                (removeMember)="onTeamCardRemoveMember($event)"
+                (editMember)="onTeamCardEditMember($event)">
+              </app-team-card>
             </div>
+          </p-tabpanel>
 
-            <!-- Team Card Component -->
-            <app-team-card
-              [team]="getTeamForCard()"
-              mode="edit"
-              [showHeader]="false"
-              [maxHeight]="'400px'"
-              (removeMember)="onTeamCardRemoveMember($event)"
-              (editMember)="onTeamCardEditMember($event)">
-            </app-team-card>
-          </div>
-        </p-tabPanel>
+          <!-- Aba: Solicitações Pendentes -->
+          <p-tabpanel value="1">
+            <div class="flex flex-col gap-4">
+              <div class="flex justify-center items-center">
+                <h4 class="text-lg font-semibold">Solicitações ({{ pendingRequests.length }})</h4>
+              </div>
 
-        <!-- Aba: Solicitações Pendentes -->
-        <p-tabPanel header="Solicitações Pendentes">
-          <div class="space-y-4">
-            <div class="flex justify-between items-center">
-              <h4 class="text-lg font-semibold">Solicitações ({{ pendingRequests.length }})</h4>
+              <!-- Request Card Component -->
+              <app-request-card
+                [requests]="pendingRequests"
+                [showHeader]="false"
+                (acceptRequest)="onRequestCardAcceptRequest($event)"
+                (rejectRequest)="onRequestCardRejectRequest($event)">
+              </app-request-card>
             </div>
-
-            <!-- Request Card Component -->
-            <app-request-card
-              [requests]="pendingRequests"
-              [showHeader]="false"
-              [maxHeight]="'400px'"
-              (acceptRequest)="onRequestCardAcceptRequest($event)"
-              (rejectRequest)="onRequestCardRejectRequest($event)">
-            </app-request-card>
-          </div>
-        </p-tabPanel>
-      </p-tabView>
+          </p-tabpanel>
+        </p-tabpanels>
+      </p-tabs>
     </p-card>
 
     <!-- Tags -->
-    <p-card header="Tags do Projeto" styleClass="mb-4" *ngIf="isFormReady && projectForm && projectForm.get('tags')">
-      <div class="space-y-6">
-        <div class="space-y-4">
+    <p-card header="Tags do Projeto" *ngIf="isFormReady && projectForm && projectForm.get('tags')" styleClass="rounded-none">
+      <div class="flex flex-col gap-6">
+        <div class="flex flex-col gap-4">
                   <!-- Tecnologias/Ferramentas -->
-        <div class="space-y-2">
-          <label class="block font-semibold">
+        <div class="flex flex-col gap-2">
+          <label class="flex items-center font-semibold">
             <i class="pi pi-cog mr-2 text-primary"></i>
             Tecnologias/Ferramentas
           </label>
@@ -259,8 +261,8 @@
         </div>
 
         <!-- Assuntos (Temas do Projeto) -->
-        <div class="space-y-2">
-          <label class="block font-semibold">
+        <div class="flex flex-col gap-2">
+          <label class="flex items-center font-semibold">
             <i class="pi pi-tags mr-2 text-primary"></i>
             Assuntos (Temas do Projeto)
           </label>
@@ -278,10 +280,10 @@
         </div>
 
           <!-- Tempo Estimado e Complexidade -->
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="flex flex-col md:flex-row gap-4">
             <!-- Tempo Estimado -->
-            <div class="space-y-2">
-              <label class="block font-semibold">
+            <div class="flex flex-col gap-2 flex-1">
+              <label class="flex items-start font-semibold">
                 <i class="pi pi-clock mr-2 text-primary"></i>
                 Tempo Estimado
               </label>
@@ -297,8 +299,8 @@
             </div>
 
             <!-- Complexidade -->
-            <div class="space-y-2">
-              <label class="block font-semibold">
+            <div class="flex flex-col gap-2 flex-1">
+              <label class="flex items-start font-semibold">
                 <i class="pi pi-cog mr-2 text-primary"></i>
                 Complexidade
               </label>
@@ -316,7 +318,7 @@
         </div>
 
         <!-- Preview das tags selecionadas -->
-        <div class="space-y-3" *ngIf="getTagsArray().length > 0">
+        <div class="flex flex-col gap-3" *ngIf="getTagsArray().length > 0">
           <h5 class="font-semibold">Tags Selecionadas:</h5>
           <div class="flex flex-wrap gap-2">
             <p-tag
@@ -330,10 +332,10 @@
     </p-card>
 
     <!-- Vagas Não Preenchidas -->
-    <p-card header="Vagas Não Preenchidas" styleClass="mb-4" *ngIf="isFormReady && isBrowser && projectForm && projectForm.get('unfilledRoles')">
-              <div class="space-y-4">
-        <div class="space-y-2">
-          <label class="block font-semibold">
+    <p-card header="Vagas Não Preenchidas" *ngIf="isFormReady && isBrowser && projectForm && projectForm.get('unfilledRoles')" styleClass="rounded-t-none">
+              <div class="flex flex-col gap-4">
+        <div class="flex flex-col gap-2">
+          <label class="flex items-center font-semibold">
             <i class="pi pi-users mr-2 text-primary"></i>
             Vagas Necessárias
           </label>
@@ -363,21 +365,21 @@
     </p-card>
 
     <!-- Fallback para SSR - Equipe -->
-    <p-card header="Equipe do Projeto" styleClass="mb-4" *ngIf="isEditMode && !isBrowser">
-      <div class="text-center p-8 text-surface-600 bg-surface-ground border-2 border-dashed border-surface-border rounded-lg">
+    <p-card header="Equipe do Projeto" *ngIf="isEditMode && !isBrowser">
+      <div class="flex flex-col items-center justify-center p-8 text-surface-600 bg-surface-ground border-2 border-dashed border-surface-border rounded-lg">
         <p class="italic">Gerenciamento de equipe disponível apenas no navegador.</p>
       </div>
     </p-card>
 
     <!-- Fallback para SSR - Vagas -->
-    <p-card header="Vagas Não Preenchidas" styleClass="mb-4" *ngIf="!isBrowser">
-      <div class="text-center p-8 text-surface-600 bg-surface-ground border-2 border-dashed border-surface-border rounded-lg">
+    <p-card header="Vagas Não Preenchidas" *ngIf="!isBrowser">
+      <div class="flex flex-col items-center justify-center p-8 text-surface-600 bg-surface-ground border-2 border-dashed border-surface-border rounded-lg">
         <p class="italic">Seleção de vagas disponível apenas no navegador.</p>
       </div>
     </p-card>
 
     <!-- Ações -->
-    <div class="flex justify-end gap-3 pt-6 border-t border-surface-border">
+    <div class="flex justify-end gap-3 pt-6">
       <p-button
         label="Cancelar"
         severity="secondary"
@@ -390,200 +392,5 @@
         [disabled]="projectForm.invalid"
       ></p-button>
     </div>
-
   </form>
-
-  <!-- Dialog para editar membro -->
-  <p-dialog
-    header="Editar Membro da Equipe"
-    [(visible)]="showEditMemberDialog"
-    [modal]="true"
-    [style]="{ width: '500px' }"
-    [draggable]="false"
-    [resizable]="false"
-    (onHide)="onCancelEditMember()">
-
-    <form [formGroup]="editingMemberForm" class="space-y-4">
-      <div class="space-y-2">
-        <label for="editName" class="block font-semibold">
-          <i class="pi pi-user mr-2 text-primary"></i>
-          Nome *
-        </label>
-        <input
-          id="editName"
-          type="text"
-          formControlName="name"
-          placeholder="Digite o nome do membro"
-          class="w-full p-3 border border-surface-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-          [class.ng-invalid]="editingMemberForm.get('name')?.invalid && editingMemberForm.get('name')?.touched"
-        />
-        <small
-          class="p-error block"
-          *ngIf="editingMemberForm.get('name')?.invalid && editingMemberForm.get('name')?.touched"
-        >
-          Nome é obrigatório e deve ter pelo menos 2 caracteres
-        </small>
-      </div>
-
-      <div class="space-y-2">
-        <label for="editRole" class="block font-semibold">
-          <i class="pi pi-briefcase mr-2 text-primary"></i>
-          Cargo *
-        </label>
-        <p-select
-          id="editRole"
-          formControlName="role"
-          [options]="roleOptions"
-          placeholder="Selecione o cargo"
-          class="w-full"
-        ></p-select>
-        <small
-          class="p-error block"
-          *ngIf="editingMemberForm.get('role')?.invalid && editingMemberForm.get('role')?.touched"
-        >
-          Cargo é obrigatório
-        </small>
-      </div>
-
-      <div class="space-y-2">
-        <label for="editPhoto" class="block font-semibold">
-          <i class="pi pi-image mr-2 text-primary"></i>
-          URL da Foto
-        </label>
-        <input
-          id="editPhoto"
-          type="url"
-          formControlName="photo"
-          placeholder="https://exemplo.com/foto.jpg"
-          class="w-full p-3 border border-surface-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-        />
-      </div>
-
-      <div class="flex items-center space-x-2">
-        <input
-          id="editIsManager"
-          type="checkbox"
-          formControlName="isManager"
-          class="w-4 h-4 text-primary bg-surface-card border-surface-border rounded focus:ring-primary focus:ring-2"
-        />
-        <label for="editIsManager" class="font-semibold">
-          <i class="pi pi-star mr-2 text-primary"></i>
-          É Manager
-        </label>
-      </div>
-    </form>
-
-    <ng-template pTemplate="footer">
-      <div class="flex justify-end gap-2">
-        <p-button
-          label="Cancelar"
-          severity="secondary"
-          (onClick)="onCancelEditMember()"
-        ></p-button>
-        <p-button
-          label="Salvar"
-          icon="pi pi-check"
-          (onClick)="onSaveEditMember()"
-          [disabled]="editingMemberForm.invalid"
-        ></p-button>
-      </div>
-    </ng-template>
-  </p-dialog>
-
-  <!-- Dialog para adicionar membro -->
-  <p-dialog
-    header="Adicionar Membro à Equipe"
-    [(visible)]="showAddMemberDialog"
-    [modal]="true"
-    [style]="{ width: '500px' }"
-    [draggable]="false"
-    [resizable]="false"
-    (onHide)="onCancelAddMember()">
-
-    <form [formGroup]="addMemberForm" class="space-y-4">
-      <div class="space-y-2">
-        <label for="addName" class="block font-semibold">
-          <i class="pi pi-user mr-2 text-primary"></i>
-          Nome *
-        </label>
-        <input
-          id="addName"
-          type="text"
-          formControlName="name"
-          placeholder="Digite o nome do membro"
-          class="w-full p-3 border border-surface-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-          [class.ng-invalid]="addMemberForm.get('name')?.invalid && addMemberForm.get('name')?.touched"
-        />
-        <small
-          class="p-error block"
-          *ngIf="addMemberForm.get('name')?.invalid && addMemberForm.get('name')?.touched"
-        >
-          Nome é obrigatório e deve ter pelo menos 2 caracteres
-        </small>
-      </div>
-
-      <div class="space-y-2">
-        <label for="addRole" class="block font-semibold">
-          <i class="pi pi-briefcase mr-2 text-primary"></i>
-          Cargo *
-        </label>
-        <p-select
-          id="addRole"
-          formControlName="role"
-          [options]="roleOptions"
-          placeholder="Selecione o cargo"
-          class="w-full"
-        ></p-select>
-        <small
-          class="p-error block"
-          *ngIf="addMemberForm.get('role')?.invalid && addMemberForm.get('role')?.touched"
-        >
-          Cargo é obrigatório
-        </small>
-      </div>
-
-      <div class="space-y-2">
-        <label for="addPhoto" class="block font-semibold">
-          <i class="pi pi-image mr-2 text-primary"></i>
-          URL da Foto
-        </label>
-        <input
-          id="addPhoto"
-          type="url"
-          formControlName="photo"
-          placeholder="https://exemplo.com/foto.jpg"
-          class="w-full p-3 border border-surface-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-        />
-      </div>
-
-      <div class="flex items-center space-x-2">
-        <input
-          id="addIsManager"
-          type="checkbox"
-          formControlName="isManager"
-          class="w-4 h-4 text-primary bg-surface-card border-surface-border rounded focus:ring-primary focus:ring-2"
-        />
-        <label for="addIsManager" class="font-semibold">
-          <i class="pi pi-star mr-2 text-primary"></i>
-          É Manager
-        </label>
-      </div>
-    </form>
-
-    <ng-template pTemplate="footer">
-      <div class="flex justify-end gap-2">
-        <p-button
-          label="Cancelar"
-          severity="secondary"
-          (onClick)="onCancelAddMember()"
-        ></p-button>
-        <p-button
-          label="Adicionar"
-          icon="pi pi-plus"
-          (onClick)="onSaveAddMember()"
-          [disabled]="addMemberForm.invalid"
-        ></p-button>
-      </div>
-    </ng-template>
-  </p-dialog>
 </div>

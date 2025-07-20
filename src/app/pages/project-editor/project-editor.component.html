@@ -1,7 +1,7 @@
-<div class="min-h-screen bg-surface-ground p-6">
-  <div class="max-w-6xl mx-auto">
+<div class="flex flex-col min-h-screen bg-surface-ground p-4 md:p-6">
+  <div class="flex flex-col w-full max-w-6xl mx-auto">
     <!-- Back Button -->
-    <div class="mb-4">
+    <div class="flex mb-4">
       <p-button
         label="Voltar aos Projetos"
         icon="pi pi-arrow-left"
@@ -11,14 +11,12 @@
     </div>
 
     <!-- Header -->
-    <div class="text-center mb-8 p-6 bg-surface-card rounded-xl shadow-sm">
-      <h1 class="text-3xl font-bold text-surface-900">
-        {{ isEditMode ? 'Editar Projeto' : 'Criar Novo Projeto' }}
-      </h1>
-    </div>
+    <h1 class="text-2xl md:text-3xl font-bold text-surface-950 text-center">
+      {{ isEditMode ? 'Editar Projeto' : 'Criar Novo Projeto' }}
+    </h1>
 
     <!-- Content -->
-    <div>
+    <div class="flex flex-col w-full">
       <app-project-form
         [project]="project"
         [isEditMode]="isEditMode"
