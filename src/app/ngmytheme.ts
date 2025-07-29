@@ -2,7 +2,7 @@ import { definePreset } from '@primeng/themes';
 import Lara from '@primeng/themes/lara';
 
 const lightSurface = {
-  0: '#EEF3FF', // darkSurface[950]
+  0: '#E0E9FF', // darkSurface[950]
   50: '#DBE5FF', // darkSurface[900]
   100: '#D3D9EC', // darkSurface[800]
   200: '#BFCBEE', // darkSurface[700]

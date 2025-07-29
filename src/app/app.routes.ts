@@ -4,11 +4,17 @@ import { ReferencesComponent } from './pages/references/references.component';
 import { ProjectsComponent } from './pages/projects/projects.component';
 import { ProjectDetailsComponent } from './pages/project-details/project-details.component';
 import { ProjectEditorComponent } from './pages/project-editor/project-editor.component';
+import { LoginComponent } from './pages/login/login.component';
+import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
   {
     path: '',
     component: HomeComponent,
+  },
+  {
+    path: 'login',
+    component: LoginComponent,
   },
   {
     path: 'references',
@@ -21,13 +27,16 @@ export const routes: Routes = [
   {
     path: 'projects/new',
     component: ProjectEditorComponent,
+    canActivate: [authGuard],
   },
   {
     path: 'projects/:id/edit',
     component: ProjectEditorComponent,
+    canActivate: [authGuard],
   },
   {
     path: 'projects/:id',
     component: ProjectDetailsComponent,
+    canActivate: [authGuard],
   },
 ];

@@ -4,12 +4,21 @@
 @plugin "tailwindcss-primeui";
 
 /* Markdown Styles - Using PrimeNG theme colors */
+
+body {
+  background: #EEF3FF;
+}
+
+html.dark body {
+  background: #161616;
+}
+
 .prose {
   color: var(--surface-900);
   line-height: 1.7;
 }
 
-html.my-app-dark .prose {
+html.dark .prose {
   color: var(--surface-0);
 }
 
@@ -25,12 +34,12 @@ html.my-app-dark .prose {
   font-weight: 600;
 }
 
-html.my-app-dark .prose h1,
-html.my-app-dark .prose h2,
-html.my-app-dark .prose h3,
-html.my-app-dark .prose h4,
-html.my-app-dark .prose h5,
-html.my-app-dark .prose h6 {
+html.dark .prose h1,
+html.dark .prose h2,
+html.dark .prose h3,
+html.dark .prose h4,
+html.dark .prose h5,
+html.dark .prose h6 {
   color: var(--surface-0);
 }
 
@@ -40,7 +49,7 @@ html.my-app-dark .prose h6 {
   padding-bottom: 0.5rem;
 }
 
-html.my-app-dark .prose h1 {
+html.dark .prose h1 {
   border-bottom-color: var(--surface-700);
 }
 
@@ -50,7 +59,7 @@ html.my-app-dark .prose h1 {
   padding-bottom: 0.25rem;
 }
 
-html.my-app-dark .prose h2 {
+html.dark .prose h2 {
   border-bottom-color: var(--surface-700);
 }
 
@@ -80,7 +89,7 @@ html.my-app-dark .prose h2 {
   font-size: 0.9em;
 }
 
-html.my-app-dark .prose code {
+html.dark .prose code {
   background-color: var(--surface-800);
 }
 
@@ -92,7 +101,7 @@ html.my-app-dark .prose code {
   margin: 1rem 0;
 }
 
-html.my-app-dark .prose pre {
+html.dark .prose pre {
   background-color: var(--surface-800);
 }
 
@@ -109,7 +118,7 @@ html.my-app-dark .prose pre {
   font-style: italic;
 }
 
-html.my-app-dark .prose blockquote {
+html.dark .prose blockquote {
   border-left-color: var(--primary-400);
   color: var(--surface-300);
 }
@@ -127,8 +136,8 @@ html.my-app-dark .prose blockquote {
   text-align: left;
 }
 
-html.my-app-dark .prose th,
-html.my-app-dark .prose td {
+html.dark .prose th,
+html.dark .prose td {
   border-color: var(--surface-700);
 }
 
@@ -137,6 +146,22 @@ html.my-app-dark .prose td {
   font-weight: 600;
 }
 
-html.my-app-dark .prose th {
+html.dark .prose th {
   background-color: var(--surface-800);
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.3s ease-out;
+  animation-fill-mode: both;
 }

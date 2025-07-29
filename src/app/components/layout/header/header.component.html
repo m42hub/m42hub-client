@@ -1,4 +1,4 @@
-<div class="flex items-center justify-between px-4 py-2 bg-surface-950">
+<div class="header-container flex items-center justify-between px-4 py-2">
   <div class="flex items-center">
     <img src="/logo.png" alt="Logo" class="h-15 mr-4" />
   </div>
@@ -22,12 +22,35 @@
     ></p-button>
   </div>
 
-  <div class="flex items-center">
+  <div class="flex items-center gap-2">
+    <ng-container *ngIf="user$ | async as user; else loginButton">
+      <span class="text-sm text-surface-500 mr-2">
+        Olá, {{ user.firstName }}!
+      </span>
+      <p-button
+        label="Sair"
+        icon="pi pi-sign-out"
+        (onClick)="onLogout()"
+        styleClass="p-button-outlined p-button-sm"
+        >
+      </p-button>
+    </ng-container>
+
+    <ng-template #loginButton>
+      <p-button
+        label="Entrar"
+        icon="pi pi-sign-in"
+        (onClick)="onLogin()"
+        styleClass="p-button-sm"
+        >
+      </p-button>
+    </ng-template>
+
+    <!-- Botão de tema -->
     <p-button
       icon="pi pi-moon"
       (onClick)="toggleDarkMode()"
-      styleClass="p-button-rounded p-button-text"
-      severity="secondary">
+      styleClass="p-button-rounded p-button-text">
     </p-button>
   </div>
 </div>
