@@ -6,9 +6,6 @@ export const credentialsInterceptor: HttpInterceptorFn = (req, next) => {
 
   if (req.url.startsWith(`${apiUrl}`)) {
     const modifiedReq = req.clone({
-      setHeaders: {
-        'Content-Type': 'application/json'
-      },
       withCredentials: true
     });
     return next(modifiedReq);

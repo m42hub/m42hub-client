@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth/auth.service';
 import { ButtonModule } from 'primeng/button';
@@ -15,6 +15,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
   imports: [
     CommonModule,
     ReactiveFormsModule,
+    RouterModule,
     ButtonModule,
     InputTextModule,
     PasswordModule,

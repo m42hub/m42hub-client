@@ -2,7 +2,7 @@ import { Injectable, PLATFORM_ID, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, catchError, of, tap } from 'rxjs';
 import { isPlatformBrowser } from '@angular/common';
-import { User } from '../../interfaces/user.interface';
+import { User, RegisterRequest } from '../../interfaces/user.interface';
 import { ENVIRONMENT } from '../../../environments/environment';
 
 @Injectable({
@@ -27,6 +27,14 @@ export class AuthService {
         { username, password }
       )
       .pipe(tap(response => this.userSubject.next(response.user)));
+  }
+
+  register(registerData: RegisterRequest): Observable<User> {
+    return this.http
+      .post<User>(
+        `${this.apiUrl}/v1/auth/register`,
+        registerData
+      );
   }
 
   loadUser(): Observable<User | null> {

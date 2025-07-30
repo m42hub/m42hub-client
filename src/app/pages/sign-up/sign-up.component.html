@@ -1,0 +1,226 @@
+<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-500 to-primary-700 p-4">
+  <div class="w-full max-w-3xl">
+    <div class="bg-surface-900 dark:bg-surface-0 rounded-xl shadow-2xl overflow-hidden animate-fade-in-up">
+      <!-- Header -->
+      <div class="text-center p-4">
+        <img src="/logo.png" alt="M42Hub" class="w-16 h-16 mx-auto mb-4 rounded-lg" />
+        <h1 class="text-2xl font-bold text-surface-0 dark:text-surface-900 mb-2">Criar Conta no M42Hub</h1>
+        <p class="text-surface-300 dark:text-surface-600 text-sm">Preencha os dados para criar sua conta</p>
+      </div>
+
+      <!-- Content -->
+      <div class="px-8 pb-6">
+        <!-- Success Message -->
+        <p-message
+          *ngIf="successMessage"
+          severity="success"
+          [text]="successMessage"
+          class="mb-6">
+        </p-message>
+
+        <!-- Error Message -->
+        <p-message
+          *ngIf="errorMessage"
+          severity="error"
+          [text]="errorMessage"
+          class="mb-6">
+        </p-message>
+
+        <!-- Sign Up Form -->
+        <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()" class="space-y-4">
+
+          <!-- Username Field -->
+          <div>
+            <label for="username" class="block text-sm font-medium text-surface-200 dark:text-surface-700 mb-2">
+              Nome de Usuário
+            </label>
+            <input
+              pInputText
+              id="username"
+              formControlName="username"
+              placeholder="Digite seu nome de usuário"
+              class="w-full"
+              [class.ng-invalid]="isUsernameInvalid"
+              autocomplete="username" />
+
+            <small
+              *ngIf="isUsernameInvalid"
+              class="text-red-400 dark:text-red-500 text-xs mt-1 block">
+              <span *ngIf="usernameControl?.errors?.['required']">
+                Nome de usuário é obrigatório
+              </span>
+              <span *ngIf="usernameControl?.errors?.['minlength']">
+                Nome de usuário deve ter pelo menos 3 caracteres
+              </span>
+              <span *ngIf="usernameControl?.errors?.['maxlength']">
+                Nome de usuário deve ter no máximo 50 caracteres
+              </span>
+            </small>
+          </div>
+
+          <!-- Email Field -->
+          <div>
+            <label for="email" class="block text-sm font-medium text-surface-200 dark:text-surface-700 mb-2">
+              Email
+            </label>
+            <input
+              pInputText
+              id="email"
+              formControlName="email"
+              placeholder="Digite seu email"
+              class="w-full"
+              [class.ng-invalid]="isEmailInvalid"
+              autocomplete="email" />
+
+            <small
+              *ngIf="isEmailInvalid"
+              class="text-red-400 dark:text-red-500 text-xs mt-1 block">
+              <span *ngIf="emailControl?.errors?.['required']">
+                Email é obrigatório
+              </span>
+              <span *ngIf="emailControl?.errors?.['email']">
+                Email deve ter um formato válido
+              </span>
+            </small>
+          </div>
+
+          <!-- First Name and Last Name Row -->
+          <div class="flex flex-row gap-4">
+            <!-- First Name Field -->
+            <div class="flex-1">
+              <label for="firstName" class="block text-sm font-medium text-surface-200 dark:text-surface-700 mb-2">
+                Nome
+              </label>
+              <input
+                pInputText
+                id="firstName"
+                formControlName="firstName"
+                placeholder="Seu nome"
+                class="w-full"
+                [class.ng-invalid]="isFirstNameInvalid"
+                autocomplete="given-name" />
+
+              <small
+                *ngIf="isFirstNameInvalid"
+                class="text-red-400 dark:text-red-500 text-xs mt-1 block">
+                <span *ngIf="firstNameControl?.errors?.['required']">
+                  Nome é obrigatório
+                </span>
+                <span *ngIf="firstNameControl?.errors?.['minlength']">
+                  Nome deve ter pelo menos 2 caracteres
+                </span>
+              </small>
+            </div>
+
+            <!-- Last Name Field -->
+            <div class="flex-1">
+              <label for="lastName" class="block text-sm font-medium text-surface-200 dark:text-surface-700 mb-2">
+                Sobrenome
+              </label>
+              <input
+                pInputText
+                id="lastName"
+                formControlName="lastName"
+                placeholder="Seu sobrenome"
+                class="w-full"
+                [class.ng-invalid]="isLastNameInvalid"
+                autocomplete="family-name" />
+
+              <small
+                *ngIf="isLastNameInvalid"
+                class="text-red-400 dark:text-red-500 text-xs mt-1 block">
+                <span *ngIf="lastNameControl?.errors?.['required']">
+                  Sobrenome é obrigatório
+                </span>
+                <span *ngIf="lastNameControl?.errors?.['minlength']">
+                  Sobrenome deve ter pelo menos 2 caracteres
+                </span>
+              </small>
+            </div>
+          </div>
+
+          <!-- Password Field -->
+          <div>
+            <label for="password" class="block text-sm font-medium text-surface-200 dark:text-surface-700 mb-2">
+              Senha
+            </label>
+            <p-password
+              formControlName="password"
+              placeholder="Digite sua senha"
+              [toggleMask]="true"
+              [feedback]="true"
+              styleClass="w-full"
+              inputStyleClass="w-full"
+              [class.ng-invalid]="isPasswordInvalid"
+              autocomplete="new-password">
+            </p-password>
+
+            <small
+              *ngIf="isPasswordInvalid"
+              class="text-red-400 dark:text-red-500 text-xs mt-1 block">
+              <span *ngIf="passwordControl?.errors?.['required']">
+                Senha é obrigatória
+              </span>
+              <span *ngIf="passwordControl?.errors?.['minlength']">
+                Senha deve ter pelo menos 6 caracteres
+              </span>
+              <span *ngIf="passwordControl?.errors?.['maxlength']">
+                Senha deve ter no máximo 255 caracteres
+              </span>
+            </small>
+          </div>
+
+          <!-- Confirm Password Field -->
+          <div>
+            <label for="confirmPassword" class="block text-sm font-medium text-surface-200 dark:text-surface-700 mb-2">
+              Confirmar Senha
+            </label>
+            <p-password
+              formControlName="confirmPassword"
+              placeholder="Confirme sua senha"
+              [toggleMask]="true"
+              [feedback]="false"
+              styleClass="w-full"
+              inputStyleClass="w-full"
+              [class.ng-invalid]="isConfirmPasswordInvalid"
+              autocomplete="new-password">
+            </p-password>
+
+            <small
+              *ngIf="isConfirmPasswordInvalid"
+              class="text-red-400 dark:text-red-500 text-xs mt-1 block">
+              <span *ngIf="confirmPasswordControl?.errors?.['required']">
+                Confirmação de senha é obrigatória
+              </span>
+              <span *ngIf="confirmPasswordControl?.errors?.['passwordMismatch']">
+                As senhas não coincidem
+              </span>
+            </small>
+          </div>
+
+          <!-- Sign Up Button -->
+          <div class="pt-2 flex justify-center">
+            <p-button
+              type="submit"
+              label="Criar Conta"
+              icon="pi pi-user-plus"
+              styleClass="min-w-sm"
+              [loading]="loading"
+              [disabled]="signUpForm.invalid || loading">
+            </p-button>
+          </div>
+        </form>
+
+        <!-- Footer Links -->
+        <div class="mt-4 text-center">
+          <p class="text-surface-400 dark:text-surface-600 text-sm">
+            Já tem uma conta?
+            <a routerLink="/login" class="text-primary-400 hover:text-primary-300 dark:text-primary-500 dark:hover:text-primary-600 font-medium hover:underline transition-colors">
+              Entre aqui
+            </a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

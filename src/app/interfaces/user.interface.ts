@@ -1,10 +1,10 @@
-export interface LoginRequest {
+export interface RegisterRequest {
   username: string;
   password: string;
-}
-
-export interface LoginResponse{
-  user: User;
+  email: string;
+  firstName: string;
+  lastName: string;
+  isActive: boolean;
 }
 
 export interface SystemRole {

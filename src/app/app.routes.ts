@@ -5,6 +5,7 @@ import { ProjectsComponent } from './pages/projects/projects.component';
 import { ProjectDetailsComponent } from './pages/project-details/project-details.component';
 import { ProjectEditorComponent } from './pages/project-editor/project-editor.component';
 import { LoginComponent } from './pages/login/login.component';
+import { SignUpComponent } from './pages/sign-up/sign-up.component';
 import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
@@ -15,6 +16,10 @@ export const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent,
+  },
+  {
+    path: 'sign-up',
+    component: SignUpComponent,
   },
   {
     path: 'references',
