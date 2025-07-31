@@ -9,7 +9,7 @@ import { CreateProjectComplexity, ProjectComplexity } from '../../interfaces/pro
   providedIn: 'root',
 })
 export class ProjectComplexityService extends BaseApiService<ProjectComplexity> {
-  private readonly endpoint = '/api/v1/complexity';
+  private readonly endpoint = '/v1/complexity';
 
   constructor(http: HttpClient) {
     super(http);

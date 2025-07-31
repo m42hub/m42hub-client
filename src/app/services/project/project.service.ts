@@ -14,7 +14,7 @@ import { PaginatedResponse } from '../../interfaces/utils/utils.interface';
   providedIn: 'root'
 })
 export class ProjectService extends BaseApiService<Project> {
-  private readonly endpoint = '/api/v1/project';
+  private readonly endpoint = '/v1/project';
 
   constructor(http: HttpClient) {
     super(http);

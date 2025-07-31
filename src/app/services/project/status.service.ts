@@ -8,7 +8,7 @@ import { CreateProjectStatus, ProjectStatus } from '../../interfaces/project/sta
   providedIn: 'root'
 })
 export class ProjectStatusService extends BaseApiService<ProjectStatus> {
-  private readonly endpoint = '/api/v1/status';
+  private readonly endpoint = '/v1/status';
 
   constructor(http: HttpClient) {
     super(http);

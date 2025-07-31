@@ -10,7 +10,7 @@ import { CreateProjectMember, ProjectMemberSimplified } from '../../interfaces/p
   providedIn: 'root',
 })
 export class ProjectMemberService extends BaseApiService<ProjectMemberSimplified> {
-  private readonly endpoint = '/api/v1/tool';
+  private readonly endpoint = '/v1/tool';
 
   constructor(http: HttpClient) {
     super(http);
