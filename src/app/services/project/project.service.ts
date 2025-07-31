@@ -7,8 +7,8 @@ import {
   CreateProjectRequest,
   UpdateProjectRequest,
   ProjectSearchParams,
-  PaginatedResponse
-} from '../../interfaces/project.interface';
+} from '../../interfaces/project/project.interface';
+import { PaginatedResponse } from '../../interfaces/utils/utils.interface';
 
 @Injectable({
   providedIn: 'root'

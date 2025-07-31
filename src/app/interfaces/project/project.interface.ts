@@ -1,49 +1,9 @@
-// Base interfaces for lookup tables
-export interface ProjectStatus {
-  id: number;
-  name: string;
-  description?: string;
-}
-
-export interface ProjectComplexity {
-  id: number;
-  name: string;
-  description?: string;
-}
-
-export interface ProjectTool {
-  id: number;
-  name: string;
-  hexColor?: string;
-  description?: string;
-}
-
-export interface ProjectTopic {
-  id: number;
-  name: string;
-  hexColor?: string;
-  description?: string;
-}
-
-export interface ProjectRole {
-  id: number;
-  name: string;
-  description?: string;
-}
-
-export interface ProjectMember {
-  id: number;
-  isManager: boolean;
-  project: number;
-  role: number;
-  user: number;
-}
-
-export interface ProjectUnfilledRole {
-  id: number;
-  name: string;
-  description?: string;
-}
+import { ProjectComplexity } from "./complexity.interface";
+import { ProjectMemberSimplified } from "./member.interface";
+import { ProjectUnfilledRole } from "./role.interface";
+import { ProjectStatus } from "./status.interface";
+import { ProjectTool } from "./tool.interface";
+import { ProjectTopic } from "./topic.interface";
 
 export interface Project {
   id: number;
@@ -57,7 +17,7 @@ export interface Project {
   endDate?: string;
   tools?: ProjectTool[];
   topics?: ProjectTopic[];
-  members?: ProjectMember[];
+  members?: ProjectMemberSimplified[];
   unfilledRoles?: ProjectUnfilledRole[];
 }
 
@@ -100,13 +60,4 @@ export interface ProjectSearchParams {
   topics?: number;
   unfilledRoles?: number;
   status?: string;
-}
-
-export interface PaginatedResponse<T> {
-  content: T[];
-  pagination: {
-    currentPage: number;
-    totalPages: number;
-    totalElements: number;
-  };
 }
