@@ -41,7 +41,7 @@ export abstract class BaseApiService<T> {
     if (params) {
       const queryString = this.buildQueryString(params);
       return this.http
-        .get<T>(`${this.apiUrl}${endpoint}${endpoint}${queryString}`, {
+        .get<T>(`${this.apiUrl}${endpoint}?${queryString}`, {
           headers,
         })
         .pipe(catchError(this.handleError));
@@ -58,17 +58,24 @@ export abstract class BaseApiService<T> {
       .pipe(catchError(this.handleError));
   }
 
-  protected patch<T>(endpoint: string, body: any): Observable<T> {
+  protected put<T>(endpoint: string, body: any): Observable<T> {
     const headers = this.getHeaders();
     return this.http
       .put<T>(`${this.apiUrl}${endpoint}`, body, { headers })
       .pipe(catchError(this.handleError));
   }
 
+  protected patch<T>(endpoint: string, body: any): Observable<T> {
+    const headers = this.getHeaders();
+    return this.http
+      .patch<T>(`${this.apiUrl}${endpoint}`, body, { headers })
+      .pipe(catchError(this.handleError));
+  }
+
   protected delete<T>(endpoint: string, options?: Object): Observable<T> {
     const headers = this.getHeaders();
     return this.http
-      .put<T>(`${this.apiUrl}${endpoint}`, { headers, ...options })
+      .delete<T>(`${this.apiUrl}${endpoint}`, { headers, ...options })
       .pipe(catchError(this.handleError));
   }
 

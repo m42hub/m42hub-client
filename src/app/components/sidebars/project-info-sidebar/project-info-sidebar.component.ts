@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Project } from '../../../interfaces/project.interface';
+import { Project } from '../../../interfaces/projectMock.interface';
 import { TeamCardComponent } from '../../cards/team-card/team-card.component';
 import { CardModule } from 'primeng/card';
 import { TagModule } from 'primeng/tag';

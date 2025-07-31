@@ -5,7 +5,7 @@ import { TagModule } from 'primeng/tag';
 import { TooltipModule } from 'primeng/tooltip';
 import { marked } from 'marked';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { Project } from '../../../interfaces/project.interface';
+import { Project } from '../../../interfaces/projectMock.interface';
 
 @Component({
   selector: 'app-project-description-card',

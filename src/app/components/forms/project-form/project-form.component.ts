@@ -15,7 +15,7 @@ import { TextareaModule } from 'primeng/textarea';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { TooltipModule } from 'primeng/tooltip';
 import { marked } from 'marked';
-import { Project, TeamMember, ProjectTag } from '../../../interfaces/project.interface';
+import { Project, TeamMember, ProjectTag } from '../../../interfaces/projectMock.interface';
 import { TeamCardComponent } from '../../cards/team-card/team-card.component';
 import { RequestCardComponent } from '../../cards/request-card/request-card.component';
 

@@ -4,7 +4,7 @@ import { CardModule } from 'primeng/card';
 import { TagModule } from 'primeng/tag';
 import { ButtonModule } from 'primeng/button';
 import { TooltipModule } from 'primeng/tooltip';
-import { Project } from '../../../interfaces/project.interface';
+import { Project } from '../../../interfaces/projectMock.interface';
 
 @Component({
   selector: 'app-project-card',

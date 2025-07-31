@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { Project } from '../interfaces/project.interface';
+import { Project } from '../interfaces/projectMock.interface';
 
 @Injectable({
   providedIn: 'root'

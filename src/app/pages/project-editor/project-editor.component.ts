@@ -6,8 +6,8 @@ import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { ProjectFormComponent } from '../../components/forms/project-form/project-form.component';
-import { Project } from '../../interfaces/project.interface';
-import { ProjectService } from '../../services/project.service';
+import { Project } from '../../interfaces/projectMock.interface';
+import { ProjectService } from '../../services/projectMock.service';
 
 @Component({
   selector: 'app-project-editor',

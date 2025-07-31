@@ -5,8 +5,8 @@ import { CardModule } from 'primeng/card';
 import { TagModule } from 'primeng/tag';
 import { ButtonModule } from 'primeng/button';
 import { TooltipModule } from 'primeng/tooltip';
-import { ProjectService } from '../../services/project.service';
-import { Project } from '../../interfaces/project.interface';
+import { ProjectService } from '../../services/projectMock.service';
+import { Project } from '../../interfaces/projectMock.interface';
 import { ProjectDescriptionCardComponent } from '../../components/cards/project-description-card/project-description-card.component';
 import { ProjectInfoSidebarComponent } from '../../components/sidebars/project-info-sidebar/project-info-sidebar.component';
 

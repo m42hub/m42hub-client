@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { ProjectsComponent as ProjectCardComponent } from '../../components/cards/projects/projects.component';
 import { ProjectSummaryCardComponent } from '../../components/cards/project-summary-card/project-summary-card.component';
-import { Project, TeamMember, ProjectTag } from '../../interfaces/project.interface';
+import { Project, TeamMember, ProjectTag } from '../../interfaces/projectMock.interface';
 
 @Component({
   selector: 'app-projects-page',
