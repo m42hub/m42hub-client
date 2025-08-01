@@ -15,7 +15,12 @@ import { TextareaModule } from 'primeng/textarea';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { TooltipModule } from 'primeng/tooltip';
 import { marked } from 'marked';
-import { Project, TeamMember, ProjectTag } from '../../../interfaces/projectMock.interface';
+import { Project, CreateProjectRequest, UpdateProjectRequest } from '../../../interfaces/project/project.interface';
+import { ProjectStatusService } from '../../../services/project/status.service';
+import { ProjectComplexityService } from '../../../services/project/complexity.service';
+import { ProjectToolService } from '../../../services/project/tool.service';
+import { ProjectTopicService } from '../../../services/project/topic.service';
+import { ProjectRoleService } from '../../../services/project/role.service';
 import { TeamCardComponent } from '../../cards/team-card/team-card.component';
 import { RequestCardComponent } from '../../cards/request-card/request-card.component';
 
@@ -51,7 +56,7 @@ export interface TeamRequest {
     MultiSelectModule,
     TooltipModule,
     TeamCardComponent,
-    RequestCardComponent
+    // RequestCardComponent removido
   ],
   templateUrl: './project-form.component.html',
   styleUrl: './project-form.component.css'
@@ -59,7 +64,7 @@ export interface TeamRequest {
 export class ProjectFormComponent implements OnInit, OnChanges {
   @Input() project?: Project;
   @Input() isEditMode: boolean = false;
-  @Output() save = new EventEmitter<Project>();
+  @Output() save = new EventEmitter<CreateProjectRequest | UpdateProjectRequest>();
   @Output() cancel = new EventEmitter<void>();
 
   projectForm!: FormGroup;
@@ -79,130 +84,34 @@ export class ProjectFormComponent implements OnInit, OnChanges {
 
 
 
-  // Dados mockados para solicitações pendentes
-  pendingRequests: TeamRequest[] = [
-    {
-      id: '1',
-      userId: 'user1',
-      userName: 'Carlos Silva',
-      userPhoto: '/default_avatar.png',
-      requestedRole: 'Desenvolvedor Frontend',
-      message: 'Tenho experiência com Angular e gostaria de contribuir com o projeto.',
-      requestedAt: new Date('2024-03-15')
-    },
-    {
-      id: '2',
-      userId: 'user2',
-      userName: 'Ana Costa',
-      userPhoto: '/default_avatar.png',
-      requestedRole: 'UX Designer',
-      message: 'Sou designer e adoraria participar deste projeto inovador.',
-      requestedAt: new Date('2024-03-16')
-    }
-  ];
 
-  statusOptions = [
-    { label: 'Ativo', value: 'active' },
-    { label: 'Concluído', value: 'completed' },
-    { label: 'Em espera', value: 'on-hold' }
-  ];
+
+  // statusOptions e tagOptions devem ser carregados de services reais futuramente
+  statusOptions: { label: string, value: number }[] = [];
+  // tagOptions já declarado acima, removendo duplicidade
 
   // Tags padronizadas por categoria
-  tagOptions = {
-    'tecnologias/ferramentas': [
-      { label: 'Angular', value: 'Angular', color: '#dd0031' },
-      { label: 'React', value: 'React', color: '#61dafb' },
-      { label: 'Vue.js', value: 'Vue.js', color: '#42b883' },
-      { label: 'Node.js', value: 'Node.js', color: '#339933' },
-      { label: 'TypeScript', value: 'TypeScript', color: '#3178c6' },
-      { label: 'JavaScript', value: 'JavaScript', color: '#f7df1e' },
-      { label: 'Python', value: 'Python', color: '#3776ab' },
-      { label: 'Java', value: 'Java', color: '#ed8b00' },
-      { label: 'C#', value: 'C#', color: '#239120' },
-      { label: 'PHP', value: 'PHP', color: '#777bb4' },
-      { label: 'Go', value: 'Go', color: '#00add8' },
-      { label: 'Rust', value: 'Rust', color: '#ce422b' },
-      { label: 'Docker', value: 'Docker', color: '#2496ed' },
-      { label: 'Kubernetes', value: 'Kubernetes', color: '#326ce5' },
-      { label: 'AWS', value: 'AWS', color: '#ff9900' },
-      { label: 'Azure', value: 'Azure', color: '#0089d6' },
-      { label: 'Google Cloud', value: 'Google Cloud', color: '#4285f4' },
-      { label: 'PostgreSQL', value: 'PostgreSQL', color: '#336791' },
-      { label: 'MongoDB', value: 'MongoDB', color: '#47a248' },
-      { label: 'Redis', value: 'Redis', color: '#dc382d' },
-      { label: 'GraphQL', value: 'GraphQL', color: '#e10098' },
-      { label: 'REST API', value: 'REST API', color: '#ff6b6b' },
-      { label: 'Microservices', value: 'Microservices', color: '#4ecdc4' },
-      { label: 'Machine Learning', value: 'Machine Learning', color: '#ff6b9d' },
-      { label: 'AI', value: 'AI', color: '#a8e6cf' },
-      { label: 'Blockchain', value: 'Blockchain', color: '#f9ca24' },
-      { label: 'IoT', value: 'IoT', color: '#6c5ce7' },
-      { label: 'Mobile', value: 'Mobile', color: '#fd79a8' },
-      { label: 'Web', value: 'Web', color: '#74b9ff' },
-      { label: 'Desktop', value: 'Desktop', color: '#55a3ff' }
-    ],
-    assuntos: [
-      { label: 'Educação', value: 'Educação', color: '#4caf50' },
-      { label: 'Saúde', value: 'Saúde', color: '#f44336' },
-      { label: 'Finanças', value: 'Finanças', color: '#2196f3' },
-      { label: 'E-commerce', value: 'E-commerce', color: '#ff9800' },
-      { label: 'Redes Sociais', value: 'Redes Sociais', color: '#9c27b0' },
-      { label: 'Produtividade', value: 'Produtividade', color: '#607d8b' },
-      { label: 'Entretenimento', value: 'Entretenimento', color: '#e91e63' },
-      { label: 'Transporte', value: 'Transporte', color: '#795548' },
-      { label: 'Turismo', value: 'Turismo', color: '#00bcd4' },
-      { label: 'Esportes', value: 'Esportes', color: '#8bc34a' },
-      { label: 'Música', value: 'Música', color: '#ff5722' },
-      { label: 'Jogos', value: 'Jogos', color: '#673ab7' },
-      { label: 'Notícias', value: 'Notícias', color: '#3f51b5' },
-      { label: 'Tecnologia', value: 'Tecnologia', color: '#009688' },
-      { label: 'Sustentabilidade', value: 'Sustentabilidade', color: '#4caf50' },
-      { label: 'Inovação', value: 'Inovação', color: '#ff4081' },
-      { label: 'Acessibilidade', value: 'Acessibilidade', color: '#ffc107' },
-      { label: 'Segurança', value: 'Segurança', color: '#d32f2f' },
-      { label: 'Comunicação', value: 'Comunicação', color: '#1976d2' }
-    ],
-    tempoEstimado: [
-      { label: '1-2 semanas', value: '1-2 semanas', color: '#00b894' },
-      { label: '1 mês', value: '1 mês', color: '#00cec9' },
-      { label: '2-3 meses', value: '2-3 meses', color: '#74b9ff' },
-      { label: '3-6 meses', value: '3-6 meses', color: '#a29bfe' },
-      { label: '6+ meses', value: '6+ meses', color: '#fd79a8' }
-    ],
-    complexidade: [
-      { label: 'Baixa', value: 'Baixa', color: '#00b894' },
-      { label: 'Média', value: 'Média', color: '#fdcb6e' },
-      { label: 'Alta', value: 'Alta', color: '#e17055' },
-      { label: 'Muito Alta', value: 'Muito Alta', color: '#d63031' }
-    ]
+  tagOptions: any = {
+    'tecnologias/ferramentas': [],
+    assuntos: [],
+    tempoEstimado: [],
+    complexidade: []
   };
+  complexityOptions: { label: string, value: number, color?: string }[] = [];
+  toolOptions: { label: string, value: number, color?: string }[] = [];
+  topicOptions: { label: string, value: number, color?: string }[] = [];
+  roleOptions: { label: string, value: number }[] = [];
 
-  roleOptions = [
-    { label: 'Tech Lead', value: 'Tech Lead' },
-    { label: 'Desenvolvedor Frontend', value: 'Desenvolvedor Frontend' },
-    { label: 'Desenvolvedor Backend', value: 'Desenvolvedor Backend' },
-    { label: 'Desenvolvedor Full Stack', value: 'Desenvolvedor Full Stack' },
-    { label: 'UX/UI Designer', value: 'UX/UI Designer' },
-    { label: 'DevOps Engineer', value: 'DevOps Engineer' },
-    { label: 'QA Tester', value: 'QA Tester' },
-    { label: 'Product Manager', value: 'Product Manager' },
-    { label: 'Scrum Master', value: 'Scrum Master' },
-    { label: 'Data Scientist', value: 'Data Scientist' },
-    { label: 'Machine Learning Engineer', value: 'Machine Learning Engineer' },
-    { label: 'Mobile Developer', value: 'Mobile Developer' },
-    { label: 'Game Developer', value: 'Game Developer' },
-    { label: 'Security Engineer', value: 'Security Engineer' },
-    { label: 'Database Administrator', value: 'Database Administrator' },
-    { label: 'System Administrator', value: 'System Administrator' },
-    { label: 'Network Engineer', value: 'Network Engineer' },
-    { label: 'Cloud Architect', value: 'Cloud Architect' },
-    { label: 'Business Analyst', value: 'Business Analyst' },
-    { label: 'Technical Writer', value: 'Technical Writer' }
-  ];
+
 
   constructor(
     private fb: FormBuilder,
-    @Inject(PLATFORM_ID) private platformId: Object
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private statusService: ProjectStatusService,
+    private complexityService: ProjectComplexityService,
+    private toolService: ProjectToolService,
+    private topicService: ProjectTopicService,
+    private roleService: ProjectRoleService
   ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
   }
@@ -213,6 +122,9 @@ export class ProjectFormComponent implements OnInit, OnChanges {
 
     // Inicializar formulários dos dialogs
     this.initDialogForms();
+
+    // Carregar opções dinâmicas
+    this.loadOptions();
 
     // Configurar marked apenas no browser para evitar erros SSR
     if (this.isBrowser) {
@@ -236,6 +148,26 @@ export class ProjectFormComponent implements OnInit, OnChanges {
         this.patchFormWithProject();
       }
     }, 0);
+  }
+  private loadOptions(): void {
+    this.statusService.getAllProjects().subscribe(statuses => {
+      this.statusOptions = statuses.map(s => ({ label: s.name, value: s.id }));
+    });
+    this.complexityService.getAllProjects().subscribe(complexities => {
+      this.complexityOptions = complexities.map(c => ({ label: c.name, value: c.id, color: c.hexColor }));
+      this.tagOptions.complexidade = this.complexityOptions;
+    });
+    this.toolService.getAllProjects().subscribe(tools => {
+      this.toolOptions = tools.map(t => ({ label: t.name, value: t.id, color: t.hexColor }));
+      this.tagOptions['tecnologias/ferramentas'] = this.toolOptions;
+    });
+    this.topicService.getAllProjects().subscribe(topics => {
+      this.topicOptions = topics.map(t => ({ label: t.name, value: t.id, color: t.hexColor }));
+      this.tagOptions.assuntos = this.topicOptions;
+    });
+    this.roleService.getAllProjects().subscribe(roles => {
+      this.roleOptions = roles.map(r => ({ label: r.name, value: r.id }));
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -299,80 +231,42 @@ export class ProjectFormComponent implements OnInit, OnChanges {
   private patchFormWithProject(): void {
     if (!this.project || !this.projectForm) return;
 
-    // Patch dos campos básicos
     this.projectForm.patchValue({
       name: this.project.name,
       summary: this.project.summary || '',
       description: this.project.description,
-      image: this.project.image || '',
-      status: this.project.status || 'active',
+      image: this.project.imageUrl || '',
+      status: this.project.status || '',
       startDate: this.project.startDate,
-      expectedDate: this.project.expectedDate,
-      unfilledRoles: this.project.unfilledRoles || []
+      expectedDate: this.project.endDate,
+      unfilledRoles: this.project.unfilledRoles?.map(r => r.id) || []
     });
 
     // Patch da equipe
     const teamArray = this.projectForm.get('team') as FormArray;
     teamArray.clear();
-    this.project.team.forEach(member => {
+    (this.project.members || []).forEach(member => {
       teamArray.push(this.fb.group({
         id: [member.id],
-        name: [member.name],
-        photo: [member.photo],
+        user: [member.user],
         role: [member.role],
         isManager: [member.isManager || false]
       }));
     });
 
-    // Patch das tags
-    const tagsArray = this.projectForm.get('tags') as FormArray;
-    tagsArray.clear();
-
-        // Resetar seleções
-    const selectedTecnologiasFerramentas: string[] = [];
-    const selectedAssuntos: string[] = [];
-    let selectedTempoEstimado: string | null = null;
-    let selectedComplexidade: string | null = null;
-
-    this.project.tags.forEach(tag => {
-      tagsArray.push(this.fb.group({
-        id: [tag.id],
-        name: [tag.name],
-        type: [tag.type],
-        color: [tag.color || '']
-      }));
-
-      // Sincronizar com as propriedades dos selects
-      if (tag.type === 'tecnologias/ferramentas') {
-        selectedTecnologiasFerramentas.push(tag.name);
-      } else if (tag.type === 'assuntos') {
-        selectedAssuntos.push(tag.name);
-      } else if (tag.type === 'tempoEstimado') {
-        selectedTempoEstimado = tag.name;
-      } else if (tag.type === 'complexidade') {
-        selectedComplexidade = tag.name;
-      }
-    });
-
-    // Patch dos controles dos selects
-    this.projectForm.patchValue({
-      selectedTecnologiasFerramentas: selectedTecnologiasFerramentas,
-      selectedAssuntos: selectedAssuntos,
-      selectedTempoEstimado: selectedTempoEstimado,
-      selectedComplexidade: selectedComplexidade
-    });
+    // Patch das tags (tools/topics/complexity)
+    // Aqui você pode adaptar para preencher selects se necessário
   }
 
   // Métodos para gerenciar tags
-  addTag(type: 'tecnologias/ferramentas' | 'assuntos' | 'tempoEstimado' | 'complexidade', value: string): void {
+  addTag(type: 'tecnologias/ferramentas' | 'assuntos' | 'tempoEstimado' | 'complexidade', value: string, color?: string): void {
     const tagsArray = this.projectForm.get('tags') as FormArray;
     const newTag = {
       id: this.generateId(),
       name: value,
       type: type,
-      color: this.getTagColor(value, type)
+      color: color || ''
     };
-
     tagsArray.push(this.fb.group(newTag));
   }
 
@@ -423,47 +317,37 @@ export class ProjectFormComponent implements OnInit, OnChanges {
     tagsArray.clear();
 
     // Adicionar tags de tecnologias/ferramentas
-    selectedTecnologiasFerramentas.forEach((value: string) => {
-      const newTag = {
-        id: this.generateId(),
-        name: value,
-        type: 'tecnologias/ferramentas',
-        color: this.getTagColor(value, 'tecnologias/ferramentas')
-      };
-      tagsArray.push(this.fb.group(newTag));
+
+    selectedTecnologiasFerramentas.forEach((value: string | number) => {
+      let found = this.toolOptions.find(t => t.value === value);
+      if (!found && typeof value === 'string') {
+        found = this.toolOptions.find(t => t.label === value);
+      }
+      const color = found?.color || '';
+      this.addTag('tecnologias/ferramentas', String(value), color);
     });
 
     // Adicionar tags de assuntos
-    selectedAssuntos.forEach((value: string) => {
-      const newTag = {
-        id: this.generateId(),
-        name: value,
-        type: 'assuntos',
-        color: this.getTagColor(value, 'assuntos')
-      };
-      tagsArray.push(this.fb.group(newTag));
+
+    selectedAssuntos.forEach((value: string | number) => {
+      let found = this.topicOptions.find(t => t.value === value);
+      if (!found && typeof value === 'string') {
+        found = this.topicOptions.find(t => t.label === value);
+      }
+      const color = found?.color || '';
+      this.addTag('assuntos', String(value), color);
     });
 
-    // Adicionar tag de tempo estimado
+    // Adicionar tag de tempo estimado (mantém sem cor)
     if (selectedTempoEstimado) {
-      const newTag = {
-        id: this.generateId(),
-        name: selectedTempoEstimado,
-        type: 'tempoEstimado',
-        color: this.getTagColor(selectedTempoEstimado, 'tempoEstimado')
-      };
-      tagsArray.push(this.fb.group(newTag));
+      this.addTag('tempoEstimado', selectedTempoEstimado);
     }
 
     // Adicionar tag de complexidade
     if (selectedComplexidade) {
-      const newTag = {
-        id: this.generateId(),
-        name: selectedComplexidade,
-        type: 'complexidade',
-        color: this.getTagColor(selectedComplexidade, 'complexidade')
-      };
-      tagsArray.push(this.fb.group(newTag));
+      const found = this.complexityOptions.find(c => c.value === selectedComplexidade || c.label === selectedComplexidade);
+      const color = found?.color || '';
+      this.addTag('complexidade', selectedComplexidade, color);
     }
   }
 
@@ -472,58 +356,6 @@ export class ProjectFormComponent implements OnInit, OnChanges {
     return Date.now().toString(36) + Math.random().toString(36).substr(2, 9);
   }
 
-  getTagColor(tagName: string, type: string): string {
-    const colorMap: { [key: string]: { [key: string]: string } } = {
-      'tecnologias/ferramentas': {
-        'Angular': '#dd0031',
-        'TypeScript': '#3178c6',
-        'Node.js': '#339933',
-        'React': '#61dafb',
-        'Vue.js': '#4fc08d',
-        'Python': '#3776ab',
-        'Java': '#007396',
-        'C#': '#68217a',
-        'PHP': '#777bb4',
-        'Ruby': '#cc342d'
-      },
-      assuntos: {
-        'Educação': '#4caf50',
-        'Saúde': '#f44336',
-        'Finanças': '#2196f3',
-        'E-commerce': '#ff9800',
-        'Redes Sociais': '#9c27b0',
-        'Produtividade': '#607d8b',
-        'Entretenimento': '#e91e63',
-        'Transporte': '#795548',
-        'Turismo': '#00bcd4',
-        'Esportes': '#8bc34a',
-        'Música': '#ff5722',
-        'Jogos': '#673ab7',
-        'Notícias': '#3f51b5',
-        'Tecnologia': '#009688',
-        'Sustentabilidade': '#4caf50',
-        'Inovação': '#ff4081',
-        'Acessibilidade': '#ffc107',
-        'Segurança': '#d32f2f',
-        'Comunicação': '#1976d2'
-      },
-      tempoEstimado: {
-        '1-2 semanas': '#4caf50',
-        '1 mês': '#8bc34a',
-        '2-3 meses': '#ff9800',
-        '3-6 meses': '#ff5722',
-        '6+ meses': '#f44336'
-      },
-      complexidade: {
-        'Baixa': '#4caf50',
-        'Média': '#ff9800',
-        'Alta': '#f44336',
-        'Muito Alta': '#9c27b0'
-      }
-    };
-
-    return colorMap[type]?.[tagName] || '#607d8b';
-  }
 
   // Team management (apenas para edição)
   get teamArray(): FormArray {
@@ -539,27 +371,29 @@ export class ProjectFormComponent implements OnInit, OnChanges {
     this.teamArray.removeAt(index);
   }
 
-  // Request management
-  acceptRequest(request: TeamRequest): void {
-    // Adicionar à equipe
-    const newMember = this.fb.group({
-      id: [request.userId],
-      name: [request.userName],
-      photo: [request.userPhoto],
-      role: [request.requestedRole],
-      isManager: [false]
-    });
 
-    this.teamArray.push(newMember);
+  // TODO: IMPLEMENT MEMBER REQUESTS WITH REAL DATA
+  // // Request management
+  // acceptRequest(request: TeamRequest): void {
+  //   // Adicionar à equipe
+  //   const newMember = this.fb.group({
+  //     id: [request.userId],
+  //     name: [request.userName],
+  //     photo: [request.userPhoto],
+  //     role: [request.requestedRole],
+  //     isManager: [false]
+  //   });
 
-    // Remover da lista de solicitações
-    this.pendingRequests = this.pendingRequests.filter(r => r.id !== request.id);
-  }
+  //   this.teamArray.push(newMember);
 
-  rejectRequest(request: TeamRequest): void {
-    // Remover da lista de solicitações
-    this.pendingRequests = this.pendingRequests.filter(r => r.id !== request.id);
-  }
+  //   // Remover da lista de solicitações
+  //   this.pendingRequests = this.pendingRequests.filter(r => r.id !== request.id);
+  // }
+
+  // rejectRequest(request: TeamRequest): void {
+  //   // Remover da lista de solicitações
+  //   this.pendingRequests = this.pendingRequests.filter(r => r.id !== request.id);
+  // }
 
   // Métodos para integração com team-card
   getTeamForCard(): any[] {
@@ -634,14 +468,7 @@ export class ProjectFormComponent implements OnInit, OnChanges {
     this.showAddMemberDialog = false;
   }
 
-  // Métodos para integração com request-card
-  onRequestCardAcceptRequest(request: TeamRequest): void {
-    this.acceptRequest(request);
-  }
-
-  onRequestCardRejectRequest(request: TeamRequest): void {
-    this.rejectRequest(request);
-  }
+  // Métodos para integração com request-card removidos
 
 
 
@@ -649,36 +476,22 @@ export class ProjectFormComponent implements OnInit, OnChanges {
   onSubmit(): void {
     if (this.projectForm.valid) {
       const formValue = this.projectForm.value;
-
-      // Converter tags do formato de grupo para array de ProjectTag
-      const tags: ProjectTag[] = [];
-
-      // Tags de tecnologias/ferramentas (múltiplas)
-      formValue.tags.forEach((tag: any) => {
-        tags.push({
-          id: tag.id,
-          name: tag.name,
-          type: tag.type,
-          color: tag.color
-        });
-      });
-
-      const project: Project = {
-        id: this.project?.id || this.generateId(),
+      // Montar o objeto para envio real (CreateProjectRequest ou UpdateProjectRequest)
+      const request: CreateProjectRequest | UpdateProjectRequest = {
         name: formValue.name,
         summary: formValue.summary,
         description: formValue.description,
-        team: formValue.team,
-        tags: tags,
-        image: formValue.image,
-        status: formValue.status,
+        statusId: formValue.status, // ajuste conforme necessário
+        complexityId: formValue.selectedComplexidade, // ajuste conforme necessário
+        imageUrl: formValue.image,
         startDate: formValue.startDate,
-        expectedDate: formValue.expectedDate,
-        unfilledRoles: formValue.unfilledRoles,
-        createdAt: this.project?.createdAt || new Date(),
-        updatedAt: new Date()
+        endDate: formValue.expectedDate,
+        toolIds: formValue.selectedTecnologiasFerramentas,
+        topicIds: formValue.selectedAssuntos,
+        unfilledRoleIds: formValue.unfilledRoles,
+        managerRoleId: 1 // ajuste conforme necessário
       };
-      this.save.emit(project);
+      this.save.emit(request);
     } else {
       this.markFormGroupTouched();
     }

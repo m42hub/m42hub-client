@@ -9,7 +9,7 @@ import { CreateProjectTopic, ProjectTopic } from '../../interfaces/project/topic
   providedIn: 'root',
 })
 export class ProjectTopicService extends BaseApiService<ProjectTopic> {
-  private readonly endpoint = '/v1/topic';
+  private readonly endpoint = '/v1/project/topic';
 
   constructor(http: HttpClient) {
     super(http);

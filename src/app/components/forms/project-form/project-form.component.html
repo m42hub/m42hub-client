@@ -41,7 +41,7 @@
             id="status"
             formControlName="status"
             [options]="statusOptions"
-            placeholder="Selecione o status"
+            placeholder="Selecione"
             class="w-full"
           ></p-select>
         </div>
@@ -54,7 +54,7 @@
           </label>
           <p-select
             [options]="tagOptions.complexidade"
-            placeholder="Selecione a complexidade"
+            placeholder="Selecione"
             class="w-full"
             optionLabel="label"
             optionValue="value"
@@ -215,14 +215,13 @@
             <p-tab value="1" class="p-2 text-sm">Solicitações Pendentes</p-tab>
           </p-tablist>
         </div>
-        <!-- Aba: Membros Atuais -->
         <p-tabpanels>
+          <!-- Aba: Membros Atuais -->
           <p-tabpanel value="0">
             <div class="flex flex-col gap-4">
               <div class="flex justify-center items-center">
                 <h4 class="text-lg font-semibold">Membros da Equipe ({{ teamArray.length }})</h4>
               </div>
-
               <!-- Team Card Component -->
               <app-team-card
                 [team]="getTeamForCard()"
@@ -233,22 +232,20 @@
               </app-team-card>
             </div>
           </p-tabpanel>
-
-          <!-- Aba: Solicitações Pendentes -->
+          <!-- Aba: Solicitações Pendentes (mock) -->
           <p-tabpanel value="1">
-            <div class="flex flex-col gap-4">
+            <!-- <div class="flex flex-col gap-4">
               <div class="flex justify-center items-center">
                 <h4 class="text-lg font-semibold">Solicitações ({{ pendingRequests.length }})</h4>
               </div>
 
-              <!-- Request Card Component -->
               <app-request-card
                 [requests]="pendingRequests"
                 [showHeader]="false"
                 (acceptRequest)="onRequestCardAcceptRequest($event)"
                 (rejectRequest)="onRequestCardRejectRequest($event)">
               </app-request-card>
-            </div>
+            </div> -->
           </p-tabpanel>
         </p-tabpanels>
       </p-tabs>

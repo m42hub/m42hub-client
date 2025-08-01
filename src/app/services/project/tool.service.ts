@@ -9,7 +9,7 @@ import { CreateProjectTool, ProjectTool } from '../../interfaces/project/tool.in
   providedIn: 'root',
 })
 export class ProjectToolService extends BaseApiService<ProjectTool> {
-  private readonly endpoint = '/v1/tool';
+  private readonly endpoint = '/v1/project/tool';
 
   constructor(http: HttpClient) {
     super(http);

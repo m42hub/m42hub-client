@@ -8,7 +8,7 @@ import { CreateProjectRole, ProjectRole } from '../../interfaces/project/role.in
   providedIn: 'root',
 })
 export class ProjectRoleService extends BaseApiService<ProjectRole> {
-  private readonly endpoint = '/v1/role';
+  private readonly endpoint = '/v1/project/role';
 
   constructor(http: HttpClient) {
     super(http);

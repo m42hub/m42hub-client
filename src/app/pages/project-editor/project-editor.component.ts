@@ -6,8 +6,8 @@ import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { ProjectFormComponent } from '../../components/forms/project-form/project-form.component';
-import { Project } from '../../interfaces/projectMock.interface';
-import { ProjectService } from '../../services/projectMock.service';
+import { Project, CreateProjectRequest, UpdateProjectRequest } from '../../interfaces/project/project.interface';
+import { ProjectService } from '../../services/project/project.service';
 
 @Component({
   selector: 'app-project-editor',
@@ -27,6 +27,7 @@ export class ProjectEditorComponent implements OnInit {
   project?: Project;
   isEditMode = false;
   isBrowser = false;
+  projectLoaded = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -42,31 +43,33 @@ export class ProjectEditorComponent implements OnInit {
     this.checkEditMode();
   }
 
-    private checkEditMode(): void {
-    const projectId = this.route.snapshot.paramMap.get('id');
+  private checkEditMode(): void {
+    // Permite buscar o id tanto por param quanto por query
+    let projectId = this.route.snapshot.paramMap.get('id');
+    if (!projectId) {
+      projectId = this.route.snapshot.queryParamMap.get('id');
+    }
     const url = this.router.url;
 
-    // Se a URL contém '/new', é modo de criação
     if (url.includes('/new')) {
       this.isEditMode = false;
       this.project = undefined;
-    }
-    // Se a URL contém '/edit' e tem ID, é modo de edição
-    else if (url.includes('/edit') && projectId) {
+      this.projectLoaded = true;
+    } else if ((url.includes('/edit') || !!projectId) && projectId) {
       this.isEditMode = true;
       this.loadProject(projectId);
-    }
-    // Se chegou aqui, algo deu errado - redireciona para criação
-    else {
+    } else {
       this.router.navigate(['/projects/new']);
     }
   }
 
   private loadProject(projectId: string): void {
-    this.projectService.getProjectById(projectId).subscribe({
+    this.projectLoaded = false;
+    this.projectService.getProjectById(Number(projectId)).subscribe({
       next: (project) => {
         if (project) {
           this.project = project;
+          this.projectLoaded = true;
         } else {
           this.messageService.add({
             severity: 'error',
@@ -88,16 +91,18 @@ export class ProjectEditorComponent implements OnInit {
     });
   }
 
-  onSave(project: Project): void {
-    if (this.isEditMode) {
-      this.updateProject(project);
+
+  onSave(request: CreateProjectRequest | UpdateProjectRequest): void {
+    if (this.isEditMode && this.project) {
+      this.updateProject(this.project.id, request as UpdateProjectRequest);
     } else {
-      this.createProject(project);
+      this.createProject(request as CreateProjectRequest);
     }
   }
 
-  private createProject(project: Project): void {
-    this.projectService.createProject(project).subscribe({
+
+  private createProject(request: CreateProjectRequest): void {
+    this.projectService.createProject(request).subscribe({
       next: () => {
         this.messageService.add({
           severity: 'success',
@@ -117,8 +122,9 @@ export class ProjectEditorComponent implements OnInit {
     });
   }
 
-  private updateProject(project: Project): void {
-    this.projectService.updateProject(project).subscribe({
+
+  private updateProject(id: number, request: UpdateProjectRequest): void {
+    this.projectService.updateProject(id, request).subscribe({
       next: () => {
         this.messageService.add({
           severity: 'success',

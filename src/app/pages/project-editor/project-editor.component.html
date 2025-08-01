@@ -17,12 +17,14 @@
 
     <!-- Content -->
     <div class="flex flex-col w-full">
-      <app-project-form
-        [project]="project"
-        [isEditMode]="isEditMode"
-        (save)="onSave($event)"
-        (cancel)="onCancel()"
-      ></app-project-form>
+      <ng-container *ngIf="!isEditMode || (isEditMode && projectLoaded)">
+        <app-project-form
+          [project]="project"
+          [isEditMode]="isEditMode"
+          (save)="onSave($event)"
+          (cancel)="onCancel()"
+        ></app-project-form>
+      </ng-container>
     </div>
 
     <!-- Toast messages -->
