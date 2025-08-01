@@ -1,4 +1,4 @@
-<div class="container mx-8 py-6 min-h-screen">
+<div class="container mx-auto py-6 min-h-screen">
   <!-- Header com título e botão de criar projeto -->
   <div class="mb-6 flex justify-between items-center">
     <div>
@@ -19,7 +19,7 @@
   <!-- Grid de projetos -->
   <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-5 items-stretch">
     <app-project-summary-card
-      *ngFor="let project of paginatedProjects; let i = index"
+      *ngFor="let project of projects; let i = index"
       [project]="project"
       class="animate-fade-in-up"
       [style.animation-delay]="(i * 0.1) + 's'">

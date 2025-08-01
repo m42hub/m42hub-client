@@ -14,35 +14,35 @@
         {{ project.summary }}
       </p>
 
-      <!-- Tecnologias/ferramentas (tags tipo 'tecnologias/ferramentas') -->
+      <!-- Tecnologias/Ferramentas -->
       <div class="mb-4 min-h-18">
         <span class="text-sm font-bold text-surface-500 uppercase tracking-wide">Tecnologias/Ferramentas</span>
         <div class="flex flex-wrap gap-1 mt-1">
           <p-tag
-            *ngFor="let tag of getTechTags()"
-            [value]="tag.name"
+            *ngFor="let tool of getTools()"
+            [value]="tool"
             class="text-sm font-medium bg-surface-300 cursor-help"
-            [pTooltip]="getTagTooltip(tag)"
+            [pTooltip]="'Tecnologias/Ferramentas'"
             tooltipPosition="top"
             tooltipStyleClass="text-xs">
           </p-tag>
-          <span *ngIf="getTechTags().length === 0" class="text-sm text-surface-500">Nenhuma</span>
+          <span *ngIf="getTools().length === 0" class="text-sm text-surface-500">Nenhuma</span>
         </div>
       </div>
 
-      <!-- Assuntos (Temas do Projeto) -->
+      <!-- Temas/Tópicos -->
       <div class="mb-4 min-h-18">
-        <span class="text-sm font-bold text-surface-500 uppercase tracking-wide">Assuntos/Temas</span>
+        <span class="text-sm font-bold text-surface-500 uppercase tracking-wide">Tópicos</span>
         <div class="flex flex-wrap gap-1 mt-1">
           <p-tag
-            *ngFor="let tag of getAssuntosTags()"
-            [value]="tag.name"
+            *ngFor="let topic of getTopics()"
+            [value]="topic"
             class="text-sm font-medium bg-surface-300 cursor-help"
-            [pTooltip]="getTagTooltip(tag)"
+            [pTooltip]="'Tópicos'"
             tooltipPosition="top"
             tooltipStyleClass="text-xs">
           </p-tag>
-          <span *ngIf="getAssuntosTags().length === 0" class="text-sm text-surface-500">Nenhum</span>
+          <span *ngIf="getTopics().length === 0" class="text-sm text-surface-500">Nenhum</span>
         </div>
       </div>
 
@@ -59,7 +59,7 @@
       <div class="mb-4 grid grid-cols-3 gap-x-8 items-center text-xs text-surface-500 min-h-6">
         <div>
           <span class="font-bold"><i class="pi pi-calendar mr-1"></i>Criação: </span>
-          <span>{{ formatDate(project.createdAt) }}</span>
+          <span>{{ formatDate(project.creationDate) }}</span>
         </div>
         <div>
           <span class="font-bold"><i class="pi pi-calendar mr-1"></i>Início: </span>
@@ -67,19 +67,18 @@
         </div>
         <div>
           <span class="font-bold"><i class="pi pi-calendar mr-1"></i>Prevista: </span>
-          <span>{{ formatDate(project.expectedDate) }}</span>
+          <span>{{ formatDate(project.endDate) }}</span>
         </div>
       </div>
 
-      <!-- Tags gerais do projeto e botão de ver detalhes na mesma linha -->
       <div class="flex items-center justify-between mt-2 gap-4 min-h-18">
         <div class="flex flex-wrap gap-1">
           <p-tag
             *ngFor="let tag of getGeneralTags()"
-            [value]="tag.name"
+            [value]="tag.label"
             class="text-xs bg-surface-200 cursor-help"
             size="small"
-            [pTooltip]="getTagTooltip(tag)"
+            [pTooltip]="getGeneralTagTooltip(tag)"
             tooltipPosition="top"
             tooltipStyleClass="text-xs">
           </p-tag>

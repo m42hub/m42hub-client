@@ -4,8 +4,7 @@ import { CardModule } from 'primeng/card';
 import { TagModule } from 'primeng/tag';
 import { ButtonModule } from 'primeng/button';
 import { TooltipModule } from 'primeng/tooltip';
-import { Project } from '../../../interfaces/projectMock.interface';
-import { ProjectTag } from '../../../interfaces/projectMock.interface';
+import { Project } from '../../../interfaces/project/project.interface';
 import { Router } from '@angular/router';
 
 
@@ -14,45 +13,67 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [CommonModule, CardModule, TagModule, ButtonModule, TooltipModule],
   templateUrl: './project-summary-card.component.html',
-  styleUrl: './project-summary-card.component.css'
+  styleUrl: './project-summary-card.component.css',
 })
 export class ProjectSummaryCardComponent {
-
   constructor(private router: Router) {}
 
   @Input() project!: Project;
   showImage: boolean = true;
 
-  getTechTags(): ProjectTag[] {
-    return this.project.tags?.filter((tag: ProjectTag) => tag.type === 'tecnologias/ferramentas') || [];
+  getTools(): string[] {
+    return this.project.tools?.map((t) => t.name) || [];
   }
 
-  getAssuntosTags(): ProjectTag[] {
-    return this.project.tags?.filter((tag: ProjectTag) => tag.type === 'assuntos') || [];
+  getTopics(): string[] {
+    return this.project.topics?.map((t) => t.name) || [];
   }
 
-  getGeneralTags(): ProjectTag[] {
-    return this.project.tags as ProjectTag[] || [];
+  getComplexity(): string {
+    return this.project.complexity?.name || '';
   }
 
-  getUnfilledRoles() {
-    return this.project.unfilledRoles || [];
+  getStatus(): string {
+    return this.project.status?.name || '';
   }
 
-  formatDate(date?: Date): string {
+  getUnfilledRoles(): string[] {
+    return this.project.unfilledRoles?.map((r) => r.name) || [];
+  }
+
+  getMonthsToEnd(): number | null {
+    if (!this.project.endDate) return null;
+    const now = new Date();
+    const end = new Date(this.project.endDate);
+    if (isNaN(end.getTime())) return null;
+    const months =
+      (end.getFullYear() - now.getFullYear()) * 12 +
+      (end.getMonth() - now.getMonth());
+    return months > 0 ? months : 0;
+  }
+
+  getGeneralTags(): { label: string; tooltip: string }[] {
+    const tags: { label: string; tooltip: string }[] = [];
+
+    const complexity = this.getComplexity();
+    if (complexity) tags.push({ label: complexity, tooltip: 'Complexidade' });
+
+    const status = this.getStatus();
+    if (status) tags.push({ label: status, tooltip: 'Status' });
+
+    const months = this.getMonthsToEnd();
+    if (months !== null) tags.push({ label: `${months} meses restantes`, tooltip: 'Tempo até a data prevista de término' });
+    return tags;
+  }
+
+  getGeneralTagTooltip(tag: { label: string; tooltip: string }): string {
+    return tag.tooltip;
+  }
+
+  formatDate(date?: string | Date): string {
     if (!date) return 'Não definida';
-    return new Date(date).toLocaleDateString('pt-BR');
-  }
-
-  getTagTooltip(tag: ProjectTag): string {
-    const typeLabels: { [key: string]: string } = {
-      'tecnologias/ferramentas': 'Tecnologia/Ferramenta',
-      'assuntos': 'Assunto/Tema',
-      'tempoEstimado': 'Tempo Estimado',
-      'complexidade': 'Complexidade'
-    };
-
-    return typeLabels[tag.type] || 'Tag';
+    const d = typeof date === 'string' ? new Date(date) : date;
+    return d.toLocaleDateString('pt-BR');
   }
 
   onDetailsClick() {
@@ -64,7 +85,7 @@ export class ProjectSummaryCardComponent {
     this.showImage = false;
   }
 
-  viewProjectDetails(id: string): void {
+  viewProjectDetails(id: number | string): void {
     this.router.navigate([`/projects/${id}`]);
   }
 }

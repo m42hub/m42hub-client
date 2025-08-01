@@ -13,6 +13,7 @@ export interface Project {
   status?: ProjectStatus;
   complexity?: ProjectComplexity;
   imageUrl?: string;
+  creationDate: string;
   startDate: string;
   endDate?: string;
   tools?: ProjectTool[];
