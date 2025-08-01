@@ -11,7 +11,7 @@
     <!-- Informações Básicas -->
     <p-card header="Informações Básicas" styleClass="rounded-b-none">
       <div class="flex flex-col md:flex-row gap-4">
-        <div class="flex flex-col gap-2 flex-2">
+        <div class="flex flex-col gap-2 flex-3">
           <label for="name" class="flex items-start font-semibold">
             <i class="pi pi-briefcase mr-2 text-primary"></i>
             Nome do Projeto *
@@ -43,6 +43,23 @@
             [options]="statusOptions"
             placeholder="Selecione o status"
             class="w-full"
+          ></p-select>
+        </div>
+
+                    <!-- Complexidade -->
+        <div class="flex flex-col gap-2 flex-1">
+          <label class="flex items-start font-semibold">
+            <i class="pi pi-cog mr-2 text-primary"></i>
+            Complexidade
+          </label>
+          <p-select
+            [options]="tagOptions.complexidade"
+            placeholder="Selecione a complexidade"
+            class="w-full"
+            optionLabel="label"
+            optionValue="value"
+            (onChange)="onComplexidadeChange($event)"
+            formControlName="selectedComplexidade"
           ></p-select>
         </div>
       </div>
@@ -242,78 +259,41 @@
       <div class="flex flex-col gap-6">
         <div class="flex flex-col gap-4">
                   <!-- Tecnologias/Ferramentas -->
-        <div class="flex flex-col gap-2">
-          <label class="flex items-center font-semibold">
-            <i class="pi pi-cog mr-2 text-primary"></i>
-            Tecnologias/Ferramentas
-          </label>
-          <p-multiSelect
-            [options]="tagOptions['tecnologias/ferramentas']"
-            placeholder="Selecione as tecnologias"
-            class="w-full"
-            optionLabel="label"
-            optionValue="value"
-            display="chip"
-            [maxSelectedLabels]="10"
-            (onChange)="onTecnologiasFerramentasChange($event)"
-            formControlName="selectedTecnologiasFerramentas"
-          ></p-multiSelect>
-        </div>
+          <div class="flex flex-col gap-2">
+            <label class="flex items-center font-semibold">
+              <i class="pi pi-cog mr-2 text-primary"></i>
+              Tecnologias/Ferramentas
+            </label>
+            <p-multiSelect
+              [options]="tagOptions['tecnologias/ferramentas']"
+              placeholder="Selecione as tecnologias"
+              class="w-full"
+              optionLabel="label"
+              optionValue="value"
+              display="chip"
+              [maxSelectedLabels]="10"
+              (onChange)="onTecnologiasFerramentasChange($event)"
+              formControlName="selectedTecnologiasFerramentas"
+            ></p-multiSelect>
+          </div>
 
-        <!-- Assuntos (Temas do Projeto) -->
-        <div class="flex flex-col gap-2">
-          <label class="flex items-center font-semibold">
-            <i class="pi pi-tags mr-2 text-primary"></i>
-            Assuntos (Temas do Projeto)
-          </label>
-          <p-multiSelect
-            [options]="tagOptions.assuntos"
-            placeholder="Selecione os temas do projeto"
-            class="w-full"
-            optionLabel="label"
-            optionValue="value"
-            display="chip"
-            [maxSelectedLabels]="5"
-            (onChange)="onAssuntosChange($event)"
-            formControlName="selectedAssuntos"
-          ></p-multiSelect>
-        </div>
-
-          <!-- Tempo Estimado e Complexidade -->
-          <div class="flex flex-col md:flex-row gap-4">
-            <!-- Tempo Estimado -->
-            <div class="flex flex-col gap-2 flex-1">
-              <label class="flex items-start font-semibold">
-                <i class="pi pi-clock mr-2 text-primary"></i>
-                Tempo Estimado
-              </label>
-              <p-select
-                [options]="tagOptions.tempoEstimado"
-                placeholder="Selecione o tempo"
-                class="w-full"
-                optionLabel="label"
-                optionValue="value"
-                (onChange)="onTempoEstimadoChange($event)"
-                formControlName="selectedTempoEstimado"
-              ></p-select>
-            </div>
-
-            <!-- Complexidade -->
-            <div class="flex flex-col gap-2 flex-1">
-              <label class="flex items-start font-semibold">
-                <i class="pi pi-cog mr-2 text-primary"></i>
-                Complexidade
-              </label>
-              <p-select
-                [options]="tagOptions.complexidade"
-                placeholder="Selecione a complexidade"
-                class="w-full"
-                optionLabel="label"
-                optionValue="value"
-                (onChange)="onComplexidadeChange($event)"
-                formControlName="selectedComplexidade"
-              ></p-select>
-            </div>
+          <!-- Assuntos (Temas do Projeto) -->
+          <div class="flex flex-col gap-2">
+            <label class="flex items-center font-semibold">
+              <i class="pi pi-tags mr-2 text-primary"></i>
+              Assuntos (Temas do Projeto)
+            </label>
+            <p-multiSelect
+              [options]="tagOptions.assuntos"
+              placeholder="Selecione os temas do projeto"
+              class="w-full"
+              optionLabel="label"
+              optionValue="value"
+              display="chip"
+              [maxSelectedLabels]="5"
+              (onChange)="onAssuntosChange($event)"
+              formControlName="selectedAssuntos"
+            ></p-multiSelect>
           </div>
         </div>
 
