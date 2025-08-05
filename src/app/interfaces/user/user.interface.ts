@@ -17,3 +17,12 @@ export interface User {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface AuthenticatedUser {
+  id: number;
+  username: string;
+  firstName: string;
+  lastName: string;
+  roleId: number;
+  roleName: string;
+}

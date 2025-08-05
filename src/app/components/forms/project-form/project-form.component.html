@@ -220,11 +220,11 @@
           <p-tabpanel value="0">
             <div class="flex flex-col gap-4">
               <div class="flex justify-center items-center">
-                <h4 class="text-lg font-semibold">Membros da Equipe ({{ teamArray.length }})</h4>
+                <h4 class="text-lg font-semibold">Membros da Equipe</h4>
               </div>
               <!-- Team Card Component -->
               <app-team-card
-                [team]="getTeamForCard()"
+                [team]="getTeamForCard('approved')"
                 mode="edit"
                 [showHeader]="false"
                 (removeMember)="onTeamCardRemoveMember($event)"
@@ -234,18 +234,18 @@
           </p-tabpanel>
           <!-- Aba: Solicitações Pendentes (mock) -->
           <p-tabpanel value="1">
-            <!-- <div class="flex flex-col gap-4">
+            <div class="flex flex-col gap-4">
               <div class="flex justify-center items-center">
-                <h4 class="text-lg font-semibold">Solicitações ({{ pendingRequests.length }})</h4>
+                <h4 class="text-lg font-semibold">Solicitações</h4>
               </div>
 
-              <app-request-card
-                [requests]="pendingRequests"
+              <!-- <app-request-card
+                [requests]="getTeamForCard('pending')"
                 [showHeader]="false"
                 (acceptRequest)="onRequestCardAcceptRequest($event)"
                 (rejectRequest)="onRequestCardRejectRequest($event)">
-              </app-request-card>
-            </div> -->
+              </app-request-card> -->
+            </div>
           </p-tabpanel>
         </p-tabpanels>
       </p-tabs>

@@ -59,12 +59,14 @@ export interface TeamRequest {
     // RequestCardComponent removido
   ],
   templateUrl: './project-form.component.html',
-  styleUrl: './project-form.component.css'
+  styleUrl: './project-form.component.css',
 })
 export class ProjectFormComponent implements OnInit, OnChanges {
   @Input() project?: Project;
   @Input() isEditMode: boolean = false;
-  @Output() save = new EventEmitter<CreateProjectRequest | UpdateProjectRequest>();
+  @Output() save = new EventEmitter<
+    CreateProjectRequest | UpdateProjectRequest
+  >();
   @Output() cancel = new EventEmitter<void>();
 
   projectForm!: FormGroup;
@@ -82,12 +84,8 @@ export class ProjectFormComponent implements OnInit, OnChanges {
   showAddMemberDialog = false;
   addMemberForm!: FormGroup;
 
-
-
-
-
   // statusOptions e tagOptions devem ser carregados de services reais futuramente
-  statusOptions: { label: string, value: number }[] = [];
+  statusOptions: { label: string; value: number }[] = [];
   // tagOptions já declarado acima, removendo duplicidade
 
   // Tags padronizadas por categoria
@@ -95,14 +93,12 @@ export class ProjectFormComponent implements OnInit, OnChanges {
     'tecnologias/ferramentas': [],
     assuntos: [],
     tempoEstimado: [],
-    complexidade: []
+    complexidade: [],
   };
-  complexityOptions: { label: string, value: number, color?: string }[] = [];
-  toolOptions: { label: string, value: number, color?: string }[] = [];
-  topicOptions: { label: string, value: number, color?: string }[] = [];
-  roleOptions: { label: string, value: number }[] = [];
-
-
+  complexityOptions: { label: string; value: number; color?: string }[] = [];
+  toolOptions: { label: string; value: number; color?: string }[] = [];
+  topicOptions: { label: string; value: number; color?: string }[] = [];
+  roleOptions: { label: string; value: number }[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -130,11 +126,11 @@ export class ProjectFormComponent implements OnInit, OnChanges {
     if (this.isBrowser) {
       marked.setOptions({
         breaks: true,
-        gfm: true
+        gfm: true,
       });
 
       // Atualizar preview quando o valor da descrição mudar (apenas no browser)
-      this.projectForm.get('description')?.valueChanges.subscribe(value => {
+      this.projectForm.get('description')?.valueChanges.subscribe((value) => {
         this.updateMarkdownPreview(value);
       });
     }
@@ -150,28 +146,48 @@ export class ProjectFormComponent implements OnInit, OnChanges {
     }, 0);
   }
   private loadOptions(): void {
-    this.statusService.getAllProjects().subscribe(statuses => {
-      this.statusOptions = statuses.map(s => ({ label: s.name, value: s.id }));
+    this.statusService.getAllProjects().subscribe((statuses) => {
+      this.statusOptions = statuses.map((s) => ({
+        label: s.name,
+        value: s.id,
+      }));
     });
-    this.complexityService.getAllProjects().subscribe(complexities => {
-      this.complexityOptions = complexities.map(c => ({ label: c.name, value: c.id, color: c.hexColor }));
+    this.complexityService.getAllProjects().subscribe((complexities) => {
+      this.complexityOptions = complexities.map((c) => ({
+        label: c.name,
+        value: c.id,
+        color: c.hexColor,
+      }));
       this.tagOptions.complexidade = this.complexityOptions;
     });
-    this.toolService.getAllProjects().subscribe(tools => {
-      this.toolOptions = tools.map(t => ({ label: t.name, value: t.id, color: t.hexColor }));
+    this.toolService.getAllProjects().subscribe((tools) => {
+      this.toolOptions = tools.map((t) => ({
+        label: t.name,
+        value: t.id,
+        color: t.hexColor,
+      }));
       this.tagOptions['tecnologias/ferramentas'] = this.toolOptions;
     });
-    this.topicService.getAllProjects().subscribe(topics => {
-      this.topicOptions = topics.map(t => ({ label: t.name, value: t.id, color: t.hexColor }));
+    this.topicService.getAllProjects().subscribe((topics) => {
+      this.topicOptions = topics.map((t) => ({
+        label: t.name,
+        value: t.id,
+        color: t.hexColor,
+      }));
       this.tagOptions.assuntos = this.topicOptions;
     });
-    this.roleService.getAllProjects().subscribe(roles => {
-      this.roleOptions = roles.map(r => ({ label: r.name, value: r.id }));
+    this.roleService.getAllProjects().subscribe((roles) => {
+      this.roleOptions = roles.map((r) => ({ label: r.name, value: r.id }));
     });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['project'] && changes['project'].currentValue && this.isEditMode && this.projectForm) {
+    if (
+      changes['project'] &&
+      changes['project'].currentValue &&
+      this.isEditMode &&
+      this.projectForm
+    ) {
       // Aguardar o próximo ciclo de detecção de mudanças
       setTimeout(() => {
         this.patchFormWithProject();
@@ -202,7 +218,7 @@ export class ProjectFormComponent implements OnInit, OnChanges {
       selectedTecnologiasFerramentas: [[]],
       selectedAssuntos: [[]],
       selectedTempoEstimado: [null],
-      selectedComplexidade: [null]
+      selectedComplexidade: [null],
     });
 
     // Garantir que o formulário está marcado como inicializado
@@ -216,7 +232,7 @@ export class ProjectFormComponent implements OnInit, OnChanges {
       name: ['', [Validators.required, Validators.minLength(2)]],
       role: ['', [Validators.required]],
       photo: [''],
-      isManager: [false]
+      isManager: [false],
     });
 
     // Inicializar formulário de adição de membros
@@ -224,7 +240,7 @@ export class ProjectFormComponent implements OnInit, OnChanges {
       name: ['', [Validators.required, Validators.minLength(2)]],
       role: ['', [Validators.required]],
       photo: [''],
-      isManager: [false]
+      isManager: [false],
     });
   }
 
@@ -239,19 +255,26 @@ export class ProjectFormComponent implements OnInit, OnChanges {
       status: this.project.status || '',
       startDate: this.project.startDate,
       expectedDate: this.project.endDate,
-      unfilledRoles: this.project.unfilledRoles?.map(r => r.id) || []
+      unfilledRoles: this.project.unfilledRoles?.map((r) => r.id) || [],
     });
 
     // Patch da equipe
     const teamArray = this.projectForm.get('team') as FormArray;
     teamArray.clear();
-    (this.project.members || []).forEach(member => {
-      teamArray.push(this.fb.group({
-        id: [member.id],
-        user: [member.user],
-        role: [member.role],
-        isManager: [member.isManager || false]
-      }));
+    (this.project.members || []).forEach((member) => {
+      console.log('Member: ', member);
+
+      let memberFullname: string = `${member.user.firstName}  ${member.user.lastName}`;
+      teamArray.push(
+        this.fb.group({
+          id: [member.id],
+          name: [memberFullname],
+          user: [member.user],
+          role: [member.role],
+          memberStatus: [member.memberStatus],
+          isManager: [member.isManager || false],
+        })
+      );
     });
 
     // Patch das tags (tools/topics/complexity)
@@ -259,13 +282,38 @@ export class ProjectFormComponent implements OnInit, OnChanges {
   }
 
   // Métodos para gerenciar tags
-  addTag(type: 'tecnologias/ferramentas' | 'assuntos' | 'tempoEstimado' | 'complexidade', value: string, color?: string): void {
+  addTag(
+    type:
+      | 'tecnologias/ferramentas'
+      | 'assuntos'
+      | 'tempoEstimado'
+      | 'complexidade',
+    value: string,
+    color?: string
+  ): void {
     const tagsArray = this.projectForm.get('tags') as FormArray;
+    let label = value;
+    if (type === 'tecnologias/ferramentas') {
+      const found = this.toolOptions.find(
+        (t) => String(t.value) === String(value) || t.label === value
+      );
+      label = found ? found.label : value;
+    } else if (type === 'assuntos') {
+      const found = this.topicOptions.find(
+        (t) => String(t.value) === String(value) || t.label === value
+      );
+      label = found ? found.label : value;
+    } else if (type === 'complexidade') {
+      const found = this.complexityOptions.find(
+        (c) => String(c.value) === String(value) || c.label === value
+      );
+      label = found ? found.label : value;
+    }
     const newTag = {
       id: this.generateId(),
-      name: value,
+      name: label,
       type: type,
-      color: color || ''
+      color: color || '',
     };
     tagsArray.push(this.fb.group(newTag));
   }
@@ -282,16 +330,16 @@ export class ProjectFormComponent implements OnInit, OnChanges {
 
   isTagSelected(type: string, value: string): boolean {
     const tagsArray = this.projectForm.get('tags') as FormArray;
-    return tagsArray.value.some((tag: any) => tag.type === type && tag.name === value);
+    return tagsArray.value.some(
+      (tag: any) => tag.type === type && tag.name === value
+    );
   }
 
   getTagsArray(): FormArray {
     return this.projectForm.get('tags') as FormArray;
   }
 
-
-
-      onTecnologiasFerramentasChange(event: any): void {
+  onTecnologiasFerramentasChange(event: any): void {
     this.updateTagsFromSelects();
   }
 
@@ -309,33 +357,36 @@ export class ProjectFormComponent implements OnInit, OnChanges {
 
   private updateTagsFromSelects(): void {
     const tagsArray = this.projectForm.get('tags') as FormArray;
-    const selectedTecnologiasFerramentas = this.projectForm.get('selectedTecnologiasFerramentas')?.value || [];
-    const selectedAssuntos = this.projectForm.get('selectedAssuntos')?.value || [];
-    const selectedTempoEstimado = this.projectForm.get('selectedTempoEstimado')?.value;
-    const selectedComplexidade = this.projectForm.get('selectedComplexidade')?.value;
+    const selectedTecnologiasFerramentas =
+      this.projectForm.get('selectedTecnologiasFerramentas')?.value || [];
+    const selectedAssuntos =
+      this.projectForm.get('selectedAssuntos')?.value || [];
+    const selectedTempoEstimado = this.projectForm.get(
+      'selectedTempoEstimado'
+    )?.value;
+    const selectedComplexidade = this.projectForm.get(
+      'selectedComplexidade'
+    )?.value;
 
     tagsArray.clear();
 
     // Adicionar tags de tecnologias/ferramentas
 
-    selectedTecnologiasFerramentas.forEach((value: string | number) => {
-      let found = this.toolOptions.find(t => t.value === value);
-      if (!found && typeof value === 'string') {
-        found = this.toolOptions.find(t => t.label === value);
-      }
+    selectedTecnologiasFerramentas.forEach((id: string | number) => {
+      const found = this.toolOptions.find(
+        (t) => String(t.value) === String(id)
+      );
       const color = found?.color || '';
-      this.addTag('tecnologias/ferramentas', String(value), color);
+      this.addTag('tecnologias/ferramentas', String(id), color);
     });
 
     // Adicionar tags de assuntos
-
-    selectedAssuntos.forEach((value: string | number) => {
-      let found = this.topicOptions.find(t => t.value === value);
-      if (!found && typeof value === 'string') {
-        found = this.topicOptions.find(t => t.label === value);
-      }
+    selectedAssuntos.forEach((id: string | number) => {
+      const found = this.topicOptions.find(
+        (t) => String(t.value) === String(id)
+      );
       const color = found?.color || '';
-      this.addTag('assuntos', String(value), color);
+      this.addTag('assuntos', String(id), color);
     });
 
     // Adicionar tag de tempo estimado (mantém sem cor)
@@ -345,7 +396,9 @@ export class ProjectFormComponent implements OnInit, OnChanges {
 
     // Adicionar tag de complexidade
     if (selectedComplexidade) {
-      const found = this.complexityOptions.find(c => c.value === selectedComplexidade || c.label === selectedComplexidade);
+      const found = this.complexityOptions.find(
+        (c) => String(c.value) === String(selectedComplexidade)
+      );
       const color = found?.color || '';
       this.addTag('complexidade', selectedComplexidade, color);
     }
@@ -355,7 +408,6 @@ export class ProjectFormComponent implements OnInit, OnChanges {
   private generateId(): string {
     return Date.now().toString(36) + Math.random().toString(36).substr(2, 9);
   }
-
 
   // Team management (apenas para edição)
   get teamArray(): FormArray {
@@ -370,7 +422,6 @@ export class ProjectFormComponent implements OnInit, OnChanges {
   removeTeamMember(index: number): void {
     this.teamArray.removeAt(index);
   }
-
 
   // TODO: IMPLEMENT MEMBER REQUESTS WITH REAL DATA
   // // Request management
@@ -396,21 +447,47 @@ export class ProjectFormComponent implements OnInit, OnChanges {
   // }
 
   // Métodos para integração com team-card
-  getTeamForCard(): any[] {
-    return this.teamArray.controls.map((control, index) => ({
-      id: control.get('id')?.value || `temp-${index}`,
-      name: control.get('name')?.value || '',
-      role: control.get('role')?.value || '',
-      photo: control.get('photo')?.value || '',
-      isManager: control.get('isManager')?.value || false
-    }));
+  getTeamForCard(filter?: 'approved' | 'pending'): any[] {
+    let filteredControls = this.teamArray.controls;
+
+    if (filter === 'approved') {
+      filteredControls = filteredControls.filter(
+        (control) => control.get('memberStatus')?.value?.id == 2
+      );
+    } else if (filter === 'pending') {
+      filteredControls = filteredControls.filter(
+        (control) => control.get('memberStatus')?.value?.id == 1
+      );
+    }
+
+    return filteredControls.map((control, index) => {
+      const id = control.get('id')?.value || `temp-${index}`;
+      const name =
+        control.get('name')?.value || control.get('user')?.value?.name || '';
+      const roleId = control.get('role')?.value;
+      const roleObj = this.roleOptions.find(
+        (r) => r.value === roleId || r.label === roleId
+      );
+      const role = roleObj ? roleObj.label : roleId;
+      const photo =
+        control.get('photo')?.value || control.get('user')?.value?.photo || '';
+      const isManager = control.get('isManager')?.value || false;
+      return {
+        id,
+        name,
+        role,
+        photo,
+        isManager,
+        managerTag: isManager ? 'manager' : null,
+      };
+    });
   }
 
-  onTeamCardRemoveMember(event: { index: number, member: any }): void {
+  onTeamCardRemoveMember(event: { index: number; member: any }): void {
     this.removeTeamMember(event.index);
   }
 
-  onTeamCardEditMember(event: { index: number, member: any }): void {
+  onTeamCardEditMember(event: { index: number; member: any }): void {
     this.editingMemberIndex = event.index;
     this.initEditMemberForm(event.member);
     this.showEditMemberDialog = true;
@@ -421,7 +498,7 @@ export class ProjectFormComponent implements OnInit, OnChanges {
       name: member.name,
       role: member.role,
       photo: member.photo || '',
-      isManager: member.isManager || false
+      isManager: member.isManager || false,
     });
   }
 
@@ -456,7 +533,7 @@ export class ProjectFormComponent implements OnInit, OnChanges {
         name: [this.addMemberForm.value.name],
         role: [this.addMemberForm.value.role],
         photo: [this.addMemberForm.value.photo || ''],
-        isManager: [this.addMemberForm.value.isManager || false]
+        isManager: [this.addMemberForm.value.isManager || false],
       });
 
       this.teamArray.push(newMember);
@@ -469,8 +546,6 @@ export class ProjectFormComponent implements OnInit, OnChanges {
   }
 
   // Métodos para integração com request-card removidos
-
-
 
   // Form submission
   onSubmit(): void {
@@ -489,7 +564,7 @@ export class ProjectFormComponent implements OnInit, OnChanges {
         toolIds: formValue.selectedTecnologiasFerramentas,
         topicIds: formValue.selectedAssuntos,
         unfilledRoleIds: formValue.unfilledRoles,
-        managerRoleId: 1 // ajuste conforme necessário
+        managerRoleId: 1, // ajuste conforme necessário
       };
       this.save.emit(request);
     } else {
@@ -502,7 +577,7 @@ export class ProjectFormComponent implements OnInit, OnChanges {
   }
 
   private markFormGroupTouched(): void {
-    Object.keys(this.projectForm.controls).forEach(key => {
+    Object.keys(this.projectForm.controls).forEach((key) => {
       const control = this.projectForm.get(key);
       control?.markAsTouched();
     });
@@ -524,7 +599,9 @@ export class ProjectFormComponent implements OnInit, OnChanges {
     } else {
       // No servidor, usar formato mais simples para evitar problemas de localização
       const d = new Date(date);
-      return `${d.getDate().toString().padStart(2, '0')}/${(d.getMonth() + 1).toString().padStart(2, '0')}/${d.getFullYear()}`;
+      return `${d.getDate().toString().padStart(2, '0')}/${(d.getMonth() + 1)
+        .toString()
+        .padStart(2, '0')}/${d.getFullYear()}`;
     }
   }
 

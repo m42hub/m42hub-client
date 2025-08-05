@@ -1,5 +1,5 @@
 import { ProjectComplexity } from "./complexity.interface";
-import { ProjectMemberSimplified } from "./member.interface";
+import { ProjectMember } from "./member.interface";
 import { ProjectUnfilledRole } from "./role.interface";
 import { ProjectStatus } from "./status.interface";
 import { ProjectTool } from "./tool.interface";
@@ -18,7 +18,7 @@ export interface Project {
   endDate?: string;
   tools?: ProjectTool[];
   topics?: ProjectTopic[];
-  members?: ProjectMemberSimplified[];
+  members?: ProjectMember[];
   unfilledRoles?: ProjectUnfilledRole[];
 }
 

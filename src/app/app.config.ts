@@ -5,7 +5,7 @@ import { provideClientHydration, withEventReplay } from '@angular/platform-brows
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { providePrimeNG } from 'primeng/config';
 import { NgMyTheme } from './ngmytheme';
-import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { provideHttpClient, withInterceptors, withFetch } from '@angular/common/http';
 import { credentialsInterceptor } from './interceptors/credentials.interceptor';
 
 export const appConfig: ApplicationConfig = {
@@ -14,7 +14,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideClientHydration(withEventReplay()),
     provideAnimationsAsync(),
-    provideHttpClient(withInterceptors([credentialsInterceptor])),
+    provideHttpClient(withInterceptors([credentialsInterceptor]), withFetch()),
     providePrimeNG({
       theme: {
         preset: NgMyTheme,
