@@ -8,12 +8,11 @@ import { AvatarModule } from 'primeng/avatar';
 
 export interface TeamRequest {
   id: string;
-  userId: string;
-  userName: string;
-  userPhoto: string;
-  requestedRole: string;
-  message?: string;
-  requestedAt: Date;
+  name: string;
+  role: string;
+  photo: string;
+  applicationMessage?: string;
+  createdAt: Date;
 }
 
 @Component({

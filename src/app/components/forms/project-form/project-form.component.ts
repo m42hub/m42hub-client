@@ -21,6 +21,7 @@ import { ProjectComplexityService } from '../../../services/project/complexity.s
 import { ProjectToolService } from '../../../services/project/tool.service';
 import { ProjectTopicService } from '../../../services/project/topic.service';
 import { ProjectRoleService } from '../../../services/project/role.service';
+import { ProjectMemberService } from '../../../services/project/member.service';
 import { TeamCardComponent } from '../../cards/team-card/team-card.component';
 import { RequestCardComponent } from '../../cards/request-card/request-card.component';
 
@@ -32,7 +33,7 @@ export interface TeamRequest {
   userPhoto: string;
   requestedRole: string;
   message?: string;
-  requestedAt: Date;
+  createdAt: Date;
 }
 
 @Component({
@@ -56,8 +57,8 @@ export interface TeamRequest {
     MultiSelectModule,
     TooltipModule,
     TeamCardComponent,
-    // RequestCardComponent removido
-  ],
+    RequestCardComponent
+],
   templateUrl: './project-form.component.html',
   styleUrl: './project-form.component.css',
 })
@@ -107,7 +108,8 @@ export class ProjectFormComponent implements OnInit, OnChanges {
     private complexityService: ProjectComplexityService,
     private toolService: ProjectToolService,
     private topicService: ProjectTopicService,
-    private roleService: ProjectRoleService
+    private roleService: ProjectRoleService,
+    private memberService: ProjectMemberService
   ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
   }
@@ -273,6 +275,8 @@ export class ProjectFormComponent implements OnInit, OnChanges {
           role: [member.role],
           memberStatus: [member.memberStatus],
           isManager: [member.isManager || false],
+          applicationMessage: [member.applicationMessage],
+          createdAt: [member.createdAt],
         })
       );
     });
@@ -423,29 +427,6 @@ export class ProjectFormComponent implements OnInit, OnChanges {
     this.teamArray.removeAt(index);
   }
 
-  // TODO: IMPLEMENT MEMBER REQUESTS WITH REAL DATA
-  // // Request management
-  // acceptRequest(request: TeamRequest): void {
-  //   // Adicionar à equipe
-  //   const newMember = this.fb.group({
-  //     id: [request.userId],
-  //     name: [request.userName],
-  //     photo: [request.userPhoto],
-  //     role: [request.requestedRole],
-  //     isManager: [false]
-  //   });
-
-  //   this.teamArray.push(newMember);
-
-  //   // Remover da lista de solicitações
-  //   this.pendingRequests = this.pendingRequests.filter(r => r.id !== request.id);
-  // }
-
-  // rejectRequest(request: TeamRequest): void {
-  //   // Remover da lista de solicitações
-  //   this.pendingRequests = this.pendingRequests.filter(r => r.id !== request.id);
-  // }
-
   // Métodos para integração com team-card
   getTeamForCard(filter?: 'approved' | 'pending'): any[] {
     let filteredControls = this.teamArray.controls;
@@ -472,12 +453,18 @@ export class ProjectFormComponent implements OnInit, OnChanges {
       const photo =
         control.get('photo')?.value || control.get('user')?.value?.photo || '';
       const isManager = control.get('isManager')?.value || false;
+      const applicationMesage = control.get('applicationMessage')?.value || '';
+      const createdAt = control.get('createdAt')?.value || '';
+
+
       return {
         id,
         name,
         role,
         photo,
         isManager,
+        applicationMesage,
+        createdAt,
         managerTag: isManager ? 'manager' : null,
       };
     });
@@ -636,5 +623,52 @@ export class ProjectFormComponent implements OnInit, OnChanges {
 
       return null;
     };
+  }
+
+  // Aceitar solicitação de membro
+  onRequestCardAcceptRequest(request: any): void {
+    if (!request?.id) return;
+    this.memberService.approveMember(request.id).subscribe({
+      next: (updatedMember) => {
+        // Atualiza o status do membro aprovado localmente
+        const teamArray = this.projectForm.get('team') as FormArray;
+        if (!teamArray) return;
+        for (let i = 0; i < teamArray.length; i++) {
+          const member = teamArray.at(i);
+          if (member.get('id')?.value === request.id) {
+            member.patchValue({
+              memberStatus: { id: 2, name: 'Aprovado' }
+            });
+            break;
+          }
+        }
+      },
+      error: (err) => {
+        console.error('Erro ao aprovar membro:', err);
+      }
+    });
+  }
+
+  // Rejeitar solicitação de membro
+  onRequestCardRejectRequest(event: { request: any, feedback: string }): void {
+    const { request, feedback } = event;
+    if (!request?.id) return;
+    this.memberService.rejectMember(request.id, feedback || '').subscribe({
+      next: (updatedMember) => {
+        // Remove o membro rejeitado localmente
+        const teamArray = this.projectForm.get('team') as FormArray;
+        if (!teamArray) return;
+        for (let i = 0; i < teamArray.length; i++) {
+          const member = teamArray.at(i);
+          if (member.get('id')?.value === request.id) {
+            teamArray.removeAt(i);
+            break;
+          }
+        }
+      },
+      error: (err) => {
+        console.error('Erro ao rejeitar membro:', err);
+      }
+    });
   }
 }

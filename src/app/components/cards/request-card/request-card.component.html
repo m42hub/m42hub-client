@@ -11,7 +11,7 @@
         <div class="flex items-start gap-3">
           <div class="flex-shrink-0">
             <p-avatar
-              [image]="getImageUrl(request.userPhoto)"
+              [image]="getImageUrl(request.photo)"
               size="large"
               shape="circle"
               (onImageError)="onImageError($event)"
@@ -22,14 +22,18 @@
             <div class="flex justify-between items-start">
               <div class="flex-1 min-w-0">
                 <p class="text-md font-bold text-surface-950 truncate"
-                   [pTooltip]="request.userName"
+                   [pTooltip]="request.name"
                    tooltipPosition="top"
-                   tooltipStyleClass="text-xs">{{ request.userName }}</p>
+                   tooltipStyleClass="text-xs">{{ request.name }}</p>
                 <p class="text-sm text-surface-800 truncate"
-                   [pTooltip]="request.requestedRole"
+                   [pTooltip]="request.role"
                    tooltipPosition="top"
-                   tooltipStyleClass="text-xs">Solicitou: {{ request.requestedRole }}</p>
-                <p class="text-xs text-surface-800">{{ formatDate(request.requestedAt) }}</p>
+                   tooltipStyleClass="text-xs">Solicitou: {{ request.role }}</p>
+
+                <p class="text-xs text-surface-800" *ngIf="request.createdAt">
+                  {{ formatDate(request.createdAt) }}
+                </p>
+
               </div>
               <div class="flex-shrink-0 flex flex-col sm:flex-row gap-1">
                 <p-button
@@ -51,8 +55,8 @@
               </div>
             </div>
 
-            <div class="text-surface-900 text-sm" *ngIf="request.message">
-              <strong>Mensagem:</strong> {{ request.message }}
+            <div class="text-surface-900 text-sm" *ngIf="request.applicationMessage">
+              <strong>Mensagem:</strong> {{ request.applicationMessage }}
             </div>
           </div>
         </div>

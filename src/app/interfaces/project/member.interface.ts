@@ -7,7 +7,8 @@ export interface ProjectMember {
   role: number;
   user: AuthenticatedUser;
   memberStatus: ProjectMemberStatus;
-  applicationMesage: string | null;
+  applicationMessage: string | null;
+  createdAt: string;
 }
 
 export interface CreateProjectMember {
@@ -15,7 +16,7 @@ export interface CreateProjectMember {
   projectId: number;
   roleId: number;
   userId: number;
-  applicationMesage: string | null;
+  applicationMessage: string | null;
 }
 
 export interface ProjectMemberStatus {

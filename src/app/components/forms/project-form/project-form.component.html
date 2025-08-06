@@ -239,12 +239,12 @@
                 <h4 class="text-lg font-semibold">Solicitações</h4>
               </div>
 
-              <!-- <app-request-card
+              <app-request-card
                 [requests]="getTeamForCard('pending')"
                 [showHeader]="false"
                 (acceptRequest)="onRequestCardAcceptRequest($event)"
-                (rejectRequest)="onRequestCardRejectRequest($event)">
-              </app-request-card> -->
+                (rejectRequest)="onRequestCardRejectRequest({ request: $event, feedback: '' })">
+              </app-request-card>
             </div>
           </p-tabpanel>
         </p-tabpanels>
