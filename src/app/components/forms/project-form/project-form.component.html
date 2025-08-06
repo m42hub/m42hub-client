@@ -243,8 +243,29 @@
                 [requests]="getTeamForCard('pending')"
                 [showHeader]="false"
                 (acceptRequest)="onRequestCardAcceptRequest($event)"
-                (rejectRequest)="onRequestCardRejectRequest({ request: $event, feedback: '' })">
+                (rejectRequest)="onRequestCardRejectRequest($event)">
               </app-request-card>
+
+              <!-- Diálogo de feedback para rejeição -->
+              <p-dialog
+                header="Motivo da Rejeição"
+                [(visible)]="feedbackDialogVisible"
+                [modal]="true"
+                [closable]="false"
+                [dismissableMask]="true"
+                [style]="{width: '400px'}">
+                <div class="flex flex-col gap-3">
+                  <label for="feedbackText">Por favor, informe o motivo da rejeição:</label>
+                  <textarea id="feedbackText" pInputText [formControl]="feedbackTextControl" rows="4" class="w-full"></textarea>
+                  <small class="p-error block" *ngIf="feedbackTextControl.invalid && (feedbackTextControl.dirty || feedbackTextControl.touched)">
+                    O feedback é obrigatório.
+                  </small>
+                </div>
+                <ng-template pTemplate="footer">
+                  <button pButton type="button" label="Cancelar" (click)="closeFeedbackDialog()" class="p-button-text"></button>
+                  <button pButton type="button" label="Rejeitar" severity="danger" (click)="confirmRejectRequest()" [disabled]="feedbackTextControl.invalid"></button>
+                </ng-template>
+              </p-dialog>
             </div>
           </p-tabpanel>
         </p-tabpanels>

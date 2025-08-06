@@ -80,7 +80,6 @@ export class ProjectEditorComponent implements OnInit {
         }
       },
       error: (error) => {
-        console.error('Erro ao carregar projeto:', error);
         this.messageService.add({
           severity: 'error',
           summary: 'Erro',

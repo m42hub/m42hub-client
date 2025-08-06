@@ -80,7 +80,6 @@ export abstract class BaseApiService<T> {
   }
 
   protected handleError(error: any): Observable<never> {
-    console.error('API Error: ', error);
     return throwError(() => error);
   }
 }

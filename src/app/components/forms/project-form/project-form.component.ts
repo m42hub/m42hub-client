@@ -264,8 +264,6 @@ export class ProjectFormComponent implements OnInit, OnChanges {
     const teamArray = this.projectForm.get('team') as FormArray;
     teamArray.clear();
     (this.project.members || []).forEach((member) => {
-      console.log('Member: ', member);
-
       let memberFullname: string = `${member.user.firstName}  ${member.user.lastName}`;
       teamArray.push(
         this.fb.group({
@@ -441,31 +439,34 @@ export class ProjectFormComponent implements OnInit, OnChanges {
       );
     }
 
+    // O RequestCardComponent espera: id, name, role, photo, applicationMessage, createdAt
     return filteredControls.map((control, index) => {
       const id = control.get('id')?.value || `temp-${index}`;
-      const name =
-        control.get('name')?.value || control.get('user')?.value?.name || '';
+      // Tenta pegar o nome do user, se existir, senão pega o campo name
+      let name = '';
+      const user = control.get('user')?.value;
+      if (user && (user.firstName || user.lastName)) {
+        name = `${user.firstName || ''} ${user.lastName || ''}`.trim();
+      } else {
+        name = control.get('name')?.value || '';
+      }
       const roleId = control.get('role')?.value;
       const roleObj = this.roleOptions.find(
         (r) => r.value === roleId || r.label === roleId
       );
       const role = roleObj ? roleObj.label : roleId;
       const photo =
-        control.get('photo')?.value || control.get('user')?.value?.photo || '';
-      const isManager = control.get('isManager')?.value || false;
-      const applicationMesage = control.get('applicationMessage')?.value || '';
+        control.get('photo')?.value || (user && user.photo) || '';
+      const applicationMessage = control.get('applicationMessage')?.value || '';
       const createdAt = control.get('createdAt')?.value || '';
-
 
       return {
         id,
         name,
         role,
         photo,
-        isManager,
-        applicationMesage,
-        createdAt,
-        managerTag: isManager ? 'manager' : null,
+        applicationMessage,
+        createdAt
       };
     });
   }
@@ -625,12 +626,17 @@ export class ProjectFormComponent implements OnInit, OnChanges {
     };
   }
 
-  // Aceitar solicitação de membro
+  // --- Aceitar/Rejeitar solicitação de membro ---
+
+  feedbackDialogVisible = false;
+  feedbackTextControl = new FormControl('', [Validators.required, Validators.minLength(1)]);
+  feedbackRequest: any = null;
+
   onRequestCardAcceptRequest(request: any): void {
+    console.log('[ProjectFormComponent] Evento de aceitar recebido:', request);
     if (!request?.id) return;
     this.memberService.approveMember(request.id).subscribe({
       next: (updatedMember) => {
-        // Atualiza o status do membro aprovado localmente
         const teamArray = this.projectForm.get('team') as FormArray;
         if (!teamArray) return;
         for (let i = 0; i < teamArray.length; i++) {
@@ -649,26 +655,41 @@ export class ProjectFormComponent implements OnInit, OnChanges {
     });
   }
 
-  // Rejeitar solicitação de membro
-  onRequestCardRejectRequest(event: { request: any, feedback: string }): void {
-    const { request, feedback } = event;
-    if (!request?.id) return;
-    this.memberService.rejectMember(request.id, feedback || '').subscribe({
+  // Abre o diálogo de feedback ao rejeitar
+  onRequestCardRejectRequest(request: any): void {
+    console.log('[ProjectFormComponent] Evento de rejeitar recebido:', request);
+    this.feedbackRequest = request;
+    this.feedbackTextControl.reset('');
+    this.feedbackDialogVisible = true;
+  }
+
+  // Confirma rejeição com feedback
+  confirmRejectRequest(): void {
+    if (!this.feedbackRequest?.id) return;
+    const feedback = this.feedbackTextControl.value || '';
+    this.memberService.rejectMember(this.feedbackRequest.id, feedback).subscribe({
       next: (updatedMember) => {
-        // Remove o membro rejeitado localmente
         const teamArray = this.projectForm.get('team') as FormArray;
         if (!teamArray) return;
         for (let i = 0; i < teamArray.length; i++) {
           const member = teamArray.at(i);
-          if (member.get('id')?.value === request.id) {
+          if (member.get('id')?.value === this.feedbackRequest.id) {
             teamArray.removeAt(i);
             break;
           }
         }
+        this.closeFeedbackDialog();
       },
       error: (err) => {
         console.error('Erro ao rejeitar membro:', err);
+        this.closeFeedbackDialog();
       }
     });
+  }
+
+  closeFeedbackDialog(): void {
+    this.feedbackDialogVisible = false;
+    this.feedbackTextControl.reset('');
+    this.feedbackRequest = null;
   }
 }

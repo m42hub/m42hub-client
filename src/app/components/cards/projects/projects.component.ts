@@ -63,9 +63,4 @@ export class ProjectsComponent {
 
     return `${typeLabels[tag.type] || 'Tag'}: ${tag.name}`;
   }
-
-  onCardClick(): void {
-    // TODO: Implementar navegação para detalhes do projeto
-    console.log('Card clicado:', this.project.name);
-  }
 }

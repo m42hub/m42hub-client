@@ -36,22 +36,20 @@
 
               </div>
               <div class="flex-shrink-0 flex flex-col sm:flex-row gap-1">
-                <p-button
-                  icon="pi pi-check"
-                  severity="success"
-                  size="small"
-                  (onClick)="onAcceptRequest(request)"
-                  pTooltip="Aceitar solicitação"
-                  class="text-xs">
-                </p-button>
-                <p-button
-                  icon="pi pi-times"
-                  severity="danger"
-                  size="small"
-                  (onClick)="onRejectRequest(request)"
-                  pTooltip="Recusar solicitação"
-                  class="text-xs">
-                </p-button>
+                <button
+                  type="button"
+                  class="p-button p-button-success p-button-sm text-xs"
+                  (click)="onAcceptRequest(request)"
+                  title="Aceitar solicitação">
+                  <i class="pi pi-check"></i>
+                </button>
+                <button
+                  type="button"
+                  class="p-button p-button-danger p-button-sm text-xs"
+                  (click)="onRejectRequest(request)"
+                  title="Recusar solicitação">
+                  <i class="pi pi-times"></i>
+                </button>
               </div>
             </div>
 

@@ -24,10 +24,10 @@ export class ProjectMemberService extends BaseApiService<ProjectMember> {
   }
 
   approveMember(id: number): Observable<ProjectMember> {
-    return this.get<ProjectMember>(`${this.endpoint}/approve/${id}`);
+    return this.patch<ProjectMember>(`${this.endpoint}/approve/${id}`, '');
   }
 
   rejectMember(id: number, applicationFeedback: string): Observable<ProjectMember> {
-    return this.get<ProjectMember>(`${this.endpoint}/reject/${id}`, {applicationFeedback});
+    return this.patch<ProjectMember>(`${this.endpoint}/reject/${id}`, {applicationFeedback});
   }
 }
