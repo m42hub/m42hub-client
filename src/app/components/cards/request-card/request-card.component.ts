@@ -41,17 +41,11 @@ export class RequestCardComponent {
   }
 
   onAcceptRequest(request: TeamRequest): void {
-    console.log('[RequestCardComponent] Aceitar clicado:', request);
     this.acceptRequest.emit(request);
   }
 
   onRejectRequest(request: TeamRequest): void {
-    console.log('[RequestCardComponent] Rejeitar clicado:', request);
     this.rejectRequest.emit(request);
-  }
-
-  handleClick():void {
-    console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
   }
 
   formatDate(date: Date): string {
