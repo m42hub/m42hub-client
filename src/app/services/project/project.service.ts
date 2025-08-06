@@ -37,6 +37,6 @@ export class ProjectService extends BaseApiService<Project> {
   }
 
   updateProject(id: number, project: UpdateProjectRequest): Observable<Project> {
-    return this.patch<Project>(`${this.endpoint}/${id}`, project);
+    return this.put<Project>(`${this.endpoint}/${id}`, project);
   }
 }

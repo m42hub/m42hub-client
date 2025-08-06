@@ -190,13 +190,13 @@
           ></p-datepicker>
         </div>
         <div class="flex flex-col gap-2 ml-12">
-          <label for="expectedDate" class="flex items-start font-semibold">
+          <label for="endDate" class="flex items-start font-semibold">
             <i class="pi pi-calendar-times mr-2 mt-1 text-primary"></i>
             Data Prevista
           </label>
           <p-datepicker
-            id="expectedDate"
-            formControlName="expectedDate"
+            id="endDate"
+            formControlName="endDate"
             dateFormat="dd/mm/yy"
             placeholder="Selecione a data prevista"
             class="w-full"
@@ -320,6 +320,7 @@
           <h5 class="font-semibold">Tags Selecionadas:</h5>
           <div class="flex flex-wrap gap-2">
             <p-tag
+              class="text-white text-shadow-blue-950 text-shadow-2xs"
               *ngFor="let tag of getTagsArray().value; let i = index"
               [value]="tag.name"
               [style]="{'background-color': tag.color}"

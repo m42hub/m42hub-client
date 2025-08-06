@@ -140,19 +140,28 @@ export class ProjectFormComponent implements OnInit, OnChanges {
     // Marcar formulário como pronto
     this.isFormReady = true;
 
-    // Aguardar o próximo ciclo de detecção de mudanças antes de fazer patch
-    setTimeout(() => {
-      if (this.project && this.isEditMode) {
-        this.patchFormWithProject();
-      }
-    }, 0);
+    // Não fazer patch aqui, será feito após carregar as opções
   }
   private loadOptions(): void {
+    let loadedCount = 0;
+    const totalServices = 5;
+
+    const checkAndPatch = () => {
+      loadedCount++;
+      if (loadedCount === totalServices && this.project && this.isEditMode) {
+        // Aguardar próximo ciclo antes de fazer patch
+        setTimeout(() => {
+          this.patchFormWithProject();
+        }, 0);
+      }
+    };
+
     this.statusService.getAllProjects().subscribe((statuses) => {
       this.statusOptions = statuses.map((s) => ({
         label: s.name,
         value: s.id,
       }));
+      checkAndPatch();
     });
     this.complexityService.getAllProjects().subscribe((complexities) => {
       this.complexityOptions = complexities.map((c) => ({
@@ -161,6 +170,7 @@ export class ProjectFormComponent implements OnInit, OnChanges {
         color: c.hexColor,
       }));
       this.tagOptions.complexidade = this.complexityOptions;
+      checkAndPatch();
     });
     this.toolService.getAllProjects().subscribe((tools) => {
       this.toolOptions = tools.map((t) => ({
@@ -169,6 +179,7 @@ export class ProjectFormComponent implements OnInit, OnChanges {
         color: t.hexColor,
       }));
       this.tagOptions['tecnologias/ferramentas'] = this.toolOptions;
+      checkAndPatch();
     });
     this.topicService.getAllProjects().subscribe((topics) => {
       this.topicOptions = topics.map((t) => ({
@@ -177,9 +188,11 @@ export class ProjectFormComponent implements OnInit, OnChanges {
         color: t.hexColor,
       }));
       this.tagOptions.assuntos = this.topicOptions;
+      checkAndPatch();
     });
     this.roleService.getAllProjects().subscribe((roles) => {
       this.roleOptions = roles.map((r) => ({ label: r.name, value: r.id }));
+      checkAndPatch();
     });
   }
 
@@ -212,9 +225,9 @@ export class ProjectFormComponent implements OnInit, OnChanges {
       team: teamArray,
       tags: tagsArray,
       image: [''],
-      status: ['active'],
+      status: [null],
       startDate: [null],
-      expectedDate: [null],
+      endDate: [null],
       unfilledRoles: [[], [this.maxItemsValidator(8)]],
       // Controles para os selects
       selectedTecnologiasFerramentas: [[]],
@@ -254,10 +267,16 @@ export class ProjectFormComponent implements OnInit, OnChanges {
       summary: this.project.summary || '',
       description: this.project.description,
       image: this.project.imageUrl || '',
-      status: this.project.status || '',
-      startDate: this.project.startDate,
-      expectedDate: this.project.endDate,
-      unfilledRoles: this.project.unfilledRoles?.map((r) => r.id) || [],
+      status: this.project.status?.id ? Number(this.project.status.id) : null,
+      startDate: this.project.startDate ? new Date(this.project.startDate) : null,
+      endDate: this.project.endDate ? new Date(this.project.endDate) : null,
+      unfilledRoles: this.project.unfilledRoles?.map((r) => Number(r.id)) || [],
+      selectedTecnologiasFerramentas:
+        this.project.tools?.map((t) => Number(t.id)) || [],
+      selectedAssuntos: this.project.topics?.map((t) => Number(t.id)) || [],
+      selectedComplexidade: this.project.complexity?.id
+        ? Number(this.project.complexity.id)
+        : null,
     });
 
     // Patch da equipe
@@ -279,8 +298,10 @@ export class ProjectFormComponent implements OnInit, OnChanges {
       );
     });
 
-    // Patch das tags (tools/topics/complexity)
-    // Aqui você pode adaptar para preencher selects se necessário
+    // Atualizar as tags após o patch dos selects
+    setTimeout(() => {
+      this.updateTagsFromSelects();
+    }, 0);
   }
 
   // Métodos para gerenciar tags
@@ -544,11 +565,11 @@ export class ProjectFormComponent implements OnInit, OnChanges {
         name: formValue.name,
         summary: formValue.summary,
         description: formValue.description,
-        statusId: formValue.status, // ajuste conforme necessário
-        complexityId: formValue.selectedComplexidade, // ajuste conforme necessário
+        statusId: formValue.status, // statusId é o valor do select
+        complexityId: formValue.selectedComplexidade, // complexidade
         imageUrl: formValue.image,
         startDate: formValue.startDate,
-        endDate: formValue.expectedDate,
+        endDate: formValue.endDate, // data prevista
         toolIds: formValue.selectedTecnologiasFerramentas,
         topicIds: formValue.selectedAssuntos,
         unfilledRoleIds: formValue.unfilledRoles,
