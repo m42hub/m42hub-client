@@ -6,13 +6,13 @@
   <ng-template pTemplate="header">
     <div class="relative h-32 bg-gradient-to-br from-primary-500 to-primary-700">
       <img
-        *ngIf="project.image"
-        [src]="getImageUrl(project.image)"
+        *ngIf="project.imageUrl"
+        [src]="getImageUrl()"
         [alt]="project.name"
         class="w-full h-full object-cover"
         (error)="onImageError($event)"
       />
-      <div *ngIf="!project.image" class="w-full h-full flex items-center justify-center">
+      <div *ngIf="!project.imageUrl" class="w-full h-full flex items-center justify-center">
         <i class="pi pi-briefcase text-white text-4xl opacity-50"></i>
       </div>
 
@@ -20,8 +20,8 @@
       <div class="absolute top-2 right-2">
         <p-tag
           *ngIf="project.status"
-          [value]="project.status"
-          [severity]="getStatusSeverity(project.status)"
+          [value]="project.status.name"
+          [severity]="getStatusSeverity()"
           class="text-xs font-semibold">
         </p-tag>
       </div>
@@ -31,33 +31,53 @@
   <!-- Conteúdo do card -->
   <ng-template pTemplate="content">
     <!-- Descrição em cima -->
-    <div class="mb-2 h-32 max-w-sm">
-      <h3 class="text-lg font-bold text-gray-900 mb-1 overflow-hidden text-ellipsis whitespace-nowrap">{{ project.name }}</h3>
-      <p class="text-surface-600 text-sm leading-relaxed overflow-hidden line-clamp-3 break-words">{{ project.description }}</p>
+    <div class="mb-4 h-32 max-w-sm">
+      <h3 class="text-lg font-bold text-gray-900 mb-2 overflow-hidden text-ellipsis whitespace-nowrap">{{ project.name }}</h3>
+      <p class="text-surface-600 text-sm leading-relaxed overflow-hidden line-clamp-3 break-words">{{ project.summary }}</p>
     </div>
 
-    <!-- Equipe e Tags lado a lado -->
-    <div class="grid px-2 grid-cols-3 gap-4">
-      <!-- Coluna da esquerda - Tags -->
-      <div class="col-span-1 w-46">
-        <h4 class="text-sm font-semibold text-surface-700 uppercase tracking-wide mb-2">Tags</h4>
+    <!-- Tools e Topics -->
+    <div class="space-y-4">
+      <!-- Tools -->
+      <div *ngIf="getTools().length > 0">
+        <h4 class="text-sm font-semibold text-surface-700 uppercase tracking-wide mb-2">Tecnologias</h4>
         <div class="flex flex-wrap gap-1">
           <p-tag
-            *ngFor="let tag of project.tags"
-            [value]="tag.name"
-            [severity]="getTagSeverity(tag)"
-            class="text-xs font-medium cursor-help"
-            [pTooltip]="getTagTooltip(tag)"
-            tooltipPosition="top"
-            tooltipStyleClass="text-xs">
+            *ngFor="let tool of getTools()"
+            [value]="tool"
+            severity="secondary"
+            class="text-xs font-medium">
           </p-tag>
         </div>
+      </div>
 
-        <!-- Data logo abaixo das tags -->
-        <div class="mt-3 pt-2 text-xs text-surface-500">
-          <i class="pi pi-calendar mr-1"></i>
-          {{ project.createdAt | date:'dd/MM/yyyy' }}
+      <!-- Topics -->
+      <div *ngIf="getTopics().length > 0">
+        <h4 class="text-sm font-semibold text-surface-700 uppercase tracking-wide mb-2">Tópicos</h4>
+        <div class="flex flex-wrap gap-1">
+          <p-tag
+            *ngFor="let topic of getTopics()"
+            [value]="topic"
+            severity="info"
+            class="text-xs font-medium">
+          </p-tag>
         </div>
+      </div>
+
+      <!-- Complexity -->
+      <div *ngIf="project.complexity">
+        <h4 class="text-sm font-semibold text-surface-700 uppercase tracking-wide mb-2">Complexidade</h4>
+        <p-tag
+          [value]="project.complexity.name"
+          [severity]="getComplexitySeverity()"
+          class="text-xs font-medium">
+        </p-tag>
+      </div>
+
+      <!-- Data de criação -->
+      <div class="pt-2 text-xs text-surface-500 border-t border-surface-200">
+        <i class="pi pi-calendar mr-1"></i>
+        Criado em: {{ formatDate(project.creationDate) }}
       </div>
     </div>
   </ng-template>

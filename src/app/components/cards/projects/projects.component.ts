@@ -4,7 +4,7 @@ import { CardModule } from 'primeng/card';
 import { TagModule } from 'primeng/tag';
 import { ButtonModule } from 'primeng/button';
 import { TooltipModule } from 'primeng/tooltip';
-import { Project } from '../../../interfaces/projectMock.interface';
+import { Project } from '../../../interfaces/project/project.interface';
 
 @Component({
   selector: 'app-project-card',
@@ -24,43 +24,45 @@ export class ProjectsComponent {
 
   defaultAvatar = '/default_avatar.png';
 
-  getStatusSeverity(status?: string): string {
+  getStatusSeverity(): string {
+    const status = this.project.status?.name.toLowerCase();
     switch (status) {
-      case 'active': return 'success';
-      case 'completed': return 'info';
-      case 'on-hold': return 'warning';
+      case 'ativo': return 'success';
+      case 'concluído': return 'info';
+      case 'pausado': return 'warning';
       default: return 'secondary';
     }
   }
 
-  getTagSeverity(tag: any): string {
-    switch (tag.type) {
-      case 'complexidade':
-        return tag.name.toLowerCase() === 'alta' ? 'danger' :
-               tag.name.toLowerCase() === 'média' ? 'warning' : 'success';
-      case 'tempoEstimado':
-        return 'info';
-      default:
-        return 'secondary';
+  getComplexitySeverity(): string {
+    const complexity = this.project.complexity?.name.toLowerCase();
+    switch (complexity) {
+      case 'alta': return 'danger';
+      case 'média': return 'warning';
+      case 'baixa': return 'success';
+      default: return 'secondary';
     }
   }
 
-  getImageUrl(imageUrl: string): string {
-    return imageUrl || this.defaultAvatar;
+  getImageUrl(): string {
+    return this.project.imageUrl || this.defaultAvatar;
   }
 
   onImageError(event: any): void {
     event.target.src = this.defaultAvatar;
   }
 
-  getTagTooltip(tag: any): string {
-    const typeLabels: { [key: string]: string } = {
-      'tecnologias/ferramentas': 'Tecnologia/Ferramenta',
-      'assuntos': 'Assunto/Tema',
-      'tempoEstimado': 'Tempo Estimado',
-      'complexidade': 'Complexidade'
-    };
+  getTools(): string[] {
+    return this.project.tools?.map((t) => t.name) || [];
+  }
 
-    return `${typeLabels[tag.type] || 'Tag'}: ${tag.name}`;
+  getTopics(): string[] {
+    return this.project.topics?.map((t) => t.name) || [];
+  }
+
+  formatDate(date?: string | Date): string {
+    if (!date) return 'Não definida';
+    const d = typeof date === 'string' ? new Date(date) : date;
+    return d.toLocaleDateString('pt-BR');
   }
 }

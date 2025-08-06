@@ -1,11 +1,11 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CardModule } from 'primeng/card';
 import { TagModule } from 'primeng/tag';
 import { TooltipModule } from 'primeng/tooltip';
 import { marked } from 'marked';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { Project } from '../../../interfaces/projectMock.interface';
+import { Project } from '../../../interfaces/project/project.interface';
 
 @Component({
   selector: 'app-project-description-card',
@@ -14,7 +14,7 @@ import { Project } from '../../../interfaces/projectMock.interface';
   templateUrl: './project-description-card.component.html',
   styleUrl: './project-description-card.component.css'
 })
-export class ProjectDescriptionCardComponent {
+export class ProjectDescriptionCardComponent implements OnInit {
   @Input() project!: Project;
   descriptionHtml: SafeHtml = '';
 
@@ -31,16 +31,36 @@ export class ProjectDescriptionCardComponent {
     }
   }
 
+  getTools(): string[] {
+    return this.project.tools?.map((t) => t.name) || [];
+  }
+
+  getTopics(): string[] {
+    return this.project.topics?.map((t) => t.name) || [];
+  }
+
+  getComplexity(): string {
+    return this.project.complexity?.name || '';
+  }
+
+  getStatus(): string {
+    return this.project.status?.name || '';
+  }
+
   getTechTags() {
-    return this.project.tags?.filter(tag => tag.type === 'tecnologias/ferramentas') || [];
+    return this.project.tools || [];
   }
 
   getAssuntosTags() {
-    return this.project.tags?.filter(tag => tag.type === 'assuntos') || [];
+    return this.project.topics || [];
   }
 
   getGeneralTags() {
-    return this.project.tags || [];
+    const allTags = [
+      ...(this.project.tools || []).map(tool => ({ ...tool, type: 'tecnologias/ferramentas' })),
+      ...(this.project.topics || []).map(topic => ({ ...topic, type: 'assuntos' }))
+    ];
+    return allTags;
   }
 
   getTagTooltip(tag: any): string {
@@ -54,8 +74,9 @@ export class ProjectDescriptionCardComponent {
     return typeLabels[tag.type] || 'Tag';
   }
 
-  formatDate(date?: Date): string {
+  formatDate(date?: string | Date): string {
     if (!date) return 'Não definida';
-    return new Date(date).toLocaleDateString('pt-BR');
+    const d = typeof date === 'string' ? new Date(date) : date;
+    return d.toLocaleDateString('pt-BR');
   }
 }

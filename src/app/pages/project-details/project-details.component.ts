@@ -5,8 +5,8 @@ import { CardModule } from 'primeng/card';
 import { TagModule } from 'primeng/tag';
 import { ButtonModule } from 'primeng/button';
 import { TooltipModule } from 'primeng/tooltip';
-import { ProjectService } from '../../services/projectMock.service';
-import { Project } from '../../interfaces/projectMock.interface';
+import { ProjectService } from '../../services/project/project.service';
+import { Project } from '../../interfaces/project/project.interface';
 import { ProjectDescriptionCardComponent } from '../../components/cards/project-description-card/project-description-card.component';
 import { ProjectInfoSidebarComponent } from '../../components/sidebars/project-info-sidebar/project-info-sidebar.component';
 
@@ -49,7 +49,14 @@ export class ProjectDetailsComponent implements OnInit {
     this.loading = true;
     this.error = false;
 
-    this.projectService.getProjectById(projectId).subscribe({
+    const id = parseInt(projectId, 10);
+    if (isNaN(id)) {
+      this.error = true;
+      this.loading = false;
+      return;
+    }
+
+    this.projectService.getProjectById(id).subscribe({
       next: (project) => {
         if (project) {
           this.project = project;

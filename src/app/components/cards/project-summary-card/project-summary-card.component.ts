@@ -41,17 +41,6 @@ export class ProjectSummaryCardComponent {
     return this.project.unfilledRoles?.map((r) => r.name) || [];
   }
 
-  getMonthsToEnd(): number | null {
-    if (!this.project.endDate) return null;
-    const now = new Date();
-    const end = new Date(this.project.endDate);
-    if (isNaN(end.getTime())) return null;
-    const months =
-      (end.getFullYear() - now.getFullYear()) * 12 +
-      (end.getMonth() - now.getMonth());
-    return months > 0 ? months : 0;
-  }
-
   getGeneralTags(): { label: string; tooltip: string }[] {
     const tags: { label: string; tooltip: string }[] = [];
 
@@ -61,8 +50,6 @@ export class ProjectSummaryCardComponent {
     const status = this.getStatus();
     if (status) tags.push({ label: status, tooltip: 'Status' });
 
-    const months = this.getMonthsToEnd();
-    if (months !== null) tags.push({ label: `${months} meses restantes`, tooltip: 'Tempo até a data prevista de término' });
     return tags;
   }
 
