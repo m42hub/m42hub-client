@@ -60,5 +60,5 @@ export interface ProjectSearchParams {
   tools?: number;
   topics?: number;
   unfilledRoles?: number;
-  status?: string;
+  status?: number;
 }

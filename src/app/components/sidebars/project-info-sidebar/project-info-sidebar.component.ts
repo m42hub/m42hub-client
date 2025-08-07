@@ -28,7 +28,7 @@ export class ProjectInfoSidebarComponent implements OnInit {
 
   private loadRoles(): void {
     // Carrega todos os roles disponíveis para mapear IDs para nomes
-    this.roleService.getAllProjects().subscribe({
+    this.roleService.getAll().subscribe({
       next: (roles: ProjectRole[]) => {
         roles.forEach((role) => {
           this.rolesMap.set(role.id, role.name);

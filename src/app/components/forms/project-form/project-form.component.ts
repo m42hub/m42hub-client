@@ -156,14 +156,14 @@ export class ProjectFormComponent implements OnInit, OnChanges {
       }
     };
 
-    this.statusService.getAllProjects().subscribe((statuses) => {
+    this.statusService.getAll().subscribe((statuses) => {
       this.statusOptions = statuses.map((s) => ({
         label: s.name,
         value: s.id,
       }));
       checkAndPatch();
     });
-    this.complexityService.getAllProjects().subscribe((complexities) => {
+    this.complexityService.getAll().subscribe((complexities) => {
       this.complexityOptions = complexities.map((c) => ({
         label: c.name,
         value: c.id,
@@ -172,7 +172,7 @@ export class ProjectFormComponent implements OnInit, OnChanges {
       this.tagOptions.complexidade = this.complexityOptions;
       checkAndPatch();
     });
-    this.toolService.getAllProjects().subscribe((tools) => {
+    this.toolService.getAll().subscribe((tools) => {
       this.toolOptions = tools.map((t) => ({
         label: t.name,
         value: t.id,
@@ -181,7 +181,7 @@ export class ProjectFormComponent implements OnInit, OnChanges {
       this.tagOptions['tecnologias/ferramentas'] = this.toolOptions;
       checkAndPatch();
     });
-    this.topicService.getAllProjects().subscribe((topics) => {
+    this.topicService.getAll().subscribe((topics) => {
       this.topicOptions = topics.map((t) => ({
         label: t.name,
         value: t.id,
@@ -190,7 +190,7 @@ export class ProjectFormComponent implements OnInit, OnChanges {
       this.tagOptions.assuntos = this.topicOptions;
       checkAndPatch();
     });
-    this.roleService.getAllProjects().subscribe((roles) => {
+    this.roleService.getAll().subscribe((roles) => {
       this.roleOptions = roles.map((r) => ({ label: r.name, value: r.id }));
       checkAndPatch();
     });
@@ -656,7 +656,7 @@ export class ProjectFormComponent implements OnInit, OnChanges {
   onRequestCardAcceptRequest(request: any): void {
     console.log('[ProjectFormComponent] Evento de aceitar recebido:', request);
     if (!request?.id) return;
-    this.memberService.approveMember(request.id).subscribe({
+    this.memberService.approve(request.id).subscribe({
       next: (updatedMember) => {
         const teamArray = this.projectForm.get('team') as FormArray;
         if (!teamArray) return;
@@ -688,7 +688,7 @@ export class ProjectFormComponent implements OnInit, OnChanges {
   confirmRejectRequest(): void {
     if (!this.feedbackRequest?.id) return;
     const feedback = this.feedbackTextControl.value || '';
-    this.memberService.rejectMember(this.feedbackRequest.id, feedback).subscribe({
+    this.memberService.reject(this.feedbackRequest.id, feedback).subscribe({
       next: (updatedMember) => {
         const teamArray = this.projectForm.get('team') as FormArray;
         if (!teamArray) return;

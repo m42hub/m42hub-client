@@ -14,15 +14,11 @@ export class ProjectRoleService extends BaseApiService<ProjectRole> {
     super(http);
   }
 
-  getAllProjects(): Observable<ProjectRole[]> {
+  getAll(): Observable<ProjectRole[]> {
     return this.get<ProjectRole[]>(this.endpoint);
   }
 
-  getProjectById(id: number): Observable<ProjectRole> {
+  getById(id: number): Observable<ProjectRole> {
     return this.get<ProjectRole>(`${this.endpoint}/${id}`);
-  }
-
-  createProject(role: CreateProjectRole): Observable<ProjectRole> {
-    return this.post<ProjectRole>(this.endpoint, role);
   }
 }

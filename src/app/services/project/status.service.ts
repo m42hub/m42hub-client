@@ -14,15 +14,11 @@ export class ProjectStatusService extends BaseApiService<ProjectStatus> {
     super(http);
   }
 
-  getAllProjects(): Observable<ProjectStatus[]> {
+  getAll(): Observable<ProjectStatus[]> {
     return this.get<ProjectStatus[]>(this.endpoint);
   }
 
-  getProjectById(id: number): Observable<ProjectStatus> {
+  getById(id: number): Observable<ProjectStatus> {
     return this.get<ProjectStatus>(`${this.endpoint}/${id}`);
-  }
-
-  createProject(status: CreateProjectStatus): Observable<ProjectStatus> {
-    return this.post<ProjectStatus>(this.endpoint, status);
   }
 }

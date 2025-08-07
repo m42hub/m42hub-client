@@ -16,35 +16,211 @@
     </div>
   </div>
 
+  <!-- Filtros -->
+  <p-card class="mb-6">
+    <ng-template pTemplate="header">
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+        <h3 class="text-lg font-semibold text-surface-900">Filtros de Busca</h3>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="content">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-2 justify-center">
+        <!-- Ordenação -->
+        <div class="flex flex-col">
+          <label class="text-sm font-medium text-surface-700 mb-2">Ordenar por</label>
+          <p-select
+            [options]="sortOptions"
+            [(ngModel)]="selectedSort"
+            optionLabel="label"
+            placeholder="Ordenação"
+            [showClear]="true"
+            class="w-full"
+            (onChange)="onSortChange()">
+          </p-select>
+        </div>
+
+        <!-- Complexidade -->
+        <div class="flex flex-col">
+          <label class="text-sm font-medium text-surface-700 mb-2">Complexidade</label>
+          <p-select
+            [options]="complexities"
+            [(ngModel)]="filters.complexity"
+            optionLabel="name"
+            optionValue="id"
+            placeholder="Todas"
+            [showClear]="true"
+            class="w-full"
+            (onChange)="onFilterChange()">
+          </p-select>
+        </div>
+
+        <!-- Status -->
+        <div class="flex flex-col">
+          <label class="text-sm font-medium text-surface-700 mb-2">Status</label>
+          <p-select
+            [options]="statuses"
+            [(ngModel)]="filters.status"
+            optionLabel="name"
+            optionValue="id"
+            placeholder="Todos"
+            [showClear]="true"
+            class="w-full"
+            (onChange)="onFilterChange()">
+          </p-select>
+        </div>
+
+        <!-- Ferramentas -->
+        <div class="flex flex-col">
+          <label class="text-sm font-medium text-surface-700 mb-2">Ferramenta</label>
+          <p-select
+            [options]="tools"
+            [(ngModel)]="filters.tools"
+            optionLabel="name"
+            optionValue="id"
+            placeholder="Todas"
+            [showClear]="true"
+            class="w-full"
+            (onChange)="onFilterChange()">
+          </p-select>
+        </div>
+
+        <!-- Tópicos -->
+        <div class="flex flex-col">
+          <label class="text-sm font-medium text-surface-700 mb-2">Tópico</label>
+          <p-select
+            [options]="topics"
+            [(ngModel)]="filters.topics"
+            optionLabel="name"
+            optionValue="id"
+            placeholder="Todos"
+            [showClear]="true"
+            class="w-full"
+            (onChange)="onFilterChange()">
+          </p-select>
+        </div>
+
+        <!-- Vagas Disponíveis -->
+        <div class="flex flex-col">
+          <label class="text-sm font-medium text-surface-700 mb-2">Vaga Disponível</label>
+          <p-select
+            [options]="roles"
+            [(ngModel)]="filters.unfilledRoles"
+            optionLabel="name"
+            optionValue="id"
+            placeholder="Todas"
+            [showClear]="true"
+            class="w-full"
+            (onChange)="onFilterChange()">
+          </p-select>
+        </div>
+      </div>
+
+      <!-- Link para limpar filtros -->
+      <div class="text-center">
+        <a
+          href="javascript:void(0)"
+          class="text-sm text-primary-500 hover:text-primary-600 cursor-pointer inline-flex items-center gap-1"
+          (click)="clearFilters()">
+          <i class="pi pi-times text-xs"></i>
+          Limpar todos os filtros
+        </a>
+      </div>
+    </ng-template>
+  </p-card>
+
   <!-- Grid de projetos -->
-  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-5 items-stretch">
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 items-stretch">
     <app-project-summary-card
       *ngFor="let project of projects; let i = index"
       [project]="project"
       class="animate-fade-in-up"
-      [style.animation-delay]="(i * 0.1) + 's'">
+      [style.animation-delay]="(i * 0.05) + 's'">
     </app-project-summary-card>
   </div>
 
-  <!-- Controles de paginação -->
-  <div *ngIf="totalPages > 1" class="flex justify-center items-center gap-2 mt-4 text-sm">
-    <button pButton type="button" name="" icon="pi pi-angle-left" (click)="prevPage()" [disabled]="currentPage === 1" class="!w-8 !h-8 !min-w-0 !p-0"></button>
-    <span class="mx-1">Página {{ currentPage }} de {{ totalPages }}</span>
-    <button pButton type="button" icon="pi pi-angle-right" (click)="nextPage()" [disabled]="currentPage === totalPages" class="!w-8 !h-8 !min-w-0 !p-0"></button>
-  </div>
+  <!-- Controles de paginação melhorados -->
+  <div *ngIf="totalPages > 1" class="flex flex-col sm:flex-row justify-center items-center gap-4 p-4 rounded-lg">
+    <!-- Informações de paginação -->
+
+
+    <!-- Controles de navegação -->
+    <div class="flex items-center gap-2">
+      <!-- Primeira página -->
+      <button
+        pButton
+        type="button"
+        icon="pi pi-angle-double-left"
+        [disabled]="currentPage === 1"
+        class="!w-10 !h-10 !min-w-0 !p-0"
+        (click)="goToPage(1)"
+        pTooltip="Primeira página">
+      </button>
+
+      <!-- Página anterior -->
+      <button
+        pButton
+        type="button"
+        icon="pi pi-angle-left"
+        [disabled]="currentPage === 1"
+        class="!w-10 !h-10 !min-w-0 !p-0"
+        (click)="prevPage()"
+        pTooltip="Página anterior">
+      </button>
+
+      <!-- Números das páginas -->
+      <div class="flex items-center gap-1 mx-2">
+        <span class="text-sm font-medium text-surface-700">
+          Página {{ currentPage }} de {{ totalPages }}
+        </span>
+      </div>
+
+      <!-- Próxima página -->
+      <button
+        pButton
+        type="button"
+        icon="pi pi-angle-right"
+        [disabled]="currentPage === totalPages"
+        class="!w-10 !h-10 !min-w-0 !p-0"
+        (click)="nextPage()"
+        pTooltip="Próxima página">
+      </button>
+
+      <!-- Última página -->
+      <button
+        pButton
+        type="button"
+        icon="pi pi-angle-double-right"
+        [disabled]="currentPage === totalPages"
+        class="!w-10 !h-10 !min-w-0 !p-0"
+        (click)="goToPage(totalPages)"
+        pTooltip="Última página">
+      </button>
+    </div>
 
   <!-- Estado vazio -->
-  <div *ngIf="projects.length === 0" class="text-center py-12">
+  <div *ngIf="projects.length === 0" class="text-center py-16">
     <div class="max-w-md mx-auto">
-      <i class="pi pi-briefcase text-6xl text-surface-300 mb-4"></i>
-      <h3 class="text-xl font-semibold text-surface-600 mb-2">Nenhum projeto encontrado</h3>
-      <p-button
-        label="Criar Projeto"
-        icon="pi pi-plus"
-        severity="primary"
-        class="font-medium"
-        (onClick)="createNewProject()">
-      </p-button>
+      <i class="pi pi-search text-6xl text-surface-300 mb-6"></i>
+      <h3 class="text-xl font-semibold text-surface-600 mb-3">Nenhum projeto encontrado</h3>
+      <p class="text-surface-500 mb-6">
+        Não encontramos projetos com os filtros selecionados.
+        Tente ajustar os filtros ou criar um novo projeto.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-3 justify-center">
+        <p-button
+          label="Limpar Filtros"
+          icon="pi pi-times"
+          severity="secondary"
+          [outlined]="true"
+          (onClick)="clearFilters()">
+        </p-button>
+        <p-button
+          label="Criar Projeto"
+          icon="pi pi-plus"
+          severity="primary"
+          (onClick)="createNewProject()">
+        </p-button>
+      </div>
     </div>
   </div>
 </div>

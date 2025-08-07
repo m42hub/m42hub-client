@@ -56,7 +56,7 @@ export class ProjectDetailsComponent implements OnInit {
       return;
     }
 
-    this.projectService.getProjectById(id).subscribe({
+    this.projectService.getById(id).subscribe({
       next: (project) => {
         if (project) {
           this.project = project;

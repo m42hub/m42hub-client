@@ -15,19 +15,19 @@ export class ProjectMemberService extends BaseApiService<ProjectMember> {
     super(http);
   }
 
-  getAllProjects(): Observable<ProjectMember[]> {
+  getAll(): Observable<ProjectMember[]> {
     return this.get<ProjectMember[]>(this.endpoint);
   }
 
-  getProjectById(id: number): Observable<ProjectMember> {
+  getById(id: number): Observable<ProjectMember> {
     return this.get<ProjectMember>(`${this.endpoint}/${id}`);
   }
 
-  approveMember(id: number): Observable<ProjectMember> {
+  approve(id: number): Observable<ProjectMember> {
     return this.patch<ProjectMember>(`${this.endpoint}/approve/${id}`, '');
   }
 
-  rejectMember(id: number, applicationFeedback: string): Observable<ProjectMember> {
+  reject(id: number, applicationFeedback: string): Observable<ProjectMember> {
     return this.patch<ProjectMember>(`${this.endpoint}/reject/${id}`, {applicationFeedback});
   }
 }

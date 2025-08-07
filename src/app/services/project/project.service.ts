@@ -20,23 +20,23 @@ export class ProjectService extends BaseApiService<Project> {
     super(http);
   }
 
-  getAllProjects(): Observable<Project[]> {
+  getAll(): Observable<Project[]> {
     return this.get<Project[]>(this.endpoint);
   }
 
-  searchProjects(params?: ProjectSearchParams): Observable<PaginatedResponse<Project>> {
+  search(params?: ProjectSearchParams): Observable<PaginatedResponse<Project>> {
     return this.get<PaginatedResponse<Project>>(`${this.endpoint}/search`, params);
   }
 
-  getProjectById(id: number): Observable<Project> {
+  getById(id: number): Observable<Project> {
     return this.get<Project>(`${this.endpoint}/${id}`);
   }
 
-  createProject(project: CreateProjectRequest): Observable<Project> {
+  create(project: CreateProjectRequest): Observable<Project> {
     return this.post<Project>(this.endpoint, project);
   }
 
-  updateProject(id: number, project: UpdateProjectRequest): Observable<Project> {
+  update(id: number, project: UpdateProjectRequest): Observable<Project> {
     return this.put<Project>(`${this.endpoint}/${id}`, project);
   }
 }

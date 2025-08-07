@@ -65,7 +65,7 @@ export class ProjectEditorComponent implements OnInit {
 
   private loadProject(projectId: string): void {
     this.projectLoaded = false;
-    this.projectService.getProjectById(Number(projectId)).subscribe({
+    this.projectService.getById(Number(projectId)).subscribe({
       next: (project) => {
         if (project) {
           this.project = project;
@@ -101,7 +101,7 @@ export class ProjectEditorComponent implements OnInit {
 
 
   private createProject(request: CreateProjectRequest): void {
-    this.projectService.createProject(request).subscribe({
+    this.projectService.create(request).subscribe({
       next: () => {
         this.messageService.add({
           severity: 'success',
@@ -123,7 +123,7 @@ export class ProjectEditorComponent implements OnInit {
 
 
   private updateProject(id: number, request: UpdateProjectRequest): void {
-    this.projectService.updateProject(id, request).subscribe({
+    this.projectService.update(id, request).subscribe({
       next: () => {
         this.messageService.add({
           severity: 'success',

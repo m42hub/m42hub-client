@@ -15,15 +15,11 @@ export class ProjectToolService extends BaseApiService<ProjectTool> {
     super(http);
   }
 
-  getAllProjects(): Observable<ProjectTool[]> {
-    return this.get<ProjectComplexity[]>(this.endpoint);
+  getAll(): Observable<ProjectTool[]> {
+    return this.get<ProjectTool[]>(this.endpoint);
   }
 
-  getProjectById(id: number): Observable<ProjectTool> {
-    return this.get<ProjectComplexity>(`${this.endpoint}/${id}`);
-  }
-
-  createProject(tool: CreateProjectTool): Observable<ProjectComplexity> {
-    return this.post<ProjectComplexity>(this.endpoint, tool);
+  getById(id: number): Observable<ProjectTool> {
+    return this.get<ProjectTool>(`${this.endpoint}/${id}`);
   }
 }

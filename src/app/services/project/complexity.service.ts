@@ -15,15 +15,11 @@ export class ProjectComplexityService extends BaseApiService<ProjectComplexity> 
     super(http);
   }
 
-  getAllProjects(): Observable<ProjectComplexity[]> {
+  getAll(): Observable<ProjectComplexity[]> {
     return this.get<ProjectComplexity[]>(this.endpoint);
   }
 
-  getProjectById(id: number): Observable<ProjectComplexity> {
+  getById(id: number): Observable<ProjectComplexity> {
     return this.get<ProjectComplexity>(`${this.endpoint}/${id}`);
-  }
-
-  createProject(complexity: CreateProjectComplexity): Observable<ProjectComplexity> {
-    return this.post<ProjectComplexity>(this.endpoint, complexity);
   }
 }

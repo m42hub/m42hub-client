@@ -15,15 +15,12 @@ export class ProjectTopicService extends BaseApiService<ProjectTopic> {
     super(http);
   }
 
-  getAllProjects(): Observable<ProjectTopic[]> {
+  getAll(): Observable<ProjectTopic[]> {
     return this.get<ProjectTopic[]>(this.endpoint);
   }
 
-  getProjectById(id: number): Observable<ProjectTopic> {
+  getById(id: number): Observable<ProjectTopic> {
     return this.get<ProjectTopic>(`${this.endpoint}/${id}`);
   }
 
-  createProject(status: CreateProjectTopic): Observable<ProjectTopic> {
-    return this.post<ProjectRole>(this.endpoint, status);
-  }
 }
