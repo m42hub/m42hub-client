@@ -6,6 +6,7 @@ import { ButtonModule } from 'primeng/button';
 import { TooltipModule } from 'primeng/tooltip';
 import { Project } from '../../../interfaces/project/project.interface';
 import { Router } from '@angular/router';
+import { AuthService } from '../../../services/auth/auth.service';
 
 
 @Component({
@@ -16,7 +17,7 @@ import { Router } from '@angular/router';
   styleUrl: './project-summary-card.component.css',
 })
 export class ProjectSummaryCardComponent {
-  constructor(private router: Router) {}
+  constructor(private router: Router, private authService: AuthService) {}
 
   @Input() project!: Project;
   showImage: boolean = true;
@@ -74,5 +75,22 @@ export class ProjectSummaryCardComponent {
 
   viewProjectDetails(id: number | string): void {
     this.router.navigate([`/projects/${id}`]);
+  }
+
+  editProject(id: number | string): void {
+    this.router.navigate([`/projects/${id}/edit`]);
+  }
+
+  isUserManager(): boolean {
+    const currentUser = this.authService.currentUser;
+    if (!currentUser || !this.project.members) {
+      return false;
+    }
+
+    const userMember = this.project.members.find(member =>
+      member.user.username === currentUser.username && member.isManager
+    );
+
+    return !!userMember;
   }
 }

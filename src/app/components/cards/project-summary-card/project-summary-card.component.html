@@ -83,7 +83,20 @@
             tooltipStyleClass="text-xs">
           </p-tag>
         </div>
-        <button pButton type="button" label="Ver detalhes" icon="pi pi-eye" iconPos="left" size="small" class="p-button-md p-2 h-12 min-w-32 ml-2" (click)="viewProjectDetails(project.id)"></button>
+        <div class="flex gap-2">
+          <button
+            *ngIf="isUserManager()"
+            pButton
+            type="button"
+            label="Editar"
+            icon="pi pi-pencil"
+            iconPos="left"
+            size="small"
+            class="p-button-outlined p-button-primary p-2 h-12 min-w-24"
+            (click)="editProject(project.id)">
+          </button>
+          <button pButton type="button" label="Ver detalhes" icon="pi pi-eye" iconPos="left" size="small" class="p-button-md p-2 h-12 min-w-32 ml-2" (click)="viewProjectDetails(project.id)"></button>
+        </div>
       </div>
     </div>
   </ng-template>

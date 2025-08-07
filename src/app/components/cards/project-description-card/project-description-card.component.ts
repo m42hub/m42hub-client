@@ -3,14 +3,17 @@ import { CommonModule } from '@angular/common';
 import { CardModule } from 'primeng/card';
 import { TagModule } from 'primeng/tag';
 import { TooltipModule } from 'primeng/tooltip';
+import { ButtonModule } from 'primeng/button';
 import { marked } from 'marked';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Project } from '../../../interfaces/project/project.interface';
+import { Router } from '@angular/router';
+import { AuthService } from '../../../services/auth/auth.service';
 
 @Component({
   selector: 'app-project-description-card',
   standalone: true,
-  imports: [CommonModule, CardModule, TagModule, TooltipModule],
+  imports: [CommonModule, CardModule, TagModule, TooltipModule, ButtonModule],
   templateUrl: './project-description-card.component.html',
   styleUrl: './project-description-card.component.css'
 })
@@ -18,7 +21,7 @@ export class ProjectDescriptionCardComponent implements OnInit {
   @Input() project!: Project;
   descriptionHtml: SafeHtml = '';
 
-  constructor(private sanitizer: DomSanitizer) {}
+  constructor(private sanitizer: DomSanitizer, private router: Router, private authService: AuthService) {}
 
   ngOnInit(): void {
     this.renderDescription();
@@ -78,5 +81,22 @@ export class ProjectDescriptionCardComponent implements OnInit {
     if (!date) return 'Não definida';
     const d = typeof date === 'string' ? new Date(date) : date;
     return d.toLocaleDateString('pt-BR');
+  }
+
+  editProject(id: number | string): void {
+    this.router.navigate([`/projects/${id}/edit`]);
+  }
+
+  isUserManager(): boolean {
+    const currentUser = this.authService.currentUser;
+    if (!currentUser || !this.project.members) {
+      return false;
+    }
+
+    const userMember = this.project.members.find(member =>
+      member.user.username === currentUser.username && member.isManager
+    );
+
+    return !!userMember;
   }
 }
