@@ -56,9 +56,9 @@ export interface ProjectSearchParams {
   limit?: number;
   sortBy?: string;
   sortDirection?: 'ASC' | 'DESC';
-  complexity?: number;
-  tools?: number;
-  topics?: number;
-  unfilledRoles?: number;
-  status?: number;
+  complexity?: number | number[];
+  tools?: number | number[];
+  topics?: number | number[];
+  unfilledRoles?: number | number[];
+  status?: number | number[];
 }

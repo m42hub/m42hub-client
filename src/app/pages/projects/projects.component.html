@@ -19,12 +19,12 @@
   <!-- Filtros -->
   <p-card class="mb-6">
     <ng-template pTemplate="header">
-      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
-        <h3 class="text-lg font-semibold text-surface-900">Filtros de Busca</h3>
+      <div class="flex flex-col sm:flex-row justify-center items-start sm:items-center gap-3">
+        <h3 class="text-lg font-semibold text-surface-600">Filtros de Busca</h3>
       </div>
     </ng-template>
     <ng-template pTemplate="content">
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-2 justify-center">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 justify-center">
         <!-- Ordenação -->
         <div class="flex flex-col">
           <label class="text-sm font-medium text-surface-700 mb-2">Ordenar por</label>
@@ -34,84 +34,84 @@
             optionLabel="label"
             placeholder="Ordenação"
             [showClear]="true"
-            class="w-full"
+            class="w-[220px]"
             (onChange)="onSortChange()">
           </p-select>
         </div>
 
         <!-- Complexidade -->
         <div class="flex flex-col">
-          <label class="text-sm font-medium text-surface-700 mb-2">Complexidade</label>
-          <p-select
+          <label class="text-sm font-medium text-surface-700 mb-2">Complexidades</label>
+          <p-multiselect
             [options]="complexities"
             [(ngModel)]="filters.complexity"
             optionLabel="name"
             optionValue="id"
             placeholder="Todas"
             [showClear]="true"
-            class="w-full"
+            class="w-[220px]"
             (onChange)="onFilterChange()">
-          </p-select>
+          </p-multiselect>
         </div>
 
         <!-- Status -->
         <div class="flex flex-col">
           <label class="text-sm font-medium text-surface-700 mb-2">Status</label>
-          <p-select
+          <p-multiselect
             [options]="statuses"
             [(ngModel)]="filters.status"
             optionLabel="name"
             optionValue="id"
             placeholder="Todos"
             [showClear]="true"
-            class="w-full"
+            class="w-[220px]"
             (onChange)="onFilterChange()">
-          </p-select>
+          </p-multiselect>
         </div>
 
         <!-- Ferramentas -->
         <div class="flex flex-col">
-          <label class="text-sm font-medium text-surface-700 mb-2">Ferramenta</label>
-          <p-select
+          <label class="text-sm font-medium text-surface-700 mb-2">Ferramentas</label>
+          <p-multiselect
             [options]="tools"
             [(ngModel)]="filters.tools"
             optionLabel="name"
             optionValue="id"
             placeholder="Todas"
             [showClear]="true"
-            class="w-full"
+            class="w-[220px]"
             (onChange)="onFilterChange()">
-          </p-select>
+          </p-multiselect>
         </div>
 
         <!-- Tópicos -->
         <div class="flex flex-col">
-          <label class="text-sm font-medium text-surface-700 mb-2">Tópico</label>
-          <p-select
+          <label class="text-sm font-medium text-surface-700 mb-2">Tópicos</label>
+          <p-multiselect
             [options]="topics"
             [(ngModel)]="filters.topics"
             optionLabel="name"
             optionValue="id"
             placeholder="Todos"
             [showClear]="true"
-            class="w-full"
+            class="w-[220px]"
             (onChange)="onFilterChange()">
-          </p-select>
+          </p-multiselect>
         </div>
 
         <!-- Vagas Disponíveis -->
         <div class="flex flex-col">
-          <label class="text-sm font-medium text-surface-700 mb-2">Vaga Disponível</label>
-          <p-select
+          <label class="text-sm font-medium text-surface-700 mb-2">Vagas Disponíveis</label>
+          <p-multiselect
             [options]="roles"
             [(ngModel)]="filters.unfilledRoles"
             optionLabel="name"
             optionValue="id"
             placeholder="Todas"
             [showClear]="true"
-            class="w-full"
+            class="w-[220px]"
             (onChange)="onFilterChange()">
-          </p-select>
+          </p-multiselect>
         </div>
       </div>
 
@@ -119,7 +119,7 @@
       <div class="text-center">
         <a
           href="javascript:void(0)"
-          class="text-sm text-primary-500 hover:text-primary-600 cursor-pointer inline-flex items-center gap-1"
+          class="text-sm text-primary-500 hover:text-primary-600 cursor-pointer inline-flex items-center gap-1 mt-2"
           (click)="clearFilters()">
           <i class="pi pi-times text-xs"></i>
           Limpar todos os filtros
@@ -129,7 +129,7 @@
   </p-card>
 
   <!-- Grid de projetos -->
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 items-stretch">
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 items-stretch mt-6">
     <app-project-summary-card
       *ngFor="let project of projects; let i = index"
       [project]="project"
@@ -140,18 +140,12 @@
 
   <!-- Controles de paginação melhorados -->
   <div *ngIf="totalPages > 1" class="flex flex-col sm:flex-row justify-center items-center gap-4 p-4 rounded-lg">
-    <!-- Informações de paginação -->
-
-
-    <!-- Controles de navegação -->
     <div class="flex items-center gap-2">
-      <!-- Primeira página -->
       <button
         pButton
         type="button"
         icon="pi pi-angle-double-left"
         [disabled]="currentPage === 1"
-        class="!w-10 !h-10 !min-w-0 !p-0"
         (click)="goToPage(1)"
         pTooltip="Primeira página">
       </button>
@@ -162,7 +156,6 @@
         type="button"
         icon="pi pi-angle-left"
         [disabled]="currentPage === 1"
-        class="!w-10 !h-10 !min-w-0 !p-0"
         (click)="prevPage()"
         pTooltip="Página anterior">
       </button>
@@ -180,7 +173,6 @@
         type="button"
         icon="pi pi-angle-right"
         [disabled]="currentPage === totalPages"
-        class="!w-10 !h-10 !min-w-0 !p-0"
         (click)="nextPage()"
         pTooltip="Próxima página">
       </button>
@@ -191,7 +183,6 @@
         type="button"
         icon="pi pi-angle-double-right"
         [disabled]="currentPage === totalPages"
-        class="!w-10 !h-10 !min-w-0 !p-0"
         (click)="goToPage(totalPages)"
         pTooltip="Última página">
       </button>

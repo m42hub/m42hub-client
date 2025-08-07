@@ -67,19 +67,19 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     { label: 'Nome (A-Z)', value: { sortBy: 'name', sortDirection: 'ASC' } },
     { label: 'Nome (Z-A)', value: { sortBy: 'name', sortDirection: 'DESC' } },
     {
-      label: 'Data de Criação (Mais Recente)',
+      label: 'Mais Recentes (Criação)',
       value: { sortBy: 'creationDate', sortDirection: 'DESC' },
     },
     {
-      label: 'Data de Criação (Mais Antigo)',
+      label: 'Mais Antigos (Criação)',
       value: { sortBy: 'creationDate', sortDirection: 'ASC' },
     },
     {
-      label: 'Data de Início (Mais Recente)',
+      label: 'Mais Recentes (Início)',
       value: { sortBy: 'startDate', sortDirection: 'DESC' },
     },
     {
-      label: 'Data de Início (Mais Antigo)',
+      label: 'Mais Antigos (Início)',
       value: { sortBy: 'startDate', sortDirection: 'ASC' },
     },
   ];
@@ -191,23 +191,46 @@ export class ProjectsComponent implements OnInit, OnDestroy {
       searchParams.sortDirection = this.filters.sortDirection;
     }
 
-    if (this.filters.complexity) {
+    if (
+      this.filters.complexity &&
+      (Array.isArray(this.filters.complexity)
+        ? this.filters.complexity.length > 0
+        : true)
+    ) {
       searchParams.complexity = this.filters.complexity;
     }
 
-    if (this.filters.status) {
+    if (
+      this.filters.status &&
+      (Array.isArray(this.filters.status)
+        ? this.filters.status.length > 0
+        : true)
+    ) {
       searchParams.status = this.filters.status;
     }
 
-    if (this.filters.tools) {
+    if (
+      this.filters.tools &&
+      (Array.isArray(this.filters.tools) ? this.filters.tools.length > 0 : true)
+    ) {
       searchParams.tools = this.filters.tools;
     }
 
-    if (this.filters.topics) {
+    if (
+      this.filters.topics &&
+      (Array.isArray(this.filters.topics)
+        ? this.filters.topics.length > 0
+        : true)
+    ) {
       searchParams.topics = this.filters.topics;
     }
 
-    if (this.filters.unfilledRoles) {
+    if (
+      this.filters.unfilledRoles &&
+      (Array.isArray(this.filters.unfilledRoles)
+        ? this.filters.unfilledRoles.length > 0
+        : true)
+    ) {
       searchParams.unfilledRoles = this.filters.unfilledRoles;
     }
 
