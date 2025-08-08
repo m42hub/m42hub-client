@@ -1,6 +1,7 @@
-<p-card class="mx-auto shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
+<p-card
+  styleClass="rounded-xl overflow-hidden mx-auto shadow-xl">
   <ng-template pTemplate="header">
-    <div class="w-full h-32 rounded-t-lg overflow-hidden relative bg-gradient-to-r from-primary-400 to-primary-600">
+    <div class="w-full h-32 rounded-t-xl overflow-hidden relative bg-gradient-to-r from-primary-400 to-primary-600">
       <img *ngIf="showImage" src="/assets/project-banner-mock.jpg" alt="Banner do Projeto" class="absolute inset-0 w-full h-full object-cover" (error)="onImageError()" />
     </div>
   </ng-template>
