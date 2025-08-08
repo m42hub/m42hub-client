@@ -50,6 +50,9 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   // Expose Math for template
   Math = Math;
 
+  // Controle de exibição dos filtros
+  showFilters = false;
+
   // Dados para os filtros
   complexities: ProjectComplexity[] = [];
   statuses: ProjectStatus[] = [];
@@ -275,6 +278,10 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     };
     this.selectedSort = null;
     this.onFilterChange();
+  }
+
+  toggleFilters(): void {
+    this.showFilters = !this.showFilters;
   }
 
   nextPage() {
