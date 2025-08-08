@@ -1,13 +1,13 @@
 <div class="container mx-auto py-4 min-h-screen">
-  <!-- Header com título e botão de criar projeto -->
+  <!-- Header com título e botões -->
   <div class="flex justify-between items-center">
     <div>
       <h1 class="text-3xl font-bold text-surface-900 mb-2">Projetos</h1>
       <p class="text-surface-600">Encontre projetos para colaborar</p>
     </div>
 
-    <!-- Botão de Filtros centralizado -->
-    <div class="flex items-center">
+    <!-- Botões de Filtros e Criar Projeto -->
+    <div class="flex items-center gap-3">
       <p-button
         label="Filtros"
         icon="pi pi-filter"
@@ -15,9 +15,7 @@
         class="font-medium"
         (onClick)="toggleFilters()">
       </p-button>
-    </div>
 
-    <div>
       <p-button
         label="Criar Projeto"
         icon="pi pi-plus"

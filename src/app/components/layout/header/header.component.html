@@ -1,6 +1,6 @@
 <div class="header-container flex items-center justify-between px-4 py-2">
   <div class="flex items-center">
-    <img src="/logo.png" alt="Logo" class="h-15 mr-4" />
+    <img src="/logo.png" alt="Logo" class="h-15 w-20 mx-4"/>
   </div>
 
 
@@ -22,7 +22,7 @@
     ></p-button>
   </div>
 
-  <div class="flex items-center gap-2">
+  <div class="flex items-center gap-2 mr-2">
     <ng-container *ngIf="user$ | async as user; else loginButton">
       <span class="text-sm text-surface-500 mr-2">
         Olá, {{ user.firstName }}!
