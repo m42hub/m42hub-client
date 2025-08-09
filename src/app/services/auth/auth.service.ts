@@ -14,6 +14,7 @@ export class AuthService {
   private userSubject = new BehaviorSubject<User| null>(null);
   user$ = this.userSubject.asObservable();
   private _isInitialized = false;
+  private redirectUrl: string | null = null;
 
   constructor(
     private http: HttpClient,
@@ -81,5 +82,17 @@ export class AuthService {
 
   get isInitialized(): boolean {
     return this._isInitialized;
+  }
+
+  setRedirectUrl(url: string): void {
+    this.redirectUrl = url;
+  }
+
+  getRedirectUrl(): string | null {
+    return this.redirectUrl;
+  }
+
+  clearRedirectUrl(): void {
+    this.redirectUrl = null;
   }
 }

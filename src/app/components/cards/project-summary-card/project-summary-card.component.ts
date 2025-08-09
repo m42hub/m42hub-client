@@ -78,7 +78,12 @@ export class ProjectSummaryCardComponent {
   }
 
   editProject(id: number | string): void {
-    this.router.navigate([`/projects/${id}/edit`]);
+    if (this.authService.isLoggedIn) {
+      this.router.navigate([`/projects/${id}/edit`]);
+    } else {
+      this.authService.setRedirectUrl(`/projects/${id}`);
+      this.router.navigate(['/login']);
+    }
   }
 
   isUserManager(): boolean {

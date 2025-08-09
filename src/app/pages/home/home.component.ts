@@ -29,8 +29,10 @@ export class HomeComponent {
 
   createProject() {
     if (this.authService.isLoggedIn) {
-      this.router.navigate(['/project-editor']);
+      this.router.navigate(['/projects/new']);
     } else {
+      // Armazena a URL de destino antes de redirecionar para login
+      this.authService.setRedirectUrl('/projects/new');
       this.router.navigate(['/login']);
     }
   }

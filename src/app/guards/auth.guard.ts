@@ -1,10 +1,10 @@
 import { inject, Injectable, PLATFORM_ID } from '@angular/core';
-import { CanActivateFn, Router } from '@angular/router';
+import { CanActivateFn, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { isPlatformBrowser } from '@angular/common';
 import { AuthService } from '../services/auth/auth.service';
 import { map, Observable, of } from 'rxjs';
 
-export const authGuard: CanActivateFn = (): Observable<boolean> => {
+export const authGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> => {
   const authService = inject(AuthService);
   const router = inject(Router);
   const platformId = inject(PLATFORM_ID);
@@ -13,14 +13,28 @@ export const authGuard: CanActivateFn = (): Observable<boolean> => {
     return of(true);
   }
 
+  const redirectToLogin = () => {
+    // Armazena a URL atual para redirecionamento após login
+    // Se for uma URL de edição, redireciona para a página de detalhes após login
+    let redirectUrl = state.url;
+    const editUrlMatch = state.url.match(/^\/projects\/(\d+)\/edit$/);
+    if (editUrlMatch) {
+      const projectId = editUrlMatch[1];
+      redirectUrl = `/projects/${projectId}`;
+    }
+
+    authService.setRedirectUrl(redirectUrl);
+    router.navigate(['/login']);
+    return false;
+  };
+
   if (!authService.isInitialized) {
     return authService.initializeAuth().pipe(
       map(user => {
         if (user) {
           return true;
         } else {
-          router.navigate(['/login']);
-          return false;
+          return redirectToLogin();
         }
       })
     );
@@ -29,7 +43,6 @@ export const authGuard: CanActivateFn = (): Observable<boolean> => {
   if (authService.isLoggedIn) {
     return of(true);
   } else {
-    router.navigate(['/login']);
-    return of(false);
+    return of(redirectToLogin());
   }
 };

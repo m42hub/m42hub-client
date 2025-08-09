@@ -17,6 +17,7 @@ import { ProjectStatusService } from '../../services/project/status.service';
 import { ProjectToolService } from '../../services/project/tool.service';
 import { ProjectTopicService } from '../../services/project/topic.service';
 import { ProjectRoleService } from '../../services/project/role.service';
+import { AuthService } from '../../services/auth/auth.service';
 import { ProjectComplexity } from '../../interfaces/project/complexity.interface';
 import { ProjectStatus } from '../../interfaces/project/status.interface';
 import { ProjectTool } from '../../interfaces/project/tool.interface';
@@ -97,6 +98,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     private toolService: ProjectToolService,
     private topicService: ProjectTopicService,
     private roleService: ProjectRoleService,
+    private authService: AuthService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
@@ -299,7 +301,13 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   }
 
   createNewProject(): void {
-    this.router.navigate(['/projects/new']);
+    if (this.authService.isLoggedIn) {
+      this.router.navigate(['/projects/new']);
+    } else {
+      // Armazena a URL de destino antes de redirecionar para login
+      this.authService.setRedirectUrl('/projects/new');
+      this.router.navigate(['/login']);
+    }
   }
 
   goToPage(page: number): void {

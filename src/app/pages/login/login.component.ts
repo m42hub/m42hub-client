@@ -40,9 +40,11 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
     this.initializeForm();
 
-    // Se já estiver logado, redireciona para home
+    // Se já estiver logado, redireciona para home ou URL de redirecionamento
     if (this.authService.isLoggedIn) {
-      this.router.navigate(['/']);
+      const redirectUrl = this.authService.getRedirectUrl() || '/';
+      this.authService.clearRedirectUrl();
+      this.router.navigate([redirectUrl]);
     }
   }
 
@@ -63,8 +65,10 @@ export class LoginComponent implements OnInit {
       this.authService.login(username, password).subscribe({
         next: (response) => {
           this.loading = false;
-          // Sucesso - navega para a página inicial
-          this.router.navigate(['/']);
+          // Sucesso - navega para a URL de redirecionamento ou página inicial
+          const redirectUrl = this.authService.getRedirectUrl() || '/';
+          this.authService.clearRedirectUrl();
+          this.router.navigate([redirectUrl]);
         },
         error: (error) => {
           this.loading = false;

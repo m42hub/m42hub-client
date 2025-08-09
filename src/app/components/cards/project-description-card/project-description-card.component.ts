@@ -84,7 +84,13 @@ export class ProjectDescriptionCardComponent implements OnInit {
   }
 
   editProject(id: number | string): void {
-    this.router.navigate([`/projects/${id}/edit`]);
+    if (this.authService.isLoggedIn) {
+      this.router.navigate([`/projects/${id}/edit`]);
+    } else {
+      // Quando não estiver logado, redireciona para a página de detalhes após login
+      this.authService.setRedirectUrl(`/projects/${id}`);
+      this.router.navigate(['/login']);
+    }
   }
 
   isUserManager(): boolean {
