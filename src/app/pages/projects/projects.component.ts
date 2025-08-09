@@ -72,11 +72,11 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     { label: 'Nome (Z-A)', value: { sortBy: 'name', sortDirection: 'DESC' } },
     {
       label: 'Mais Recentes (Criação)',
-      value: { sortBy: 'creationDate', sortDirection: 'DESC' },
+      value: { sortBy: 'createdAt', sortDirection: 'DESC' },
     },
     {
       label: 'Mais Antigos (Criação)',
-      value: { sortBy: 'creationDate', sortDirection: 'ASC' },
+      value: { sortBy: 'createdAt', sortDirection: 'ASC' },
     },
     {
       label: 'Mais Recentes (Início)',
@@ -263,9 +263,9 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   }
 
   onSortChange(): void {
-    if (this.selectedSort) {
-      this.filters.sortBy = this.selectedSort.sortBy;
-      this.filters.sortDirection = this.selectedSort.sortDirection;
+    if (this.selectedSort && this.selectedSort.value) {
+      this.filters.sortBy = this.selectedSort.value.sortBy;
+      this.filters.sortDirection = this.selectedSort.value.sortDirection;
     } else {
       delete this.filters.sortBy;
       delete this.filters.sortDirection;
