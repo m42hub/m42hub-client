@@ -112,7 +112,7 @@
           <p-tabpanel value="0">
             <textarea
               pTextarea
-              id="description"
+              id="description-editor"
               formControlName="description"
               placeholder="
                 Descrição detalhada do projeto (suporta Markdown)
@@ -157,7 +157,7 @@
       <div *ngIf="!isBrowser" class="flex flex-col gap-2">
         <textarea
           pTextarea
-          id="description"
+          id="description-ssr"
           formControlName="description"
           placeholder="Descrição detalhada do projeto (suporta Markdown)"
           rows="6"
