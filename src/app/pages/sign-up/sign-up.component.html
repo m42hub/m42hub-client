@@ -1,4 +1,10 @@
-<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-500 to-primary-700 p-4">
+<app-disclaimer-modal
+  [(visible)]="showDisclaimerModal"
+  (accepted)="onDisclaimerAccepted()"
+  (cancelled)="onDisclaimerCancelled()">
+</app-disclaimer-modal>
+
+<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-500 to-primary-700 p-4" *ngIf="!showDisclaimerModal">
   <div class="w-full max-w-3xl">
     <div class="bg-surface-900 dark:bg-surface-0 rounded-xl shadow-2xl overflow-hidden animate-fade-in-up">
       <!-- Header -->

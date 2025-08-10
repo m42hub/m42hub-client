@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser, Location } from '@angular/common';
 import { AuthService } from '../../services/auth/auth.service';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
@@ -11,6 +11,7 @@ import { MessageModule } from 'primeng/message';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { CheckboxModule } from 'primeng/checkbox';
 import { RegisterRequest } from '../../interfaces/user.interface';
+import { DisclaimerModalComponent } from '../../components/modals/disclaimer-modal/disclaimer-modal.component';
 
 @Component({
   selector: 'app-sign-up',
@@ -24,7 +25,8 @@ import { RegisterRequest } from '../../interfaces/user.interface';
     CardModule,
     MessageModule,
     ProgressSpinnerModule,
-    CheckboxModule
+    CheckboxModule,
+    DisclaimerModalComponent
   ],
   templateUrl: './sign-up.component.html',
   styleUrl: './sign-up.component.css'
@@ -34,19 +36,28 @@ export class SignUpComponent implements OnInit {
   loading = false;
   errorMessage = '';
   successMessage = '';
+  showDisclaimerModal = false;
+  private isBrowser = false;
 
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router
-  ) {}
+    private router: Router,
+    private location: Location,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+  }
 
   ngOnInit() {
     this.initializeForm();
 
     // Se já estiver logado, redireciona para home
     if (this.authService.isLoggedIn) {
-      this.router.navigate(['/']);
+      this.router.navigate(['/projects']);
+    } else {
+      // Ao entrar na tela, exibe o disclaimer
+      this.showDisclaimerModal = true;
     }
   }
 
@@ -127,6 +138,19 @@ export class SignUpComponent implements OnInit {
       const control = this.signUpForm.get(key);
       control?.markAsTouched();
     });
+  }
+
+  onDisclaimerAccepted(): void {
+    this.showDisclaimerModal = false;
+  }
+
+  onDisclaimerCancelled(): void {
+    // Volta para a última tela; se não houver histórico, vai para home
+    if (this.isBrowser && window.history.length > 1) {
+      this.location.back();
+    } else {
+      this.router.navigate(['/projects']);
+    }
   }
 
   // Getters para facilitar acesso aos controles do formulário
