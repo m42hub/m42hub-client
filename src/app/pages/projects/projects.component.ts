@@ -239,14 +239,11 @@ export class ProjectsComponent implements OnInit, OnDestroy {
       searchParams.unfilledRoles = this.filters.unfilledRoles;
     }
 
-    console.log('Parâmetros de busca:', searchParams); // Para debug
-
     this.projectService.search(searchParams).subscribe({
       next: (res) => {
         this.projects = res.content;
         this.totalPages = res.pagination.totalPages;
         this.totalElements = res.pagination.totalElements;
-        console.log('Projetos carregados:', res); // Para debug
       },
       error: (error) => {
         console.error('Erro ao carregar projetos:', error);

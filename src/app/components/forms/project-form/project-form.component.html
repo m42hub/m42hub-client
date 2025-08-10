@@ -248,6 +248,7 @@
 
               <!-- Diálogo de feedback para rejeição -->
               <p-dialog
+                *ngIf="isBrowser"
                 header="Motivo da Rejeição"
                 [(visible)]="feedbackDialogVisible"
                 [modal]="true"

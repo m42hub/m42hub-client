@@ -17,7 +17,7 @@
 
     <!-- Content -->
     <div class="flex flex-col w-full">
-      <ng-container *ngIf="!isEditMode || (isEditMode && projectLoaded)">
+      <ng-container *ngIf="(!isEditMode && !showDisclaimerModal) || (isEditMode && projectLoaded)">
         <app-project-form
           [project]="project"
           [isEditMode]="isEditMode"
@@ -28,6 +28,13 @@
     </div>
 
     <!-- Toast messages -->
-    <p-toast></p-toast>
+    <p-toast *ngIf="isBrowser"></p-toast>
+
+    <!-- Disclaimer Modal -->
+    <app-disclaimer-modal
+      [(visible)]="showDisclaimerModal"
+      (accepted)="onDisclaimerAccepted()"
+      (cancelled)="onDisclaimerCancelled()">
+    </app-disclaimer-modal>
   </div>
 </div>

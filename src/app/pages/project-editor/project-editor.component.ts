@@ -6,6 +6,7 @@ import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { ProjectFormComponent } from '../../components/forms/project-form/project-form.component';
+import { DisclaimerModalComponent } from '../../components/modals/disclaimer-modal/disclaimer-modal.component';
 import { Project, CreateProjectRequest, UpdateProjectRequest } from '../../interfaces/project/project.interface';
 import { ProjectService } from '../../services/project/project.service';
 
@@ -17,7 +18,8 @@ import { ProjectService } from '../../services/project/project.service';
     CardModule,
     ButtonModule,
     ToastModule,
-    ProjectFormComponent
+    ProjectFormComponent,
+    DisclaimerModalComponent
   ],
   providers: [MessageService],
   templateUrl: './project-editor.component.html',
@@ -28,6 +30,7 @@ export class ProjectEditorComponent implements OnInit {
   isEditMode = false;
   isBrowser = false;
   projectLoaded = false;
+  showDisclaimerModal = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -55,6 +58,7 @@ export class ProjectEditorComponent implements OnInit {
       this.isEditMode = false;
       this.project = undefined;
       this.projectLoaded = true;
+      this.showDisclaimerModal = true;
     } else if ((url.includes('/edit') || !!projectId) && projectId) {
       this.isEditMode = true;
       this.loadProject(projectId);
@@ -148,6 +152,14 @@ export class ProjectEditorComponent implements OnInit {
   }
 
   goBack(): void {
+    this.router.navigate(['/projects']);
+  }
+
+  onDisclaimerAccepted(): void {
+    this.showDisclaimerModal = false;
+  }
+
+  onDisclaimerCancelled(): void {
     this.router.navigate(['/projects']);
   }
 }
