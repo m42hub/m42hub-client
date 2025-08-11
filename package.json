@@ -8,11 +8,12 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:m42hub-client": "node dist/m42hub-client/server/server.mjs",
-    "build:ssr": "ng build && ng run m42hub-client:server",
+    "build:ssr": "ng build --configuration production",
     "serve:ssr": "node dist/m42hub-client/server/main.js"
   },
   "private": true,
   "dependencies": {
+    "@angular/animations": "^20.1.6",
     "@angular/common": "^19.2.0",
     "@angular/compiler": "^19.2.0",
     "@angular/core": "^19.2.0",

@@ -2,12 +2,17 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 
+# Copiar package files
 COPY package*.json ./
-RUN npm install
 
+# Limpar cache e instalar dependências
+RUN npm cache clean --force && \
+    npm install --legacy-peer-deps
+
+# Copiar código fonte
 COPY . .
 
-# Build SSR (ajuste o comando para seu projeto)
+# Build SSR
 RUN npm run build:ssr
 
 # Stage final
@@ -15,12 +20,14 @@ FROM node:20-alpine
 
 WORKDIR /app
 
-COPY --from=builder /app/dist/m42hub-client/server ./server
-COPY --from=builder /app/dist/m42hub-client/browser ./browser
+# Copiar arquivos built do SSR
+COPY --from=builder /app/dist/m42hub-client ./dist/m42hub-client
 COPY --from=builder /app/package*.json ./
 
-RUN npm install --production
+# Instalar apenas dependências de produção
+RUN npm install --production --legacy-peer-deps
 
 EXPOSE 4000
 
-CMD ["node", "server/server.mjs"]
+# Comando para iniciar o servidor SSR
+CMD ["node", "dist/m42hub-client/server/server.mjs"]
