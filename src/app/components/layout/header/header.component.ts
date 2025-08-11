@@ -6,10 +6,11 @@ import { isPlatformBrowser, CommonModule } from '@angular/common';
 import { AuthService } from '../../../services/auth/auth.service';
 import { Observable } from 'rxjs';
 import { User } from '../../../interfaces/user.interface';
+import { TagModule } from 'primeng/tag';
 
 @Component({
   selector: 'app-header',
-  imports: [ButtonModule, CommonModule],
+  imports: [ButtonModule, CommonModule, TagModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css',
 })

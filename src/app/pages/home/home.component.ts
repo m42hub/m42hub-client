@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
+import { TagModule } from 'primeng/tag';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth/auth.service';
 
@@ -10,7 +11,8 @@ import { AuthService } from '../../services/auth/auth.service';
   imports: [
     CommonModule,
     ButtonModule,
-    CardModule
+    CardModule,
+    TagModule
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
