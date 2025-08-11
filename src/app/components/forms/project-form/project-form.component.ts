@@ -143,6 +143,17 @@ export class ProjectFormComponent implements OnInit, OnChanges {
     // Não fazer patch aqui, será feito após carregar as opções
   }
   private loadOptions(): void {
+    // Só carrega dados se estivermos no browser
+    if (!isPlatformBrowser(this.platformId)) {
+      // No servidor, inicializar arrays vazios e marcar como carregado
+      this.statusOptions = [];
+      this.complexityOptions = [];
+      this.toolOptions = [];
+      this.topicOptions = [];
+      this.roleOptions = [];
+      return;
+    }
+
     let loadedCount = 0;
     const totalServices = 5;
 

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BaseApiService } from '../base/base-api.service';
 import { HttpClient } from '@angular/common/http';
@@ -16,8 +16,11 @@ import { PaginatedResponse } from '../../interfaces/utils/utils.interface';
 export class ProjectService extends BaseApiService<Project> {
   private readonly endpoint = '/v1/project';
 
-  constructor(http: HttpClient) {
-    super(http);
+  constructor(
+    http: HttpClient,
+    @Inject(PLATFORM_ID) platformId: Object
+  ) {
+    super(http, platformId);
   }
 
   getAll(): Observable<Project[]> {

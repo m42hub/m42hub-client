@@ -1,12 +1,17 @@
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { ENVIRONMENT } from "../../../environments/environment";
-import { catchError, Observable, throwError } from "rxjs";
+import { catchError, Observable, throwError, of } from "rxjs";
 import { options } from "marked";
+import { Inject, PLATFORM_ID } from "@angular/core";
+import { isPlatformBrowser } from "@angular/common";
 
 export abstract class BaseApiService<T> {
   protected readonly apiUrl = ENVIRONMENT.apiUrl;
 
-  constructor(protected http: HttpClient) {}
+  constructor(
+    protected http: HttpClient,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {}
 
   private getHeaders(): HttpHeaders {
     return new HttpHeaders({
@@ -37,6 +42,11 @@ export abstract class BaseApiService<T> {
     endpoint: string,
     params?: Record<string, any>
   ): Observable<T> {
+    // Durante SSR, retornar observable vazio para evitar requisições
+    if (!isPlatformBrowser(this.platformId) || !this.apiUrl) {
+      return of([] as unknown as T);
+    }
+
     const headers = this.getHeaders();
     if (params) {
       const queryString = this.buildQueryString(params);
@@ -52,6 +62,10 @@ export abstract class BaseApiService<T> {
   }
 
   protected post<T>(endpoint: string, body: any): Observable<T> {
+    if (!isPlatformBrowser(this.platformId) || !this.apiUrl) {
+      return of({} as T);
+    }
+
     const headers = this.getHeaders();
     return this.http
       .post<T>(`${this.apiUrl}${endpoint}`, body, { headers })
@@ -59,6 +73,10 @@ export abstract class BaseApiService<T> {
   }
 
   protected put<T>(endpoint: string, body: any): Observable<T> {
+    if (!isPlatformBrowser(this.platformId) || !this.apiUrl) {
+      return of({} as T);
+    }
+
     const headers = this.getHeaders();
     return this.http
       .put<T>(`${this.apiUrl}${endpoint}`, body, { headers })
@@ -66,6 +84,10 @@ export abstract class BaseApiService<T> {
   }
 
   protected patch<T>(endpoint: string, body: any): Observable<T> {
+    if (!isPlatformBrowser(this.platformId) || !this.apiUrl) {
+      return of({} as T);
+    }
+
     const headers = this.getHeaders();
     return this.http
       .patch<T>(`${this.apiUrl}${endpoint}`, body, { headers })
@@ -73,6 +95,10 @@ export abstract class BaseApiService<T> {
   }
 
   protected delete<T>(endpoint: string, options?: Object): Observable<T> {
+    if (!isPlatformBrowser(this.platformId) || !this.apiUrl) {
+      return of({} as T);
+    }
+
     const headers = this.getHeaders();
     return this.http
       .delete<T>(`${this.apiUrl}${endpoint}`, { headers, ...options })

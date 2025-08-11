@@ -1,0 +1,9 @@
+version: '3.8'
+
+services:
+  angular:
+    build:
+      context: .
+    ports:
+      - "4200:4000"
+    restart: unless-stopped

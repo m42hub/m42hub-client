@@ -68,6 +68,12 @@ export class ProjectEditorComponent implements OnInit {
   }
 
   private loadProject(projectId: string): void {
+    // Só carrega dados se estivermos no browser
+    if (!isPlatformBrowser(this.platformId)) {
+      this.projectLoaded = true;
+      return;
+    }
+
     this.projectLoaded = false;
     this.projectService.getById(Number(projectId)).subscribe({
       next: (project) => {

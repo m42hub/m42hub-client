@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BaseApiService } from '../base/base-api.service';
 import { HttpClient } from '@angular/common/http';
@@ -11,8 +11,11 @@ import { CreateProjectTopic, ProjectTopic } from '../../interfaces/project/topic
 export class ProjectTopicService extends BaseApiService<ProjectTopic> {
   private readonly endpoint = '/v1/project/topic';
 
-  constructor(http: HttpClient) {
-    super(http);
+  constructor(
+    http: HttpClient,
+    @Inject(PLATFORM_ID) platformId: Object
+  ) {
+    super(http, platformId);
   }
 
   getAll(): Observable<ProjectTopic[]> {

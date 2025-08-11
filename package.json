@@ -7,7 +7,9 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:m42hub-client": "node dist/m42hub-client/server/server.mjs"
+    "serve:ssr:m42hub-client": "node dist/m42hub-client/server/server.mjs",
+    "build:ssr": "ng build && ng run m42hub-client:server",
+    "serve:ssr": "node dist/m42hub-client/server/main.js"
   },
   "private": true,
   "dependencies": {

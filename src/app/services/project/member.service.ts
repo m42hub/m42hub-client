@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BaseApiService } from '../base/base-api.service';
 import { HttpClient } from '@angular/common/http';
@@ -10,8 +10,11 @@ import { ApplyProjectMember, ProjectMember } from '../../interfaces/project/memb
 export class ProjectMemberService extends BaseApiService<ProjectMember> {
   private readonly endpoint = '/v1/project/member';
 
-  constructor(http: HttpClient) {
-    super(http);
+  constructor(
+    http: HttpClient,
+    @Inject(PLATFORM_ID) platformId: Object
+  ) {
+    super(http, platformId);
   }
 
   getAll(): Observable<ProjectMember[]> {

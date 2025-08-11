@@ -104,8 +104,12 @@ export class ProjectsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.updatePageSizeForScreen();
-    this.loadFilterData();
-    this.loadProjects();
+
+    // Só carrega dados se estivermos no browser (não durante SSR)
+    if (isPlatformBrowser(this.platformId)) {
+      this.loadFilterData();
+      this.loadProjects();
+    }
   }
 
   ngOnDestroy(): void {
@@ -161,6 +165,11 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   }
 
   loadFilterData(): void {
+    // Só carrega dados se estivermos no browser
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
+
     // Carregar dados para os filtros
     this.complexityService.getAll().subscribe((complexities) => {
       this.complexities = complexities;
@@ -184,6 +193,11 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   }
 
   loadProjects(): void {
+    // Só carrega dados se estivermos no browser
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
+
     // Limpar valores undefined/null antes de enviar
     const searchParams: ProjectSearchParams = {
       page: this.currentPage - 1,
