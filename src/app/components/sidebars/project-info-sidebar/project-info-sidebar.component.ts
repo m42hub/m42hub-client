@@ -1,16 +1,36 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Project } from '../../../interfaces/project/project.interface';
 import { TeamCardComponent, TeamMember } from '../../cards/team-card/team-card.component';
 import { CardModule } from 'primeng/card';
 import { TagModule } from 'primeng/tag';
+import { ButtonModule } from 'primeng/button';
+import { DialogModule } from 'primeng/dialog';
+import { SelectModule } from 'primeng/select';
+import { TextareaModule } from 'primeng/textarea';
+import { MessageModule } from 'primeng/message';
 import { ProjectRoleService } from '../../../services/project/role.service';
+import { ProjectMemberService } from '../../../services/project/member.service';
+import { AuthService } from '../../../services/auth/auth.service';
 import { ProjectRole } from '../../../interfaces/project/role.interface';
+import { ApplyProjectMember } from '../../../interfaces/project/member.interface';
 
 @Component({
   selector: 'app-project-info-sidebar',
   standalone: true,
-  imports: [CommonModule, TeamCardComponent, CardModule, TagModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    TeamCardComponent,
+    CardModule,
+    TagModule,
+    ButtonModule,
+    DialogModule,
+    SelectModule,
+    TextareaModule,
+    MessageModule
+  ],
   templateUrl: './project-info-sidebar.component.html',
   styleUrl: './project-info-sidebar.component.css',
 })
@@ -20,7 +40,25 @@ export class ProjectInfoSidebarComponent implements OnInit {
   private rolesMap: Map<number, string> = new Map();
   defaultAvatar = '/default_avatar.png';
 
-  constructor(private roleService: ProjectRoleService) {}
+  // Modal state
+  showJoinModal = false;
+  joinForm: FormGroup;
+  availableRoles: ProjectRole[] = [];
+  isSubmitting = false;
+  submitMessage = '';
+  submitMessageType: 'success' | 'error' | null = null;
+
+  constructor(
+    private roleService: ProjectRoleService,
+    private memberService: ProjectMemberService,
+    private authService: AuthService,
+    private formBuilder: FormBuilder
+  ) {
+    this.joinForm = this.formBuilder.group({
+      roleId: ['', Validators.required],
+      applicationMessage: ['', [Validators.maxLength(500)]]
+    });
+  }
 
   ngOnInit(): void {
     this.loadRoles();
@@ -72,5 +110,72 @@ export class ProjectInfoSidebarComponent implements OnInit {
         };
       }) || []
     );
+  }
+
+  // Join project functionality
+  get canJoinProject(): boolean {
+    const currentUser = this.authService.currentUser;
+    if (!currentUser || !this.project.unfilledRoles || this.project.unfilledRoles.length === 0) {
+      return false;
+    }
+
+    // Check if user is already a member by username
+    const isAlreadyMember = this.project.members?.some(
+      member => member.user.username === currentUser.username
+    );
+
+    return !isAlreadyMember;
+  }
+
+  openJoinModal(): void {
+    if (!this.canJoinProject) return;
+
+    this.availableRoles = this.project.unfilledRoles || [];
+    this.showJoinModal = true;
+    this.joinForm.reset();
+    this.submitMessage = '';
+    this.submitMessageType = null;
+  }
+
+  closeJoinModal(): void {
+    this.showJoinModal = false;
+    this.joinForm.reset();
+    this.submitMessage = '';
+    this.submitMessageType = null;
+  }
+
+  submitJoinRequest(): void {
+    if (this.joinForm.invalid || this.isSubmitting) return;
+
+    this.isSubmitting = true;
+    this.submitMessage = '';
+    this.submitMessageType = null;
+
+    const formValue = this.joinForm.value;
+    const applicationData: ApplyProjectMember = {
+      projectId: this.project.id,
+      roleId: parseInt(formValue.roleId),
+      isManager: false, // Default to false, unless there's a specific UI for this
+      applicationMessage: formValue.applicationMessage || null
+    };
+
+    this.memberService.apply(applicationData).subscribe({
+      next: (response) => {
+        this.submitMessage = 'Solicitação enviada com sucesso!';
+        this.submitMessageType = 'success';
+        this.isSubmitting = false;
+
+        // Close modal after a delay
+        setTimeout(() => {
+          this.closeJoinModal();
+        }, 2000);
+      },
+      error: (error) => {
+        console.error('Erro ao enviar solicitação:', error);
+        this.submitMessage = 'Erro ao enviar solicitação. Tente novamente.';
+        this.submitMessageType = 'error';
+        this.isSubmitting = false;
+      }
+    });
   }
 }

@@ -11,11 +11,10 @@ export interface ProjectMember {
   createdAt: string;
 }
 
-export interface CreateProjectMember {
+export interface ApplyProjectMember {
   isManager: boolean;
   projectId: number;
   roleId: number;
-  userId: number;
   applicationMessage: string | null;
 }
 

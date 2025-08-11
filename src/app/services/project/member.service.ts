@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BaseApiService } from '../base/base-api.service';
 import { HttpClient } from '@angular/common/http';
-import { CreateProjectRole, ProjectRole } from '../../interfaces/project/role.interface';
-import { ProjectMember } from '../../interfaces/project/member.interface';
+import { ApplyProjectMember, ProjectMember } from '../../interfaces/project/member.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -21,6 +20,10 @@ export class ProjectMemberService extends BaseApiService<ProjectMember> {
 
   getById(id: number): Observable<ProjectMember> {
     return this.get<ProjectMember>(`${this.endpoint}/${id}`);
+  }
+
+  apply(member: ApplyProjectMember): Observable<ProjectMember> {
+    return this.post<ProjectMember>(`${this.endpoint}/apply`, member);
   }
 
   approve(id: number): Observable<ProjectMember> {
