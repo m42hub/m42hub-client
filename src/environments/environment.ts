@@ -1,4 +1,4 @@
 export const ENVIRONMENT = {
   production: false,
-  apiUrl: 'http://localhost:8084/api'
-}
+  apiUrl: 'http://api.dev.m42hub.com/api',
+};

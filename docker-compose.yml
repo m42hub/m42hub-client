@@ -2,8 +2,7 @@ version: '3.8'
 
 services:
   angular:
-    build:
-      context: .
+    # image: betgrave/m42hub-client:latest
     ports:
       - "4200:4000"
     restart: unless-stopped
