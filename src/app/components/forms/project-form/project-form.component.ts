@@ -578,9 +578,9 @@ export class ProjectFormComponent implements OnInit, OnChanges {
         description: formValue.description,
         statusId: formValue.status, // statusId é o valor do select
         complexityId: formValue.selectedComplexidade, // complexidade
-        imageUrl: formValue.image,
-        startDate: formValue.startDate,
-        endDate: formValue.endDate, // data prevista
+        imageUrl: formValue.image && formValue.image.trim() !== '' ? formValue.image.trim() : null,
+        startDate: formValue.startDate ? formValue.startDate.toISOString() : null,
+        endDate: formValue.endDate ? formValue.endDate.toISOString() : null,
         toolIds: formValue.selectedTecnologiasFerramentas,
         topicIds: formValue.selectedAssuntos,
         unfilledRoleIds: formValue.unfilledRoles,

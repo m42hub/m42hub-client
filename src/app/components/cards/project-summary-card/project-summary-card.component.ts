@@ -73,6 +73,10 @@ export class ProjectSummaryCardComponent {
     this.showImage = false;
   }
 
+  getImageUrl(): string {
+    return this.project.imageUrl || '/assets/project-banner-mock.jpg';
+  }
+
   viewProjectDetails(id: number | string): void {
     this.router.navigate([`/projects/${id}`]);
   }

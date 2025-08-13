@@ -2,7 +2,7 @@
   styleClass="rounded-xl overflow-hidden mx-auto shadow-xl">
   <ng-template pTemplate="header">
     <div class="w-full h-32 rounded-t-xl overflow-hidden relative bg-gradient-to-r from-primary-400 to-primary-600">
-      <img *ngIf="showImage" src="/assets/project-banner-mock.jpg" alt="Banner do Projeto" class="absolute inset-0 w-full h-full object-cover" (error)="onImageError()" />
+      <img *ngIf="showImage" [src]="getImageUrl()" alt="Banner do Projeto" class="absolute inset-0 w-full h-full object-cover" (error)="onImageError()" />
     </div>
   </ng-template>
   <ng-template pTemplate="content">
