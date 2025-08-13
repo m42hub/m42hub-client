@@ -331,9 +331,36 @@
       </div>
     </p-card>
 
+    <!-- Função do Manager - apenas para criação de novos projetos -->
+    <p-card header="Função do Manager" *ngIf="!isEditMode && isFormReady && isBrowser && projectForm && projectForm.get('managerRoleId')" styleClass="rounded-none">
+      <div class="flex flex-col gap-4">
+        <div class="flex flex-col gap-2">
+          <label class="flex items-center font-semibold">
+            <i class="pi pi-user mr-2 text-primary"></i>
+            Sua Função no Projeto *
+          </label>
+          <p-select
+            formControlName="managerRoleId"
+            [options]="roleOptions"
+            placeholder="Selecione sua função como manager"
+            class="w-full"
+            optionLabel="label"
+            optionValue="value"
+            [class.ng-invalid]="projectForm.get('managerRoleId')?.invalid && projectForm.get('managerRoleId')?.touched"
+          ></p-select>
+        </div>
+        <small
+          class="p-error block"
+          *ngIf="projectForm.get('managerRoleId')?.invalid && projectForm.get('managerRoleId')?.touched"
+        >
+          É obrigatório selecionar sua função no projeto.
+        </small>
+      </div>
+    </p-card>
+
     <!-- Vagas Não Preenchidas -->
     <p-card header="Vagas Não Preenchidas" *ngIf="isFormReady && isBrowser && projectForm && projectForm.get('unfilledRoles')" styleClass="rounded-t-none">
-              <div class="flex flex-col gap-4">
+      <div class="flex flex-col gap-4">
         <div class="flex flex-col gap-2">
           <label class="flex items-center font-semibold">
             <i class="pi pi-users mr-2 text-primary"></i>

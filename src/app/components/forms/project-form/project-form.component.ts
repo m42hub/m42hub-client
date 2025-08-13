@@ -239,6 +239,7 @@ export class ProjectFormComponent implements OnInit, OnChanges {
       status: [null],
       startDate: [null],
       endDate: [null],
+      managerRoleId: [null, this.isEditMode ? [] : [Validators.required]],
       unfilledRoles: [[], [this.maxItemsValidator(8)]],
       // Controles para os selects
       selectedTecnologiasFerramentas: [[]],
@@ -273,6 +274,10 @@ export class ProjectFormComponent implements OnInit, OnChanges {
   private patchFormWithProject(): void {
     if (!this.project || !this.projectForm) return;
 
+    // Buscar o manager do projeto para obter seu roleId
+    const manager = this.project.members?.find(member => member.isManager);
+    const managerRoleId = manager?.role ? Number(manager.role) : null;
+
     this.projectForm.patchValue({
       name: this.project.name,
       summary: this.project.summary || '',
@@ -281,6 +286,7 @@ export class ProjectFormComponent implements OnInit, OnChanges {
       status: this.project.status?.id ? Number(this.project.status.id) : null,
       startDate: this.project.startDate ? new Date(this.project.startDate) : null,
       endDate: this.project.endDate ? new Date(this.project.endDate) : null,
+      managerRoleId: managerRoleId,
       unfilledRoles: this.project.unfilledRoles?.map((r) => Number(r.id)) || [],
       selectedTecnologiasFerramentas:
         this.project.tools?.map((t) => Number(t.id)) || [],
@@ -571,22 +577,41 @@ export class ProjectFormComponent implements OnInit, OnChanges {
   onSubmit(): void {
     if (this.projectForm.valid) {
       const formValue = this.projectForm.value;
-      // Montar o objeto para envio real (CreateProjectRequest ou UpdateProjectRequest)
-      const request: CreateProjectRequest | UpdateProjectRequest = {
-        name: formValue.name,
-        summary: formValue.summary,
-        description: formValue.description,
-        statusId: formValue.status, // statusId é o valor do select
-        complexityId: formValue.selectedComplexidade, // complexidade
-        imageUrl: formValue.image && formValue.image.trim() !== '' ? formValue.image.trim() : null,
-        startDate: formValue.startDate ? formValue.startDate.toISOString() : null,
-        endDate: formValue.endDate ? formValue.endDate.toISOString() : null,
-        toolIds: formValue.selectedTecnologiasFerramentas,
-        topicIds: formValue.selectedAssuntos,
-        unfilledRoleIds: formValue.unfilledRoles,
-        managerRoleId: 1, // ajuste conforme necessário
-      };
-      this.save.emit(request);
+
+      if (this.isEditMode) {
+        // Para edição, não incluir managerRoleId
+        const updateRequest: UpdateProjectRequest = {
+          name: formValue.name,
+          summary: formValue.summary,
+          description: formValue.description,
+          statusId: formValue.status,
+          complexityId: formValue.selectedComplexidade,
+          imageUrl: formValue.image && formValue.image.trim() !== '' ? formValue.image.trim() : null,
+          startDate: formValue.startDate ? formValue.startDate.toISOString() : null,
+          endDate: formValue.endDate ? formValue.endDate.toISOString() : null,
+          toolIds: formValue.selectedTecnologiasFerramentas,
+          topicIds: formValue.selectedAssuntos,
+          unfilledRoleIds: formValue.unfilledRoles,
+        };
+        this.save.emit(updateRequest);
+      } else {
+        // Para criação, incluir managerRoleId
+        const createRequest: CreateProjectRequest = {
+          name: formValue.name,
+          summary: formValue.summary,
+          description: formValue.description,
+          statusId: formValue.status,
+          complexityId: formValue.selectedComplexidade,
+          imageUrl: formValue.image && formValue.image.trim() !== '' ? formValue.image.trim() : null,
+          startDate: formValue.startDate ? formValue.startDate.toISOString() : null,
+          endDate: formValue.endDate ? formValue.endDate.toISOString() : null,
+          toolIds: formValue.selectedTecnologiasFerramentas,
+          topicIds: formValue.selectedAssuntos,
+          unfilledRoleIds: formValue.unfilledRoles,
+          managerRoleId: formValue.managerRoleId,
+        };
+        this.save.emit(createRequest);
+      }
     } else {
       this.markFormGroupTouched();
     }
