@@ -8,7 +8,6 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { InputTextModule } from 'primeng/inputtext';
 import { CardModule } from 'primeng/card';
 import { TooltipModule } from 'primeng/tooltip';
-import { ProjectsComponent as ProjectCardComponent } from '../../components/cards/projects/projects.component';
 import { ProjectSummaryCardComponent } from '../../components/cards/project-summary-card/project-summary-card.component';
 import { Project, ProjectSearchParams } from '../../interfaces/project/project.interface';
 import { ProjectService } from '../../services/project/project.service';

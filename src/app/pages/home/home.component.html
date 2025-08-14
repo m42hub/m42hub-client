@@ -1,24 +1,24 @@
 <!-- Hero Section -->
 <div class="min-h-screen bg-gradient-to-br from-primary-500 to-primary-900 relative overflow-hidden">
-  <div class="relative z-10 container mx-auto px-4 py-16 flex flex-col items-center justify-center min-h-screen text-center">
+  <div class="relative z-10 container mx-auto px-2 sm:px-4 py-8 sm:py-16 flex flex-col items-center justify-center min-h-screen text-center">
     <!-- Logo and Title -->
-    <div class="mb-12 animate-fade-in-up">
-      <div class="flex items-center justify-center gap-4 mb-4">
-        <img src="/logo.png" alt="M42Hub" class="w-35 h-35" />
+    <div class="mb-8 sm:mb-12 animate-fade-in-up">
+      <div class="flex items-center justify-center gap-2 sm:gap-4 mb-2 sm:mb-4">
+        <img src="/logo.png" alt="M42Hub" class="w-24 h-24 sm:w-35 sm:h-35" />
       </div>
-      <p class="text-xl md:text-3xl text-primary-100 font-light max-w-2xl mx-auto">
+      <p class="text-lg sm:text-xl md:text-3xl text-primary-100 font-light max-w-2xl mx-auto px-2 text-white">
         Conectando conhecimentos para criar algo incrível
       </p>
 
       <!-- Beta Message -->
 
-      <div class="mt-6 max-w-3xl mx-auto">
+      <div class="mt-4 sm:mt-6 max-w-3xl mx-auto px-2">
         <p-tag
           value="Open Beta"
           severity="warning"
-          class="text-sm font-semibold shadow-lg rounded-2xl mb-2">
+          class="text-xs sm:text-sm font-semibold shadow-lg text-white rounded-2xl mb-2">
         </p-tag>
-        <p class="text-primary-200 text-start text-sm opacity-80 leading-relaxed">
+        <p class="text-primary-200 text-start text-xs sm:text-sm opacity-80 leading-relaxed">
           Este projeto ainda está em desenvolvimento, caso tenha algum problema, favor contatar o
           <a href="https://discord.gg/E5xy62Eus2" target="_blank" rel="noopener" class="text-primary-100 hover:text-white underline transition-colors">
             suporte
@@ -33,12 +33,12 @@
 
     <!-- Main Explanation -->
     <div class="animate-fade-in-up animate-delay-1">
-      <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-6 max-w-4xl mx-auto border border-white/20">
+      <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-3 sm:p-6 max-w-4xl mx-auto border border-white/20">
         <div class="text-start">
-          <p class="text-white text-lg leading-relaxed mb-4 indent-4">
+          <p class="text-white text-sm sm:text-lg leading-relaxed mb-2 sm:mb-4 indent-2 sm:indent-4">
             No M42 Hub, acreditamos que cada pessoa tem algo único para oferecer. Desenvolvedores, designers, estrategistas, escritores, ilustradores, entusiastas de tecnologia e muitos outros se encontram para dar vida a ideias de todos os tipos e tamanhos, unindo talentos diferentes em busca de algo verdadeiro e colaborativo.
           </p>
-          <p class="text-white text-lg leading-relaxed indent-4">
+          <p class="text-white text-sm sm:text-lg leading-relaxed indent-2 sm:indent-4">
             Cada um contribui com o que sabe e gosta, aprendendo, ensinando e construindo juntos. É o ponto de partida para transformar habilidades e inspirações em algo nosso, um espaço para criar, crescer e fazer acontecer.
           </p>
         </div>
@@ -56,7 +56,7 @@
           (click)="selectOption('idea')"
           [class]="'p-button-lg transition-all duration-300 hover-scale ' +
                    (selectedOption === 'idea' ? 'p-button-outlined' : '')"
-          class="bg-white text-primary-600 hover:bg-primary-50 border-0 shadow-lg px-8 py-4 text-lg font-semibold rounded-xl min-w-[250px]">
+          class="bg-white text-primary-600 hover:bg-primary-50 border-0 shadow-lg px-4 py-4 text-lg font-semibold rounded-xl min-w-[250px]">
           <i class="pi pi-lightbulb mr-3"></i>
           Tenho uma ideia
         </button>
@@ -69,7 +69,7 @@
           (click)="selectOption('explore')"
           [class]="'p-button-lg transition-all duration-300 hover-scale ' +
                    (selectedOption === 'explore' ? 'p-button-outlined' : '')"
-          class="bg-white text-primary-600 hover:bg-primary-50 border-0 shadow-lg px-8 py-4 text-lg font-semibold rounded-xl min-w-[250px]">
+          class="bg-white text-primary-600 hover:bg-primary-50 border-0 shadow-lg px-4 py-4 text-lg font-semibold rounded-xl min-w-[250px]">
           <i class="pi pi-search mr-3"></i>
           Não tenho uma ideia
         </button>
