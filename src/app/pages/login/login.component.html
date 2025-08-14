@@ -1,15 +1,15 @@
-<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-500 to-primary-700 p-4">
+<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-500 to-primary-700 p-2 sm:p-4">
   <div class="w-full max-w-md">
     <div class="bg-surface-900 dark:bg-surface-0 rounded-xl shadow-2xl overflow-hidden animate-fade-in-up">
       <!-- Header -->
-      <div class="text-center p-8 pb-6">
-        <img src="/logo.png" alt="M42Hub" class="w-16 h-16 mx-auto mb-4 rounded-lg" />
-        <h1 class="text-2xl font-bold text-surface-0 dark:text-surface-900 mb-2">Entrar no M42Hub</h1>
-        <p class="text-surface-300 dark:text-surface-600 text-sm">Acesse sua conta para continuar</p>
+      <div class="text-center p-4 sm:p-8 pb-3 sm:pb-6">
+        <img src="/logo.png" alt="M42Hub" class="w-30 h-30 mx-auto mb-2 sm:mb-4 rounded-lg" />
+        <h1 class="text-xl sm:text-2xl font-bold text-surface-0 dark:text-surface-900 mb-1 sm:mb-2">Entrar no M42Hub</h1>
+        <p class="text-surface-300 dark:text-surface-600 text-xs sm:text-sm">Acesse sua conta para continuar</p>
       </div>
 
       <!-- Content -->
-      <div class="px-8 pb-8">
+      <div class="px-4 sm:px-8 pb-4 sm:pb-8">
         <!-- Error Message -->
         <p-message
           *ngIf="errorMessage"

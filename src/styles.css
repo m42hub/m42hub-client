@@ -165,3 +165,15 @@ html.dark .prose th {
   animation: fadeInUp 0.3s ease-out;
   animation-fill-mode: both;
 }
+
+/* Espaçamento horizontal entre chips/tags nos multiselects */
+.p-multiselect-chip {
+  margin-right: 8px !important;
+  background: #b2bff7 ;
+}
+
+.p-multiselect .p-multiselect-chips {
+  gap: 8px !important;
+  display: flex !important;
+  flex-wrap: wrap !important;
+}
