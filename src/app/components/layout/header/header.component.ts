@@ -5,7 +5,7 @@ import { PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser, CommonModule } from '@angular/common';
 import { AuthService } from '../../../services/auth/auth.service';
 import { Observable } from 'rxjs';
-import { User } from '../../../interfaces/user.interface';
+import { User } from '../../../interfaces/user/user.interface';
 import { TagModule } from 'primeng/tag';
 
 @Component({

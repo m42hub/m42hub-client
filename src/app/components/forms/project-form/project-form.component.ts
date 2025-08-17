@@ -29,7 +29,7 @@ import { RequestCardComponent } from '../../cards/request-card/request-card.comp
 export interface TeamRequest {
   id: string;
   userId: string;
-  userName: string;
+  username: string;
   userPhoto: string;
   requestedRole: string;
   message?: string;
@@ -231,7 +231,7 @@ export class ProjectFormComponent implements OnInit, OnChanges {
     // Criar o formulário principal
     this.projectForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3)]],
-      summary: ['', [Validators.required, Validators.minLength(10)]],
+      summary: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(255)]],
       description: ['', [Validators.required, Validators.minLength(10)]],
       team: teamArray,
       tags: tagsArray,
@@ -257,6 +257,7 @@ export class ProjectFormComponent implements OnInit, OnChanges {
     // Inicializar formulário de edição de membros
     this.editingMemberForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(2)]],
+      username: ['', [Validators.required, Validators.minLength(2)]],
       role: ['', [Validators.required]],
       photo: [''],
       isManager: [false],
@@ -265,6 +266,7 @@ export class ProjectFormComponent implements OnInit, OnChanges {
     // Inicializar formulário de adição de membros
     this.addMemberForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(2)]],
+      username: ['', [Validators.required, Validators.minLength(2)]],
       role: ['', [Validators.required]],
       photo: [''],
       isManager: [false],
@@ -480,27 +482,35 @@ export class ProjectFormComponent implements OnInit, OnChanges {
     // O RequestCardComponent espera: id, name, role, photo, applicationMessage, createdAt
     return filteredControls.map((control, index) => {
       const id = control.get('id')?.value || `temp-${index}`;
-      // Tenta pegar o nome do user, se existir, senão pega o campo name
+
       let name = '';
       const user = control.get('user')?.value;
       if (user && (user.firstName || user.lastName)) {
         name = `${user.firstName || ''} ${user.lastName || ''}`.trim();
-      } else {
-        name = control.get('name')?.value || '';
       }
+
+      let username = '';
+      if (user && user.username) {
+        username = user.username;
+      }
+
       const roleId = control.get('role')?.value;
       const roleObj = this.roleOptions.find(
         (r) => r.value === roleId || r.label === roleId
       );
+
       const role = roleObj ? roleObj.label : roleId;
-      const photo =
-        control.get('photo')?.value || (user && user.photo) || '';
+
+      const photo = control.get('photo')?.value || (user && user.photo) || '';
+
       const applicationMessage = control.get('applicationMessage')?.value || '';
+
       const createdAt = control.get('createdAt')?.value || '';
 
       return {
         id,
         name,
+        username,
         role,
         photo,
         applicationMessage,
@@ -522,6 +532,7 @@ export class ProjectFormComponent implements OnInit, OnChanges {
   private initEditMemberForm(member: any): void {
     this.editingMemberForm.patchValue({
       name: member.name,
+      username: member.username,
       role: member.role,
       photo: member.photo || '',
       isManager: member.isManager || false,
@@ -557,6 +568,7 @@ export class ProjectFormComponent implements OnInit, OnChanges {
       const newMember = this.fb.group({
         id: [this.generateId()],
         name: [this.addMemberForm.value.name],
+        username: [this.addMemberForm.value.username],
         role: [this.addMemberForm.value.role],
         photo: [this.addMemberForm.value.photo || ''],
         isManager: [this.addMemberForm.value.isManager || false],

@@ -11,6 +11,7 @@ export interface TeamRequest {
   name: string;
   role: string;
   photo: string;
+  username: string;
   applicationMessage?: string;
   createdAt: Date;
 }

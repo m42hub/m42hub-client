@@ -26,3 +26,12 @@ export interface AuthenticatedUser {
   roleId: number;
   roleName: string;
 }
+
+export interface RegisterRequest {
+  username: string;
+  password: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  isActive: boolean;
+}

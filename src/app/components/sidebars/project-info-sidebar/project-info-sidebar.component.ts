@@ -104,6 +104,7 @@ export class ProjectInfoSidebarComponent implements OnInit {
         return {
           id: member.id.toString(),
           name: `${member.user.firstName} ${member.user.lastName}`,
+          username: `${member.user.username}`,
           role: roleName || '',
           photo: this.getUserAvatar(member.user),
           isManager: member.isManager,

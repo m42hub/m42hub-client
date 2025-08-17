@@ -82,6 +82,7 @@
         >
           <span *ngIf="projectForm.get('summary')?.errors?.['required']">Resumo é obrigatório</span>
           <span *ngIf="projectForm.get('summary')?.errors?.['minlength']">Resumo deve ter pelo menos 10 caracteres</span>
+          <span *ngIf="projectForm.get('summary')?.errors?.['maxlength']">Resumo deve ter no máximo 255 caracteres</span>
         </small>
       </div>
 

@@ -10,7 +10,7 @@ import { CardModule } from 'primeng/card';
 import { MessageModule } from 'primeng/message';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { CheckboxModule } from 'primeng/checkbox';
-import { RegisterRequest } from '../../interfaces/user.interface';
+import { RegisterRequest } from '../../interfaces/user/user.interface';
 import { DisclaimerModalComponent } from '../../components/modals/disclaimer-modal/disclaimer-modal.component';
 
 @Component({
