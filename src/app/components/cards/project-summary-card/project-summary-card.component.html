@@ -1,5 +1,5 @@
 <p-card
-  styleClass="w-120 ounded-xl overflow-hidden mx-auto shadow-xl">
+  styleClass=" w-full max-w-[480px] rounded-xl overflow-hidden mx-auto shadow-xl">
   <ng-template pTemplate="header">
     <div class="w-full h-32 rounded-t-xl overflow-hidden relative bg-gradient-to-r from-primary-400 to-primary-600">
       <img *ngIf="showImage" [src]="getImageUrl()" alt="Banner do Projeto" class="absolute inset-0 w-full h-full object-cover" (error)="onImageError()" />
@@ -32,7 +32,7 @@
       </div>
 
       <!-- Temas/Tópicos -->
-      <div class="mb-4 min-h-24">
+      <div class="mb-4 min-h-30">
         <span class="text-sm font-bold text-surface-500 uppercase tracking-wide">Tópicos</span>
         <div class="flex flex-wrap gap-1 mt-1">
           <p-tag
@@ -48,7 +48,7 @@
       </div>
 
       <!-- Precisamos de: roles não preenchidas -->
-      <div class="mb-4 min-h-32">
+      <div class="mb-4 min-h-30">
         <span class="text-sm font-bold text-surface-500 uppercase tracking-wide">Vagas Disponíveis </span>
         <div class="flex flex-wrap gap-1 mt-1">
           <p-tag *ngFor="let role of getUnfilledRoles()" [value]="role" class="text-sm font-medium bg-surface-300"></p-tag>
