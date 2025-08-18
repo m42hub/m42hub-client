@@ -33,7 +33,14 @@
                tooltipStyleClass="text-xs">{{ member.role }}</p>
           </div>
           <!-- Manager Tag -->
-          <p-tag *ngIf="member.isManager" value="M" severity="primary" class="text-xs flex-shrink-0"></p-tag>
+          <p-tag *ngIf="member.isManager"
+            [pTooltip]="'Idealizador'"
+            tooltipPosition="top"
+            tooltipStyleClass="text-xs"
+            value="M"
+            severity="primary"
+            class="text-xs flex-shrink-0">
+          </p-tag>
         </div>
 
         <!-- Empty State -->

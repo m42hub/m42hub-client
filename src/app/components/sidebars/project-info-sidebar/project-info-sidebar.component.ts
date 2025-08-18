@@ -96,9 +96,8 @@ export class ProjectInfoSidebarComponent implements OnInit {
       this.project.members?.map((member) => {
         let roleName = this.getRoleName(member.role);
 
-        // Se for manager, adiciona essa informação ao role
         if (member.isManager) {
-          roleName = `${roleName} (Gerente)`;
+          roleName = `${roleName} (​​Idealizador)`;
         }
 
         return {
