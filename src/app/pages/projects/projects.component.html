@@ -1,6 +1,6 @@
 <div class="container mx-auto py-2 sm:py-4 min-h-screen p-2">
   <!-- Header com título e botões -->
-  <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 sm:gap-0 mb-4 sm:mb-0">
+  <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-4 sm:mb-0">
     <div>
       <h1 class="text-2xl sm:text-3xl font-bold text-surface-900">Projetos</h1>
       <p class="text-sm sm:text-base text-surface-600">Encontre projetos para colaborar</p>
@@ -158,7 +158,7 @@
 
   <!-- Grid de projetos -->
   <div class="flex justify-center mt-4 sm:mt-6">
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-2 sm:gap-4 items-stretch w-full">
+    <div class="justify-center grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-2 sm:gap-4 items-stretch w-full">
       <app-project-summary-card
         *ngFor="let project of projects; let i = index"
         [project]="project"

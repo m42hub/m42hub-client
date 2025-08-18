@@ -127,6 +127,8 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     sm: 640, // Tailwind sm breakpoint
     md: 768, // Tailwind md breakpoint
     lg: 1024, // Tailwind lg breakpoint
+    xl: 1280,
+    xl2: 1536
   };
 
   private updatePageSizeForScreen(): void {
@@ -142,8 +144,14 @@ export class ProjectsComponent implements OnInit, OnDestroy {
       newPageSize = 1;
     } else if (width < this.breakpoints.md) {
       // Small screens: 1 item
-      newPageSize = 2;
+      newPageSize = 1;
     } else if (width < this.breakpoints.lg) {
+      // Medium screens: 2 items
+      newPageSize = 1;
+    } else if (width < this.breakpoints.xl) {
+      // Medium screens: 2 items
+      newPageSize = 2;
+    } else if (width < this.breakpoints.xl2) {
       // Medium screens: 2 items
       newPageSize = 3;
     } else {
