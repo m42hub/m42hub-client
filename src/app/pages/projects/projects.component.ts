@@ -153,7 +153,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
       newPageSize = 2;
     } else if (width < this.breakpoints.xl2) {
       // Medium screens: 2 items
-      newPageSize = 3;
+      newPageSize = 2;
     } else {
       // Large screens and above: 3 items
       newPageSize = 3;
