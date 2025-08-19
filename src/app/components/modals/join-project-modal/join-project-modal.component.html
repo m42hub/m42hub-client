@@ -1,0 +1,91 @@
+
+<p-dialog
+	header="Solicitar Participação no Projeto"
+	[(visible)]="visible"
+	[modal]="true"
+	[style]="{width: '500px'}"
+	[closable]="!isSubmitting"
+	[draggable]="false"
+	[resizable]="false"
+	(onHide)="onClose()"
+>
+	<form [formGroup]="joinForm" (ngSubmit)="onSubmit()">
+		<div class="flex flex-col gap-4">
+
+			<div class="flex flex-col gap-2">
+				<label for="roleId" class="flex items-start font-semibold">
+					<i class="pi pi-users mr-2 mt-1 text-primary"></i>
+					Função Desejada *
+				</label>
+				<p-select
+					id="roleId"
+					formControlName="roleId"
+					[options]="availableRoles"
+					optionLabel="name"
+					optionValue="id"
+					placeholder="Selecione uma função"
+					class="w-full"
+					[disabled]="isSubmitting">
+				</p-select>
+				<small
+					class="p-error block"
+					*ngIf="joinForm.get('roleId')?.invalid && joinForm.get('roleId')?.touched">
+					Por favor, selecione uma função.
+				</small>
+			</div>
+
+			<div class="flex flex-col gap-2">
+				<label for="applicationMessage" class="flex items-start font-semibold">
+					<i class="pi pi-comment mr-2 mt-1 text-primary"></i>
+					Mensagem (Opcional)
+				</label>
+				<textarea
+					pTextarea
+					id="applicationMessage"
+					formControlName="applicationMessage"
+					placeholder="Conte um pouco sobre sua experiência e motivação para participar deste projeto..."
+					rows="6"
+					class="w-full p-3 border border-surface-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+					[disabled]="isSubmitting">
+				</textarea>
+				<small class="text-surface-500">Máximo 500 caracteres</small>
+				<small
+					class="p-error block"
+					*ngIf="joinForm.get('applicationMessage')?.invalid && joinForm.get('applicationMessage')?.touched">
+					A mensagem deve ter no máximo 500 caracteres.
+				</small>
+			</div>
+
+			<p-message
+				*ngIf="submitMessage"
+				[severity]="submitMessageType === 'success' ? 'success' : 'error'"
+				[text]="submitMessage">
+			</p-message>
+
+			<div class="text-center">
+				<p class="text-surface-500 dark:text-surface-400 text-xs">
+					Em caso de bug ou dúvida,
+					<a href="https://discord.gg/E5xy62Eus2" target="_blank" rel="noopener" class="text-primary-500 hover:text-primary-400 dark:text-primary-400 dark:hover:text-primary-300 font-medium hover:underline transition-colors">
+						conte o suporte
+					</a>
+				</p>
+			</div>
+
+			<div class="flex justify-end gap-2 mt-2">
+				<p-button
+					label="Cancelar"
+					severity="secondary"
+					[text]="true"
+					(onClick)="onClose()"
+					[disabled]="isSubmitting">
+				</p-button>
+				<p-button
+					label="Enviar Solicitação"
+					type="submit"
+					[loading]="isSubmitting"
+					[disabled]="joinForm.invalid">
+				</p-button>
+			</div>
+		</div>
+	</form>
+</p-dialog>

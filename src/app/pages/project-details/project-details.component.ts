@@ -1,10 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CardModule } from 'primeng/card';
-import { TagModule } from 'primeng/tag';
 import { ButtonModule } from 'primeng/button';
-import { TooltipModule } from 'primeng/tooltip';
 import { ProjectService } from '../../services/project/project.service';
 import { Project } from '../../interfaces/project/project.interface';
 import { ProjectDescriptionCardComponent } from '../../components/cards/project-description-card/project-description-card.component';
@@ -15,10 +12,7 @@ import { ProjectInfoSidebarComponent } from '../../components/sidebars/project-i
   standalone: true,
   imports: [
     CommonModule,
-    CardModule,
-    TagModule,
     ButtonModule,
-    TooltipModule,
     ProjectDescriptionCardComponent,
     ProjectInfoSidebarComponent
   ],
@@ -46,10 +40,7 @@ export class ProjectDetailsComponent implements OnInit {
   }
 
   private loadProject(projectId: string): void {
-    this.loading = true;
-    this.error = false;
-
-    const id = parseInt(projectId, 10);
+    const id = parseInt(projectId);
     if (isNaN(id)) {
       this.error = true;
       this.loading = false;

@@ -1,20 +1,20 @@
 <div class="min-h-screen p-2 sm:p-4 lg:p-6">
-  <!-- Loading State -->
   <div *ngIf="loading" class="flex flex-col items-center justify-center min-h-64 sm:min-h-96">
     <i class="pi pi-spin pi-spinner text-2xl sm:text-4xl text-primary mb-2 sm:mb-4"></i>
     <p class="text-sm sm:text-base text-surface-600">Carregando projeto...</p>
   </div>
 
-  <!-- Error State -->
   <div *ngIf="error && !loading" class="flex flex-col items-center justify-center min-h-64 sm:min-h-96">
-    <h2 class="text-xl sm:text-2xl font-bold text-red-500 mb-2 sm:mb-4">Projeto não encontrado</h2>
-    <p class="text-sm sm:text-base text-surface-600 mb-4 sm:mb-6 text-center">O projeto que você está procurando não existe ou foi removido.</p>
+    <h2 class="text-xl sm:text-2xl font-bold text-red-500 mb-2 sm:mb-4">
+      Projeto não encontrado
+    </h2>
+    <p class="text-sm sm:text-base text-surface-600 mb-4 sm:mb-6 text-center">
+      O projeto que você está procurando não existe ou foi removido.
+    </p>
     <p-button label="Voltar aos Projetos" icon="pi pi-arrow-left" severity="primary" (onClick)="goBack()"></p-button>
   </div>
 
-  <!-- Project Content -->
   <div *ngIf="project && !loading" class="max-w-full mx-auto px-2 sm:px-2 lg:px-4">
-    <!-- Back Button -->
     <div class="mb-3 sm:mb-4 mt-2 sm:mt-4">
       <p-button
         label="Voltar aos Projetos"
@@ -24,13 +24,10 @@
       </p-button>
     </div>
 
-    <!-- Main Layout: Responsive grid -->
     <div class="flex flex-col lg:flex-row gap-3 sm:gap-4 lg:gap-6">
-      <!-- Left: Project Description -->
       <div class="w-full lg:flex-[2] mb-3 sm:mb-4 lg:mb-0">
         <app-project-description-card [project]="project"></app-project-description-card>
       </div>
-      <!-- Right: Sidebar -->
       <div class="w-full lg:flex-[1]">
         <app-project-info-sidebar [project]="project"></app-project-info-sidebar>
       </div>
