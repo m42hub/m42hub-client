@@ -76,7 +76,6 @@ export class JoinProjectModalComponent {
         this.submitMessageType = 'success';
         this.isSubmitting = false;
 
-        // Close modal after a delay
         setTimeout(() => {
           this.close.emit();
           window.location.reload();

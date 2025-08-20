@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { CardModule } from 'primeng/card';
 import { TagModule } from 'primeng/tag';
 import { TooltipModule } from 'primeng/tooltip';
-import { ButtonModule } from 'primeng/button';
 import { AvatarModule } from 'primeng/avatar';
 
 export interface TeamMember {
@@ -18,7 +17,7 @@ export interface TeamMember {
 @Component({
   selector: 'app-team-card',
   standalone: true,
-  imports: [CommonModule, CardModule, TagModule, TooltipModule, ButtonModule, AvatarModule],
+  imports: [CommonModule, CardModule, TagModule, TooltipModule, AvatarModule],
   templateUrl: './team-card.component.html',
   styleUrl: './team-card.component.css'
 })

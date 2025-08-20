@@ -1,13 +1,14 @@
 <p-card class="w-full h-full">
   <ng-template pTemplate="header" *ngIf="showHeader">
     <div class="p-4">
-      <h4 class="text-sm sm:text-base font-bold text-800 dark:text-surface-0 text-center uppercase tracking-wide">Equipe</h4>
+      <h4 class="text-sm sm:text-base font-bold text-800 dark:text-surface-0 text-center uppercase tracking-wide">
+        Equipe
+      </h4>
     </div>
   </ng-template>
 
   <ng-template pTemplate="content">
-    <div class="flex flex-col gap-2 overflow-y-auto" [style]="{'max-height': maxHeight !== 'auto' ? maxHeight : 'none'}">
-      <!-- Display Mode -->
+    <div class="flex flex-col gap-2 overflow-y-auto">
       <div *ngIf="mode === 'display'" class="flex flex-col gap-2">
         <div *ngFor="let member of team" class="flex items-center gap-2 sm:gap-3 p-2 sm:p-3 bg-surface-100 dark:bg-surface-50 rounded-lg">
           <div class="flex-shrink-0">
@@ -32,7 +33,7 @@
                tooltipPosition="top"
                tooltipStyleClass="text-xs">{{ member.role }}</p>
           </div>
-          <!-- Manager Tag -->
+
           <p-tag *ngIf="member.isManager"
             [pTooltip]="'Idealizador'"
             tooltipPosition="top"
@@ -43,7 +44,6 @@
           </p-tag>
         </div>
 
-        <!-- Empty State -->
         <div *ngIf="team.length === 0" class="text-center p-6 text-surface-500 dark:text-surface-800">
           <i class="pi pi-users text-2xl mb-2 block"></i>
           <p class="text-sm">Nenhum membro na equipe</p>
@@ -70,22 +70,11 @@
               <p-tag *ngIf="member.isManager" value="Manager" severity="primary" class="text-xs"></p-tag>
             </div>
           </div>
-          <!-- <div class="flex-shrink-0 flex flex-col sm:flex-row gap-1">
-            <p-button
-              icon="pi pi-trash"
-              severity="danger"
-              size="small"
-              (onClick)="onRemoveMember(i, member)"
-              pTooltip="Remover da equipe"
-              class="text-xs">
-            </p-button>
-          </div> -->
         </div>
 
-        <!-- Empty State for Edit Mode -->
         <div *ngIf="team.length === 0" class="text-center p-6 text-surface-500 dark:text-surface-800 border-2 border-dashed border-surface-border rounded-lg">
           <i class="pi pi-users text-2xl mb-2 block"></i>
-          <p class="text-sm">Nenhum membro na equipe ainda</p>
+          <p class="text-sm">Nenhum membro na equipe</p>
         </div>
       </div>
     </div>

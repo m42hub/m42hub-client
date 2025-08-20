@@ -17,6 +17,7 @@ import { TagModule } from 'primeng/tag';
 export class HeaderComponent implements OnInit {
   darkMode = false;
   user$: Observable<User | null>;
+  showLogoutError = false;
 
   constructor(
     private router: Router,
@@ -30,7 +31,6 @@ export class HeaderComponent implements OnInit {
     this.router.navigate([path]);
   }
 
-  //TODO: Validar se realmente é assim que faz o togle de theme
   ngOnInit() {
     if (isPlatformBrowser(this.platformId)) {
       const savedTheme = localStorage.getItem('theme');
@@ -82,9 +82,7 @@ export class HeaderComponent implements OnInit {
         this.router.navigate(['/']);
       },
       error: (error) => {
-        console.error('Erro ao fazer logout:', error);
-        // Mesmo com erro, limpa o estado local e redireciona
-        this.router.navigate(['/']);
+        this.showLogoutError = true;
       },
     });
   }
