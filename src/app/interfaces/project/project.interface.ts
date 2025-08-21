@@ -1,9 +1,9 @@
-import { ProjectComplexity } from "./complexity.interface";
-import { ProjectMember } from "./member.interface";
-import { ProjectUnfilledRole } from "./role.interface";
-import { ProjectStatus } from "./status.interface";
-import { ProjectTool } from "./tool.interface";
-import { ProjectTopic } from "./topic.interface";
+import type { ProjectComplexity } from './complexity.interface';
+import type { ProjectMember } from './member.interface';
+import type { ProjectUnfilledRole } from './role.interface';
+import type { ProjectStatus } from './status.interface';
+import type { ProjectTool } from './tool.interface';
+import type { ProjectTopic } from './topic.interface';
 
 export interface Project {
   id: number;

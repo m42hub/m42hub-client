@@ -1,8 +1,8 @@
 <p-card
-  styleClass="rounded-xl overflow-hidden mx-auto shadow-xl">
+  styleClass=" w-full max-w-[480px] rounded-xl overflow-hidden mx-auto shadow-xl">
   <ng-template pTemplate="header">
     <div class="w-full h-32 rounded-t-xl overflow-hidden relative bg-gradient-to-r from-primary-400 to-primary-600">
-      <img *ngIf="showImage" [src]="getImageUrl()" alt="Banner do Projeto" class="absolute inset-0 w-full h-full object-cover" (error)="onImageError()" />
+  <img *ngIf="showImage" [src]="imageUrl" alt="Banner do Projeto" class="absolute inset-0 w-full h-full object-cover" (error)="onImageError()" />
     </div>
   </ng-template>
   <ng-template pTemplate="content">
@@ -20,39 +20,39 @@
         <span class="text-sm font-bold text-surface-500 uppercase tracking-wide">Tecnologias/Ferramentas</span>
         <div class="flex flex-wrap gap-1 mt-1">
           <p-tag
-            *ngFor="let tool of getTools()"
+            *ngFor="let tool of tools"
             [value]="tool"
             class="text-sm font-medium bg-surface-300 cursor-help"
             [pTooltip]="'Tecnologias/Ferramentas'"
             tooltipPosition="top"
             tooltipStyleClass="text-xs">
           </p-tag>
-          <span *ngIf="getTools().length === 0" class="text-sm text-surface-500">Nenhuma</span>
+          <span *ngIf="tools.length === 0" class="text-sm text-surface-500">Nenhuma</span>
         </div>
       </div>
 
       <!-- Temas/Tópicos -->
-      <div class="mb-4 min-h-24">
+      <div class="mb-4 min-h-30">
         <span class="text-sm font-bold text-surface-500 uppercase tracking-wide">Tópicos</span>
         <div class="flex flex-wrap gap-1 mt-1">
           <p-tag
-            *ngFor="let topic of getTopics()"
+            *ngFor="let topic of topics"
             [value]="topic"
             class="text-sm font-medium bg-surface-300 cursor-help"
             [pTooltip]="'Tópicos'"
             tooltipPosition="top"
             tooltipStyleClass="text-xs">
           </p-tag>
-          <span *ngIf="getTopics().length === 0" class="text-sm text-surface-500">Nenhum</span>
+          <span *ngIf="topics.length === 0" class="text-sm text-surface-500">Nenhum</span>
         </div>
       </div>
 
       <!-- Precisamos de: roles não preenchidas -->
-      <div class="mb-4 min-h-32">
+      <div class="mb-4 min-h-30">
         <span class="text-sm font-bold text-surface-500 uppercase tracking-wide">Vagas Disponíveis </span>
         <div class="flex flex-wrap gap-1 mt-1">
-          <p-tag *ngFor="let role of getUnfilledRoles()" [value]="role" class="text-sm font-medium bg-surface-300"></p-tag>
-          <span *ngIf="getUnfilledRoles().length === 0" class="text-sm text-surface-700">Nenhuma</span>
+          <p-tag *ngFor="let role of unfilledRoles" [value]="role" class="text-sm font-medium bg-surface-300"></p-tag>
+          <span *ngIf="unfilledRoles.length === 0" class="text-sm text-surface-700">Nenhuma</span>
         </div>
       </div>
 
@@ -60,33 +60,33 @@
       <div class="mb-4 grid grid-cols-3 gap-x-8 items-center text-xs text-surface-500 min-h-6">
         <div>
           <span class="font-bold"><i class="pi pi-calendar mr-1"></i>Criação: </span>
-          <span>{{ formatDate(project.creationDate) }}</span>
+          <span>{{ creationDateFormatado }}</span>
         </div>
         <div>
           <span class="font-bold"><i class="pi pi-calendar mr-1"></i>Início: </span>
-          <span>{{ formatDate(project.startDate) }}</span>
+          <span>{{ startDateFormatado }}</span>
         </div>
         <div>
           <span class="font-bold"><i class="pi pi-calendar mr-1"></i>Prevista: </span>
-          <span>{{ formatDate(project.endDate) }}</span>
+          <span>{{ endDateFormatado }}</span>
         </div>
       </div>
 
       <div class="flex items-center justify-between mt-2 gap-4 min-h-12">
         <div class="flex flex-wrap gap-1">
           <p-tag
-            *ngFor="let tag of getGeneralTags()"
+            *ngFor="let tag of generalTags"
             [value]="tag.label"
             class="text-xs bg-surface-200 cursor-help"
             size="small"
-            [pTooltip]="getGeneralTagTooltip(tag)"
+            [pTooltip]="tag.tooltip"
             tooltipPosition="top"
             tooltipStyleClass="text-xs">
           </p-tag>
         </div>
         <div class="flex gap-2">
           <button
-            *ngIf="isUserManager()"
+            *ngIf="isUserManager"
             pButton
             type="button"
             label="Editar"
@@ -94,9 +94,9 @@
             iconPos="left"
             size="small"
             class="p-button-outlined p-button-primary p-2 h-12 min-w-24"
-            (click)="editProject(project.id)">
+            (click)="onEditProject()">
           </button>
-          <button pButton type="button" label="Ver detalhes" icon="pi pi-eye" iconPos="left" size="small" class="p-button-md p-2 h-12 min-w-32 ml-2" (click)="viewProjectDetails(project.id)"></button>
+          <button pButton type="button" label="Ver detalhes" icon="pi pi-eye" iconPos="left" size="small" class="p-button-md p-2 h-12 min-w-32 ml-2" (click)="onViewDetails()"></button>
         </div>
       </div>
     </div>

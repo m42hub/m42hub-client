@@ -8,12 +8,7 @@ import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
   selector: 'app-home',
-  imports: [
-    CommonModule,
-    ButtonModule,
-    CardModule,
-    TagModule
-  ],
+  imports: [CommonModule, ButtonModule, CardModule, TagModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
 })
@@ -22,7 +17,7 @@ export class HomeComponent {
 
   constructor(
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
   ) {}
 
   selectOption(option: 'idea' | 'explore') {
@@ -31,15 +26,14 @@ export class HomeComponent {
 
   createProject() {
     if (this.authService.isLoggedIn) {
-      this.router.navigate(['/projects/new']);
+      void this.router.navigate(['/projects/new']);
     } else {
-      // Armazena a URL de destino antes de redirecionar para login
       this.authService.setRedirectUrl('/projects/new');
-      this.router.navigate(['/login']);
+      void this.router.navigate(['/login']);
     }
   }
 
   exploreProjects() {
-    this.router.navigate(['/projects']);
+    void this.router.navigate(['/projects']);
   }
 }

@@ -1,8 +1,8 @@
 import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
-import { Observable } from 'rxjs';
+import type { Observable } from 'rxjs';
 import { BaseApiService } from '../base/base-api.service';
 import { HttpClient } from '@angular/common/http';
-import { ApplyProjectMember, ProjectMember } from '../../interfaces/project/member.interface';
+import type { ApplyProjectMember, ProjectMember } from '../../interfaces/project/member.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -10,10 +10,7 @@ import { ApplyProjectMember, ProjectMember } from '../../interfaces/project/memb
 export class ProjectMemberService extends BaseApiService<ProjectMember> {
   private readonly endpoint = '/v1/project/member';
 
-  constructor(
-    http: HttpClient,
-    @Inject(PLATFORM_ID) platformId: Object
-  ) {
+  constructor(http: HttpClient, @Inject(PLATFORM_ID) platformId: Object) {
     super(http, platformId);
   }
 
@@ -34,6 +31,6 @@ export class ProjectMemberService extends BaseApiService<ProjectMember> {
   }
 
   reject(id: number, applicationFeedback: string): Observable<ProjectMember> {
-    return this.patch<ProjectMember>(`${this.endpoint}/reject/${id}`, {applicationFeedback});
+    return this.patch<ProjectMember>(`${this.endpoint}/reject/${id}`, { applicationFeedback });
   }
 }

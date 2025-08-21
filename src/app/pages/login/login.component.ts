@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
+import type { OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { Validators, ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth/auth.service';
 import { ButtonModule } from 'primeng/button';
@@ -21,10 +24,10 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
     PasswordModule,
     CardModule,
     MessageModule,
-    ProgressSpinnerModule
+    ProgressSpinnerModule,
   ],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  styleUrl: './login.component.css',
 })
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
@@ -34,24 +37,23 @@ export class LoginComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
   ) {}
 
   ngOnInit() {
     this.initializeForm();
 
-    // Se já estiver logado, redireciona para home ou URL de redirecionamento
     if (this.authService.isLoggedIn) {
       const redirectUrl = this.authService.getRedirectUrl() || '/';
       this.authService.clearRedirectUrl();
-      this.router.navigate([redirectUrl]);
+      void this.router.navigate([redirectUrl]);
     }
   }
 
   private initializeForm() {
     this.loginForm = this.fb.group({
       username: ['', [Validators.required, Validators.minLength(3)]],
-      password: ['', [Validators.required, Validators.minLength(6)]]
+      password: ['', [Validators.required, Validators.minLength(6)]],
     });
   }
 
@@ -63,21 +65,27 @@ export class LoginComponent implements OnInit {
       const { username, password } = this.loginForm.value;
 
       this.authService.login(username, password).subscribe({
-        next: (response) => {
+        next: () => {
           this.loading = false;
-          // Sucesso - navega para a URL de redirecionamento ou página inicial
           const redirectUrl = this.authService.getRedirectUrl() || '/';
           this.authService.clearRedirectUrl();
-          this.router.navigate([redirectUrl]);
+          void this.router.navigate([redirectUrl]);
         },
         error: (error) => {
           this.loading = false;
           this.errorMessage = this.getErrorMessage(error);
-        }
+        },
       });
     } else {
       this.markFormGroupTouched();
     }
+  }
+
+  private markFormGroupTouched() {
+    Object.keys(this.loginForm.controls).forEach((key) => {
+      const control = this.loginForm.get(key);
+      control?.markAsTouched();
+    });
   }
 
   private getErrorMessage(error: any): string {
@@ -94,14 +102,6 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  private markFormGroupTouched() {
-    Object.keys(this.loginForm.controls).forEach(key => {
-      const control = this.loginForm.get(key);
-      control?.markAsTouched();
-    });
-  }
-
-  // Getters para facilitar acesso aos controles do formulário
   get usernameControl() {
     return this.loginForm.get('username');
   }

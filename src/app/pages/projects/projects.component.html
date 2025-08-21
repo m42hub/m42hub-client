@@ -1,12 +1,10 @@
-<div class="container mx-auto py-2 sm:py-4 min-h-screen p-2 sm:p-4">
-  <!-- Header com título e botões -->
-  <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 sm:gap-0 mb-4 sm:mb-0">
+<div class="container mx-auto py-2 sm:py-4 min-h-screen p-2">
+  <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-4 sm:mb-0">
     <div>
       <h1 class="text-2xl sm:text-3xl font-bold text-surface-900">Projetos</h1>
       <p class="text-sm sm:text-base text-surface-600">Encontre projetos para colaborar</p>
     </div>
 
-    <!-- Botões de Filtros e Criar Projeto -->
     <div class="flex justify-between items-center gap-3">
       <p-button
         label="Filtros"
@@ -28,6 +26,8 @@
     </div>
   </div>
 
+
+  <!-- TODO: Mover card de filtros para o componente "filters/project-filter" -->
   <!-- Card dos Filtros -->
   <div *ngIf="showFilters" class="my-2 sm:my-4 animate-fade-in-up relative z-50">
     <div class="bg-surface-50 border border-surface-200 rounded-2xl">
@@ -156,9 +156,8 @@
     </div>
   </div>
 
-  <!-- Grid de projetos -->
   <div class="flex justify-center mt-4 sm:mt-6">
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-2 sm:gap-4 items-stretch w-full">
+    <div class="justify-center grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-2 sm:gap-4 items-stretch w-full">
       <app-project-summary-card
         *ngFor="let project of projects; let i = index"
         [project]="project"
@@ -168,7 +167,8 @@
     </div>
   </div>
 
-  <!-- Controles de paginação melhorados -->
+  <!-- TODO: Tentar utilizar componente de paginação do próprio PrimeNG, mas sem alterar a lógica de request por paginação -->
+  <!-- Paginação -->
   <div *ngIf="totalPages > 1" class="flex flex-col sm:flex-row justify-center items-center gap-2 sm:gap-4 m-2 sm:m-4 rounded-2xl">
     <div class="flex items-center gap-1 sm:gap-2">
       <button
@@ -181,7 +181,6 @@
         class="p-button-sm">
       </button>
 
-      <!-- Página anterior -->
       <button
         pButton
         type="button"
@@ -191,14 +190,12 @@
         pTooltip="Página anterior">
       </button>
 
-      <!-- Números das páginas -->
       <div class="flex items-center gap-1 mx-2">
         <span class="text-sm font-medium text-surface-700">
           Página {{ currentPage }} de {{ totalPages }}
         </span>
       </div>
 
-      <!-- Próxima página -->
       <button
         pButton
         type="button"
@@ -208,7 +205,6 @@
         pTooltip="Próxima página">
       </button>
 
-      <!-- Última página -->
       <button
         pButton
         type="button"
@@ -219,7 +215,7 @@
       </button>
     </div>
 
-  <!-- Estado vazio -->
+  <!-- FALLBACK -->
   <div *ngIf="projects.length === 0" class="text-center py-16">
     <div class="max-w-md mx-auto">
       <i class="pi pi-search text-6xl text-surface-300 mb-6"></i>

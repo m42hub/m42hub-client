@@ -177,6 +177,11 @@ Adoramos contribuições da comunidade! Veja como você pode ajudar:
    git push origin feature/amazing-feature
    ```
 6. **Abra um Pull Request**
+    - Vá para seu fork no GitHub
+    - Clique em "New Pull Request"
+    - **Aponte diretamente para a branch `main`** do repositório original
+    - Descreva suas mudanças detalhadamente
+
 
 ### 📋 Padrões de Código
 

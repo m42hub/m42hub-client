@@ -6,7 +6,7 @@ import { ButtonModule } from 'primeng/button';
   selector: 'app-footer',
   imports: [CommonModule, ButtonModule],
   templateUrl: './footer.component.html',
-  styleUrl: './footer.component.css'
+  styleUrl: './footer.component.css',
 })
 export class FooterComponent {
   private isBrowser = false;

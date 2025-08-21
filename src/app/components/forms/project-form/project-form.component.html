@@ -58,7 +58,7 @@
             class="w-full"
             optionLabel="label"
             optionValue="value"
-            (onChange)="onComplexidadeChange($event)"
+            (onChange)="onComplexidadeChange()"
             formControlName="selectedComplexidade"
           ></p-select>
         </div>
@@ -82,6 +82,7 @@
         >
           <span *ngIf="projectForm.get('summary')?.errors?.['required']">Resumo é obrigatório</span>
           <span *ngIf="projectForm.get('summary')?.errors?.['minlength']">Resumo deve ter pelo menos 10 caracteres</span>
+          <span *ngIf="projectForm.get('summary')?.errors?.['maxlength']">Resumo deve ter no máximo 255 caracteres</span>
         </small>
       </div>
 
@@ -207,7 +208,7 @@
     </p-card>
 
     <!-- Equipe (apenas na edição) -->
-    <p-card header="Equipe do Projeto" *ngIf="isFormReady && isEditMode && isBrowser && projectForm && projectForm.get('team')" styleClass="rounded-none">
+  <p-card header="Equipe do Projeto" *ngIf="showTeamCard" styleClass="rounded-none">
       <p-tabs value="0" size="small" >
         <div class="flex justify-center ">
           <p-tablist class="flex">
@@ -224,7 +225,7 @@
               </div>
               <!-- Team Card Component -->
               <app-team-card
-                [team]="getTeamForCard('approved')"
+                [team]="teamApproved"
                 mode="edit"
                 [showHeader]="false"
                 (removeMember)="onTeamCardRemoveMember($event)"
@@ -240,7 +241,7 @@
               </div>
 
               <app-request-card
-                [requests]="getTeamForCard('pending')"
+                [requests]="teamPending"
                 [showHeader]="false"
                 (acceptRequest)="onRequestCardAcceptRequest($event)"
                 (rejectRequest)="onRequestCardRejectRequest($event)">
@@ -274,7 +275,7 @@
     </p-card>
 
     <!-- Tags -->
-    <p-card header="Tags do Projeto" *ngIf="isFormReady && projectForm && projectForm.get('tags')" styleClass="rounded-none">
+  <p-card header="Tags do Projeto" *ngIf="showTagsCard" styleClass="rounded-none">
       <div class="flex flex-col gap-6">
         <div class="flex flex-col gap-4">
                   <!-- Tecnologias/Ferramentas -->
@@ -291,7 +292,7 @@
               optionValue="value"
               display="chip"
               [maxSelectedLabels]="10"
-              (onChange)="onTecnologiasFerramentasChange($event)"
+              (onChange)="onTecnologiasFerramentasChange()"
               formControlName="selectedTecnologiasFerramentas"
             ></p-multiSelect>
           </div>
@@ -310,19 +311,19 @@
               optionValue="value"
               display="chip"
               [maxSelectedLabels]="5"
-              (onChange)="onAssuntosChange($event)"
+              (onChange)="onAssuntosChange()"
               formControlName="selectedAssuntos"
             ></p-multiSelect>
           </div>
         </div>
 
         <!-- Preview das tags selecionadas -->
-        <div class="flex flex-col gap-3" *ngIf="getTagsArray().length > 0">
+        <div class="flex flex-col gap-3" *ngIf="tagsArray.length > 0">
           <h5 class="font-semibold">Tags Selecionadas:</h5>
           <div class="flex flex-wrap gap-2">
             <p-tag
               class="text-white text-shadow-blue-950 text-shadow-2xs"
-              *ngFor="let tag of getTagsArray().value; let i = index"
+              *ngFor="let tag of tagsArray; let i = index"
               [value]="tag.name"
               [style]="{'background-color': tag.color}"
             ></p-tag>
@@ -332,7 +333,7 @@
     </p-card>
 
     <!-- Função do Manager - apenas para criação de novos projetos -->
-    <p-card header="Função do Manager" *ngIf="!isEditMode && isFormReady && isBrowser && projectForm && projectForm.get('managerRoleId')" styleClass="rounded-none">
+  <p-card header="Função do Manager" *ngIf="showManagerCard" styleClass="rounded-none">
       <div class="flex flex-col gap-4">
         <div class="flex flex-col gap-2">
           <label class="flex items-center font-semibold">
@@ -359,7 +360,7 @@
     </p-card>
 
     <!-- Vagas Não Preenchidas -->
-    <p-card header="Vagas Não Preenchidas" *ngIf="isFormReady && isBrowser && projectForm && projectForm.get('unfilledRoles')" styleClass="rounded-t-none">
+  <p-card header="Vagas Não Preenchidas" *ngIf="showUnfilledRolesCard" styleClass="rounded-t-none">
       <div class="flex flex-col gap-4">
         <div class="flex flex-col gap-2">
           <label class="flex items-center font-semibold">
@@ -419,7 +420,7 @@
       <p-button
         label="Cancelar"
         severity="secondary"
-        (onClick)="onCancel()"
+  (onClick)="onCancel()"
       ></p-button>
       <p-button
         type="submit"

@@ -1,13 +1,18 @@
-import { Component, OnInit, PLATFORM_ID, Inject } from '@angular/core';
+import type { OnInit } from '@angular/core';
+import { Component, PLATFORM_ID, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { ActivatedRoute, Router } from '@angular/router';
-import { CardModule } from 'primeng/card';
+import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { ProjectFormComponent } from '../../components/forms/project-form/project-form.component';
 import { DisclaimerModalComponent } from '../../components/modals/disclaimer-modal/disclaimer-modal.component';
-import { Project, CreateProjectRequest, UpdateProjectRequest } from '../../interfaces/project/project.interface';
+import type {
+  Project,
+  CreateProjectRequest,
+  UpdateProjectRequest,
+} from '../../interfaces/project/project.interface';
 import { ProjectService } from '../../services/project/project.service';
 
 @Component({
@@ -15,15 +20,15 @@ import { ProjectService } from '../../services/project/project.service';
   standalone: true,
   imports: [
     CommonModule,
-    CardModule,
     ButtonModule,
     ToastModule,
     ProjectFormComponent,
-    DisclaimerModalComponent
+    DisclaimerModalComponent,
   ],
   providers: [MessageService],
   templateUrl: './project-editor.component.html',
-  styleUrl: './project-editor.component.css'
+  styleUrl: './project-editor.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProjectEditorComponent implements OnInit {
   project?: Project;
@@ -37,7 +42,7 @@ export class ProjectEditorComponent implements OnInit {
     private router: Router,
     private projectService: ProjectService,
     private messageService: MessageService,
-    @Inject(PLATFORM_ID) private platformId: Object
+    @Inject(PLATFORM_ID) private platformId: Object,
   ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
   }
@@ -47,7 +52,6 @@ export class ProjectEditorComponent implements OnInit {
   }
 
   private checkEditMode(): void {
-    // Permite buscar o id tanto por param quanto por query
     let projectId = this.route.snapshot.paramMap.get('id');
     if (!projectId) {
       projectId = this.route.snapshot.queryParamMap.get('id');
@@ -59,16 +63,15 @@ export class ProjectEditorComponent implements OnInit {
       this.project = undefined;
       this.projectLoaded = true;
       this.showDisclaimerModal = true;
-    } else if ((url.includes('/edit') || !!projectId) && projectId) {
+    } else if (url.includes('/edit') && projectId) {
       this.isEditMode = true;
       this.loadProject(projectId);
     } else {
-      this.router.navigate(['/projects/new']);
+      void this.router.navigate(['/projects']);
     }
   }
 
   private loadProject(projectId: string): void {
-    // Só carrega dados se estivermos no browser
     if (!isPlatformBrowser(this.platformId)) {
       this.projectLoaded = true;
       return;
@@ -84,22 +87,21 @@ export class ProjectEditorComponent implements OnInit {
           this.messageService.add({
             severity: 'error',
             summary: 'Erro',
-            detail: 'Projeto não encontrado'
+            detail: 'Projeto não encontrado',
           });
-          this.router.navigate(['/projects']);
+          void this.router.navigate(['/projects']);
         }
       },
-      error: (error) => {
+      error: (_error) => {
         this.messageService.add({
           severity: 'error',
           summary: 'Erro',
-          detail: 'Não foi possível carregar o projeto'
+          detail: 'Não foi possível carregar o projeto',
         });
-        this.router.navigate(['/projects']);
-      }
+        void this.router.navigate(['/projects']);
+      },
     });
   }
-
 
   onSave(request: CreateProjectRequest | UpdateProjectRequest): void {
     if (this.isEditMode && this.project) {
@@ -109,28 +111,26 @@ export class ProjectEditorComponent implements OnInit {
     }
   }
 
-
   private createProject(request: CreateProjectRequest): void {
     this.projectService.create(request).subscribe({
       next: () => {
         this.messageService.add({
           severity: 'success',
           summary: 'Sucesso',
-          detail: 'Projeto criado com sucesso!'
+          detail: 'Projeto criado com sucesso!',
         });
-        this.router.navigate(['/projects']);
+        void this.router.navigate(['/projects']);
       },
       error: (error) => {
         console.error('Erro ao criar projeto:', error);
         this.messageService.add({
           severity: 'error',
           summary: 'Erro',
-          detail: 'Não foi possível criar o projeto'
+          detail: 'Não foi possível criar o projeto',
         });
-      }
+      },
     });
   }
-
 
   private updateProject(id: number, request: UpdateProjectRequest): void {
     this.projectService.update(id, request).subscribe({
@@ -138,27 +138,27 @@ export class ProjectEditorComponent implements OnInit {
         this.messageService.add({
           severity: 'success',
           summary: 'Sucesso',
-          detail: 'Projeto atualizado com sucesso!'
+          detail: 'Projeto atualizado com sucesso!',
         });
-        this.router.navigate(['/projects']);
+        void this.router.navigate(['/projects']);
       },
       error: (error) => {
         console.error('Erro ao atualizar projeto:', error);
         this.messageService.add({
           severity: 'error',
           summary: 'Erro',
-          detail: 'Não foi possível atualizar o projeto'
+          detail: 'Não foi possível atualizar o projeto',
         });
-      }
+      },
     });
   }
 
   onCancel(): void {
-    this.router.navigate(['/projects']);
+    void this.router.navigate(['/projects']);
   }
 
   goBack(): void {
-    this.router.navigate(['/projects']);
+    void this.router.navigate(['/projects']);
   }
 
   onDisclaimerAccepted(): void {
@@ -166,6 +166,6 @@ export class ProjectEditorComponent implements OnInit {
   }
 
   onDisclaimerCancelled(): void {
-    this.router.navigate(['/projects']);
+    void this.router.navigate(['/projects']);
   }
 }

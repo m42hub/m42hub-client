@@ -1,8 +1,8 @@
 import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
-import { Observable } from 'rxjs';
+import type { Observable } from 'rxjs';
 import { BaseApiService } from '../base/base-api.service';
 import { HttpClient } from '@angular/common/http';
-import { CreateProjectStatus, ProjectStatus } from '../../interfaces/project/status.interface';
+import type { ProjectStatus } from '../../interfaces/project/status.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -10,10 +10,7 @@ import { CreateProjectStatus, ProjectStatus } from '../../interfaces/project/sta
 export class ProjectStatusService extends BaseApiService<ProjectStatus> {
   private readonly endpoint = '/v1/project/status';
 
-  constructor(
-    http: HttpClient,
-    @Inject(PLATFORM_ID) platformId: Object
-  ) {
+  constructor(http: HttpClient, @Inject(PLATFORM_ID) platformId: Object) {
     super(http, platformId);
   }
 

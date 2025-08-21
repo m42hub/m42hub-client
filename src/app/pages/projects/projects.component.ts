@@ -1,4 +1,5 @@
-import { Component, OnInit, OnDestroy, HostListener, Inject, PLATFORM_ID } from '@angular/core';
+import type { OnInit, OnDestroy } from '@angular/core';
+import { Component, HostListener, Inject, PLATFORM_ID } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -9,7 +10,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { CardModule } from 'primeng/card';
 import { TooltipModule } from 'primeng/tooltip';
 import { ProjectSummaryCardComponent } from '../../components/cards/project-summary-card/project-summary-card.component';
-import { Project, ProjectSearchParams } from '../../interfaces/project/project.interface';
+import type { Project, ProjectSearchParams } from '../../interfaces/project/project.interface';
 import { ProjectService } from '../../services/project/project.service';
 import { ProjectComplexityService } from '../../services/project/complexity.service';
 import { ProjectStatusService } from '../../services/project/status.service';
@@ -17,11 +18,11 @@ import { ProjectToolService } from '../../services/project/tool.service';
 import { ProjectTopicService } from '../../services/project/topic.service';
 import { ProjectRoleService } from '../../services/project/role.service';
 import { AuthService } from '../../services/auth/auth.service';
-import { ProjectComplexity } from '../../interfaces/project/complexity.interface';
-import { ProjectStatus } from '../../interfaces/project/status.interface';
-import { ProjectTool } from '../../interfaces/project/tool.interface';
-import { ProjectTopic } from '../../interfaces/project/topic.interface';
-import { ProjectRole } from '../../interfaces/project/role.interface';
+import type { ProjectComplexity } from '../../interfaces/project/complexity.interface';
+import type { ProjectStatus } from '../../interfaces/project/status.interface';
+import type { ProjectTool } from '../../interfaces/project/tool.interface';
+import type { ProjectTopic } from '../../interfaces/project/topic.interface';
+import type { ProjectRole } from '../../interfaces/project/role.interface';
 
 @Component({
   selector: 'app-projects-page',
@@ -47,20 +48,16 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   totalPages = 1;
   totalElements = 0;
 
-  // Expose Math for template
   Math = Math;
 
-  // Controle de exibição dos filtros
   showFilters = false;
 
-  // Dados para os filtros
   complexities: ProjectComplexity[] = [];
   statuses: ProjectStatus[] = [];
   tools: ProjectTool[] = [];
   topics: ProjectTopic[] = [];
   roles: ProjectRole[] = [];
 
-  // Filtros
   filters: ProjectSearchParams = {
     page: 0,
     limit: this.pageSize,
@@ -98,21 +95,21 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     private topicService: ProjectTopicService,
     private roleService: ProjectRoleService,
     private authService: AuthService,
-    @Inject(PLATFORM_ID) private platformId: Object
+    @Inject(PLATFORM_ID) private platformId: Object,
   ) {}
 
   ngOnInit(): void {
     this.updatePageSizeForScreen();
 
-    // Só carrega dados se estivermos no browser (não durante SSR)
     if (isPlatformBrowser(this.platformId)) {
       this.loadFilterData();
       this.loadProjects();
     }
   }
 
+  //TODO: validar se realmente é necessário ngOnDestroy
   ngOnDestroy(): void {
-    // Cleanup se necessário
+    // Método intencionalmente vazio para cumprir interface OnDestroy
   }
 
   @HostListener('window:resize', ['$event'])
@@ -122,11 +119,12 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     }
   }
 
-  // Breakpoints para responsividade
   private breakpoints = {
-    sm: 640, // Tailwind sm breakpoint
-    md: 768, // Tailwind md breakpoint
-    lg: 1024, // Tailwind lg breakpoint
+    sm: 640,
+    md: 768,
+    lg: 1024,
+    xl: 1280,
+    xl2: 1536,
   };
 
   private updatePageSizeForScreen(): void {
@@ -137,39 +135,31 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     const width = window.innerWidth;
     let newPageSize: number;
 
-    if (width < this.breakpoints.sm) {
-      // Extra small screens: 1 item
+    if (width < this.breakpoints.lg) {
       newPageSize = 1;
-    } else if (width < this.breakpoints.md) {
-      // Small screens: 1 item
+    } else if (width < this.breakpoints.xl2) {
       newPageSize = 2;
-    } else if (width < this.breakpoints.lg) {
-      // Medium screens: 2 items
-      newPageSize = 3;
     } else {
-      // Large screens and above: 3 items
       newPageSize = 3;
     }
 
     if (newPageSize !== this.pageSize) {
       this.pageSize = newPageSize;
       this.filters.limit = this.pageSize;
-      this.currentPage = 1; // Reset to first page when page size changes
+      this.currentPage = 1;
 
-      // Só recarrega os projetos se o componente já foi inicializado
       if (this.projects.length > 0 || this.totalElements > 0) {
         this.loadProjects();
       }
     }
   }
 
+  //TODO: Mover lógica de filtros para o  componente "filters/project-filter"
   loadFilterData(): void {
-    // Só carrega dados se estivermos no browser
     if (!isPlatformBrowser(this.platformId)) {
       return;
     }
 
-    // Carregar dados para os filtros
     this.complexityService.getAll().subscribe((complexities) => {
       this.complexities = complexities;
     });
@@ -191,19 +181,17 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     });
   }
 
+  //TODO: Corrigir lógica de acordo com o componente  componente "filters/project-filter"
   loadProjects(): void {
-    // Só carrega dados se estivermos no browser
     if (!isPlatformBrowser(this.platformId)) {
       return;
     }
 
-    // Limpar valores undefined/null antes de enviar
     const searchParams: ProjectSearchParams = {
       page: this.currentPage - 1,
       limit: this.pageSize,
     };
 
-    // Adicionar filtros apenas se tiverem valor
     if (this.filters.sortBy) {
       searchParams.sortBy = this.filters.sortBy;
       searchParams.sortDirection = this.filters.sortDirection;
@@ -211,18 +199,14 @@ export class ProjectsComponent implements OnInit, OnDestroy {
 
     if (
       this.filters.complexity &&
-      (Array.isArray(this.filters.complexity)
-        ? this.filters.complexity.length > 0
-        : true)
+      (Array.isArray(this.filters.complexity) ? this.filters.complexity.length > 0 : true)
     ) {
       searchParams.complexity = this.filters.complexity;
     }
 
     if (
       this.filters.status &&
-      (Array.isArray(this.filters.status)
-        ? this.filters.status.length > 0
-        : true)
+      (Array.isArray(this.filters.status) ? this.filters.status.length > 0 : true)
     ) {
       searchParams.status = this.filters.status;
     }
@@ -236,18 +220,14 @@ export class ProjectsComponent implements OnInit, OnDestroy {
 
     if (
       this.filters.topics &&
-      (Array.isArray(this.filters.topics)
-        ? this.filters.topics.length > 0
-        : true)
+      (Array.isArray(this.filters.topics) ? this.filters.topics.length > 0 : true)
     ) {
       searchParams.topics = this.filters.topics;
     }
 
     if (
       this.filters.unfilledRoles &&
-      (Array.isArray(this.filters.unfilledRoles)
-        ? this.filters.unfilledRoles.length > 0
-        : true)
+      (Array.isArray(this.filters.unfilledRoles) ? this.filters.unfilledRoles.length > 0 : true)
     ) {
       searchParams.unfilledRoles = this.filters.unfilledRoles;
     }
@@ -272,6 +252,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     this.loadProjects();
   }
 
+  //TODO: Mover lógica de filtros para o  componente "filters/project-filter"
   onSortChange(): void {
     if (this.selectedSort && this.selectedSort.value) {
       this.filters.sortBy = this.selectedSort.value.sortBy;
@@ -283,6 +264,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     this.onFilterChange();
   }
 
+  //TODO: Mover lógica de filtros para o  componente "filters/project-filter"
   clearFilters(): void {
     this.filters = {
       page: 0,
@@ -312,11 +294,10 @@ export class ProjectsComponent implements OnInit, OnDestroy {
 
   createNewProject(): void {
     if (this.authService.isLoggedIn) {
-      this.router.navigate(['/projects/new']);
+      void this.router.navigate(['/projects/new']);
     } else {
-      // Armazena a URL de destino antes de redirecionar para login
       this.authService.setRedirectUrl('/projects/new');
-      this.router.navigate(['/login']);
+      void this.router.navigate(['/login']);
     }
   }
 

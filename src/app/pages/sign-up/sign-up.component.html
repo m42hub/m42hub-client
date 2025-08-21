@@ -4,19 +4,20 @@
   (cancelled)="onDisclaimerCancelled()">
 </app-disclaimer-modal>
 
-<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-500 to-primary-700 p-2 sm:p-4" *ngIf="!showDisclaimerModal">
+<div *ngIf="!showDisclaimerModal" class="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-500 to-primary-700 p-2 sm:p-4">
   <div class="w-full max-w-3xl">
     <div class="bg-surface-900 dark:bg-surface-0 rounded-xl shadow-2xl overflow-hidden animate-fade-in-up">
-      <!-- Header -->
       <div class="text-center p-3 sm:p-4">
-        <img src="/logo.png" alt="M42Hub" class="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-2 sm:mb-4 rounded-lg" />
-        <h1 class="text-xl sm:text-2xl font-bold text-surface-0 dark:text-surface-900 mb-1 sm:mb-2">Criar Conta no M42Hub</h1>
-        <p class="text-surface-300 dark:text-surface-600 text-xs sm:text-sm">Preencha os dados para criar sua conta</p>
+        <img src="/logo.png" alt="M42Hub" class="w-25 h-25 mx-auto mb-2 sm:mb-4 rounded-lg" />
+        <h1 class="text-xl sm:text-2xl font-bold text-surface-0 dark:text-surface-900 mb-1 sm:mb-2">
+          Criar Conta no M42Hub
+        </h1>
+        <p class="text-surface-300 dark:text-surface-600 text-xs sm:text-sm">
+          Preencha os dados para criar sua conta
+        </p>
       </div>
 
-      <!-- Content -->
       <div class="px-4 sm:px-8 pb-4 sm:pb-6">
-        <!-- Success Message -->
         <p-message
           *ngIf="successMessage"
           severity="success"
@@ -24,7 +25,6 @@
           class="mb-6">
         </p-message>
 
-        <!-- Error Message -->
         <p-message
           *ngIf="errorMessage"
           severity="error"
@@ -32,10 +32,7 @@
           class="mb-6">
         </p-message>
 
-        <!-- Sign Up Form -->
         <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()" class="space-y-4">
-
-          <!-- Username Field -->
           <div>
             <label for="username" class="block text-sm font-medium text-surface-200 dark:text-surface-700 mb-2">
               Nome de Usuário
@@ -64,7 +61,6 @@
             </small>
           </div>
 
-          <!-- Email Field -->
           <div>
             <label for="email" class="block text-sm font-medium text-surface-200 dark:text-surface-700 mb-2">
               Email
@@ -90,9 +86,7 @@
             </small>
           </div>
 
-          <!-- First Name and Last Name Row -->
           <div class="flex flex-row gap-4">
-            <!-- First Name Field -->
             <div class="flex-1">
               <label for="firstName" class="block text-sm font-medium text-surface-200 dark:text-surface-700 mb-2">
                 Nome
@@ -118,7 +112,6 @@
               </small>
             </div>
 
-            <!-- Last Name Field -->
             <div class="flex-1">
               <label for="lastName" class="block text-sm font-medium text-surface-200 dark:text-surface-700 mb-2">
                 Sobrenome
@@ -145,7 +138,6 @@
             </div>
           </div>
 
-          <!-- Password Field -->
           <div>
             <label for="password" class="block text-sm font-medium text-surface-200 dark:text-surface-700 mb-2">
               Senha
@@ -176,7 +168,6 @@
             </small>
           </div>
 
-          <!-- Confirm Password Field -->
           <div>
             <label for="confirmPassword" class="block text-sm font-medium text-surface-200 dark:text-surface-700 mb-2">
               Confirmar Senha
@@ -204,7 +195,6 @@
             </small>
           </div>
 
-          <!-- Sign Up Button -->
           <div class="pt-2 flex justify-center">
             <p-button
               type="submit"
@@ -217,7 +207,6 @@
           </div>
         </form>
 
-        <!-- Footer Links -->
         <div class="mt-4 text-center">
           <p class="text-surface-400 dark:text-surface-600 text-sm">
             Já tem uma conta?

@@ -1,17 +1,19 @@
 <p-card class="w-full h-full">
   <ng-template pTemplate="header" *ngIf="showHeader">
     <div class="p-4">
-      <h4 class="text-sm sm:text-base font-bold text-800 dark:text-surface-0 text-center uppercase tracking-wide">Solicitações Pendentes</h4>
+      <h4 class="text-sm sm:text-base font-bold text-800 dark:text-surface-0 text-center uppercase tracking-wide">
+        Solicitações Pendentes
+      </h4>
     </div>
   </ng-template>
 
   <ng-template pTemplate="content">
-    <div class="flex flex-col gap-3 overflow-y-auto" [style]="{'max-height': maxHeight !== 'auto' ? maxHeight : 'none'}">
-      <div *ngFor="let request of requests" class="p-4 border border-surface-border rounded-lg bg-surface-card dark:bg-surface-50">
+    <div class="flex flex-col gap-3 overflow-y-auto">
+  <div *ngFor="let request of requestsWithFormattedDate" class="p-4 border border-surface-border rounded-lg bg-surface-card dark:bg-surface-50">
         <div class="flex items-start gap-3">
           <div class="flex-shrink-0">
             <p-avatar
-              [image]="getImageUrl(request.photo)"
+              [image]="request.photoUrl"
               size="large"
               shape="circle"
               (onImageError)="onImageError($event)"
@@ -22,16 +24,19 @@
             <div class="flex justify-between items-start">
               <div class="flex-1 min-w-0">
                 <p class="text-md font-bold text-surface-950 truncate"
-                   [pTooltip]="request.name"
-                   tooltipPosition="top"
-                   tooltipStyleClass="text-xs">{{ request.name }}</p>
+                  [pTooltip]="request.name"
+                  tooltipPosition="top"
+                  tooltipStyleClass="text-xs">{{ request.name }}</p>
+
+                <p *ngIf="request.username" class="text-xs text-surface-900 truncate mb-2"> {{ `@${request.username}` }}</p>
+
                 <p class="text-sm text-surface-800 truncate"
                    [pTooltip]="request.role"
                    tooltipPosition="top"
                    tooltipStyleClass="text-xs">Solicitou: {{ request.role }}</p>
 
-                <p class="text-xs text-surface-800" *ngIf="request.createdAt">
-                  {{ formatDate(request.createdAt) }}
+                <p class="text-xs text-surface-800" *ngIf="request.createdAtFormatted">
+                  {{ request.createdAtFormatted }}
                 </p>
 
               </div>
@@ -60,7 +65,7 @@
         </div>
       </div>
 
-      <!-- Empty State -->
+      <!-- FALLBACK -->
       <div *ngIf="requests.length === 0" class="text-center p-6 text-surface-500 dark:text-surface-800 border-2 border-dashed border-surface-border rounded-lg">
         <i class="pi pi-inbox text-2xl mb-2 block"></i>
         <p class="text-sm">Nenhuma solicitação pendente</p>

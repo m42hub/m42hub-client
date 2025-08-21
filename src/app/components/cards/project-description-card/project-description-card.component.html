@@ -1,10 +1,10 @@
 <p-card class="w-full custom-card-bg">
   <ng-template pTemplate="header">
-    <!-- Header Section -->
     <div class="p-4 space-y-4">
-      <!-- Title and Status -->
       <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
-        <h1 class="text-2xl sm:text-3xl font-bold text-700 dark:text-surface-0 break-words flex-1">{{ project.name }}</h1>
+        <h1 class="text-2xl sm:text-3xl font-bold text-700 dark:text-surface-0 break-words flex-1">
+          {{ project.name }}
+        </h1>
         <div class="flex items-center gap-2">
           <p-tag
             *ngIf="project.status"
@@ -13,77 +13,75 @@
             class="w-fit">
           </p-tag>
           <button
-            *ngIf="isUserManager()"
+            *ngIf="isUserManager"
             pButton
             type="button"
             label="Editar"
             icon="pi pi-pencil"
-            iconPos="left"
             size="small"
             class="p-button-outlined p-button-primary"
-            (click)="editProject(project.id)">
+            (click)="onEditProject()">
           </button>
         </div>
       </div>
 
-      <!-- Project Meta -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-4 text-sm text-600 dark:text-surface-200">
         <div class="flex items-center gap-2">
           <i class="pi pi-calendar text-primary flex-shrink-0"></i>
-          <span class="truncate">Criado em: {{ formatDate(project.creationDate) }}</span>
+          <span class="truncate">Criado em: {{ creationDateFormatado }}</span>
         </div>
         <div class="flex items-center gap-2" *ngIf="project.startDate">
           <i class="pi pi-play text-primary flex-shrink-0"></i>
-          <span class="truncate">Início: {{ formatDate(project.startDate) }}</span>
+          <span class="truncate">Início: {{ startDateFormatado }}</span>
         </div>
         <div class="flex items-center gap-2" *ngIf="project.endDate">
           <i class="pi pi-flag text-primary flex-shrink-0"></i>
-          <span class="truncate">Previsão: {{ formatDate(project.endDate) }}</span>
+          <span class="truncate">Previsão: {{ endDateFormatado }}</span>
         </div>
       </div>
     </div>
 
-    <!-- Tags Section -->
-    <div class="px-4 pb-4 space-y-4">
-      <!-- Tech Tags -->
-      <div *ngIf="getTechTags().length > 0" class="space-y-2">
-        <h4 class="text-xs font-bold text-800 dark:text-surface-0 uppercase tracking-wide">Tecnologias/Ferramentas</h4>
+    <div class="px-4 space-y-4">
+  <div *ngIf="tools.length > 0" class="space-y-2">
+        <h4 class="text-xs font-bold text-800 dark:text-surface-0 uppercase tracking-wide">
+          Tecnologias/Ferramentas
+        </h4>
         <div class="flex flex-wrap gap-2">
           <p-tag
-            *ngFor="let tag of getTechTags()"
+            *ngFor="let tag of tools"
             [value]="tag.name"
             [style]="{'background-color': tag.hexColor, 'color': 'white'}"
-            [pTooltip]="getTagTooltip(tag)"
             tooltipPosition="top"
             class="text-xs">
           </p-tag>
         </div>
       </div>
 
-      <!-- Assuntos Tags -->
-      <div *ngIf="getAssuntosTags().length > 0" class="space-y-2">
-        <h4 class="text-xs font-bold text-800 dark:text-surface-0 uppercase tracking-wide">Assuntos/Temas</h4>
+  <div *ngIf="topics.length > 0" class="space-y-2">
+        <h4 class="text-xs font-bold text-800 dark:text-surface-0 uppercase tracking-wide">
+          Assuntos/Temas
+        </h4>
         <div class="flex flex-wrap gap-2">
           <p-tag
-            *ngFor="let tag of getAssuntosTags()"
+            *ngFor="let tag of topics"
             [value]="tag.name"
             [style]="{'background-color': tag.hexColor, 'color': 'white'}"
-            [pTooltip]="getTagTooltip(tag)"
             tooltipPosition="top"
             class="text-xs">
           </p-tag>
         </div>
       </div>
 
-      <!-- General Tags -->
-      <div *ngIf="getGeneralTags().length > 0" class="space-y-2">
-        <h4 class="text-xs font-bold text-800 dark:text-surface-0 uppercase tracking-wide">Informações</h4>
+  <div *ngIf="generalTags.length > 0" class="space-y-2">
+        <h4 class="text-xs font-bold text-800 dark:text-surface-0 uppercase tracking-wide">
+          Informações
+        </h4>
         <div class="flex flex-wrap gap-2">
           <p-tag
-            *ngFor="let tag of getGeneralTags()"
+            *ngFor="let tag of generalTags"
             [value]="tag.name"
             [severity]="tag.type === 'tempoEstimado' ? 'info' : 'secondary'"
-            [pTooltip]="getTagTooltip(tag)"
+            [pTooltip]="tag.tooltipLabel"
             tooltipPosition="top"
             class="text-xs">
           </p-tag>
@@ -93,9 +91,11 @@
   </ng-template>
 
   <ng-template pTemplate="content">
-    <div class="p-4">
-      <!-- Project Description -->
-      <div class="prose prose-sm sm:prose-base lg:prose-lg max-w-none overflow-x-auto" [innerHTML]="descriptionHtml"></div>
+    <div class="px-4">
+      <div
+        class="prose prose-sm sm:prose-base lg:prose-lg max-w-none overflow-x-auto"
+        [innerHTML]="descriptionHtml">
+      </div>
     </div>
   </ng-template>
 </p-card>
