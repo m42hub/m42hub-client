@@ -1,4 +1,4 @@
-import { inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { inject, PLATFORM_ID } from '@angular/core';
 import type { CanActivateFn, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Router } from '@angular/router';
 import { isPlatformBrowser } from '@angular/common';
@@ -29,7 +29,7 @@ export const authGuard: CanActivateFn = (
     }
 
     authService.setRedirectUrl(redirectUrl);
-    router.navigate(['/login']);
+    void router.navigate(['/login']);
     return false;
   };
 

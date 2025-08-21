@@ -29,7 +29,7 @@ export class HeaderComponent implements OnInit {
   }
 
   handleClick(path: string) {
-    this.router.navigate([path]);
+    void this.router.navigate([path]);
   }
 
   ngOnInit() {
@@ -72,15 +72,15 @@ export class HeaderComponent implements OnInit {
   }
 
   onLogin() {
-    this.router.navigate(['/login']);
+    void this.router.navigate(['/login']);
   }
 
   onLogout() {
     this.authService.logout().subscribe({
       next: () => {
-        this.router.navigate(['/']);
+        void this.router.navigate(['/']);
       },
-      error: (error) => {
+      error: () => {
         this.showLogoutError = true;
       },
     });

@@ -74,7 +74,7 @@ export class ProjectSummaryCardComponent {
 
   onDetailsClick() {
     // TODO: Implementar navegação ou emissão de evento para detalhes
-    console.log('Ver detalhes do projeto:', this.project.id);
+    // console.log('Ver detalhes do projeto:', this.project.id);
   }
 
   onImageError() {
@@ -86,28 +86,56 @@ export class ProjectSummaryCardComponent {
   }
 
   viewProjectDetails(id: number | string): void {
-    this.router.navigate([`/projects/${id}`]);
+    void this.router.navigate([`/projects/${id}`]);
   }
 
   editProject(id: number | string): void {
     if (this.authService.isLoggedIn) {
-      this.router.navigate([`/projects/${id}/edit`]);
+      void this.router.navigate([`/projects/${id}/edit`]);
     } else {
       this.authService.setRedirectUrl(`/projects/${id}`);
-      this.router.navigate(['/login']);
+      void this.router.navigate(['/login']);
     }
   }
 
-  isUserManager(): boolean {
+  // Getters para uso no template (evita chamada de métodos)
+  get tools(): string[] {
+    return this.getTools();
+  }
+  get topics(): string[] {
+    return this.getTopics();
+  }
+  get unfilledRoles(): string[] {
+    return this.getUnfilledRoles();
+  }
+  get generalTags(): { label: string; tooltip: string }[] {
+    return this.getGeneralTags();
+  }
+  get isUserManager(): boolean {
     const currentUser = this.authService.currentUser;
-    if (!currentUser || !this.project.members) {
+    if (!currentUser || !this.project?.members) {
       return false;
     }
-
-    const userMember = this.project.members.find(
+    return this.project.members.some(
       (member) => member.user.username === currentUser.username && member.isManager,
     );
-
-    return !!userMember;
+  }
+  get creationDateFormatado(): string {
+    return this.formatDate(this.project?.creationDate);
+  }
+  get startDateFormatado(): string {
+    return this.formatDate(this.project?.startDate);
+  }
+  get endDateFormatado(): string {
+    return this.formatDate(this.project?.endDate);
+  }
+  get onEditProject(): () => void {
+    return () => this.editProject(this.project.id);
+  }
+  get onViewDetails(): () => void {
+    return () => this.viewProjectDetails(this.project.id);
+  }
+  get imageUrl(): string {
+    return this.getImageUrl();
   }
 }

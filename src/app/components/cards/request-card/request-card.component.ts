@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CardModule } from 'primeng/card';
 import { TagModule } from 'primeng/tag';
@@ -14,6 +14,8 @@ export interface TeamRequest {
   username: string;
   applicationMessage?: string;
   createdAt: Date;
+  photoUrl?: string;
+  createdAtFormatted?: string;
 }
 
 @Component({
@@ -23,7 +25,19 @@ export interface TeamRequest {
   templateUrl: './request-card.component.html',
   styleUrl: './request-card.component.css',
 })
-export class RequestCardComponent {
+export class RequestCardComponent implements OnChanges {
+  get requestsWithFormattedDate(): Array<
+    TeamRequest & {
+      createdAtFormatted?: string;
+      photoUrl?: string;
+    }
+  > {
+    return this.requests.map((r) => ({
+      ...r,
+      createdAtFormatted: r.createdAt ? new Date(r.createdAt).toLocaleDateString('pt-BR') : '',
+      photoUrl: r.photo || this.defaultAvatar,
+    }));
+  }
   @Input() requests: TeamRequest[] = [];
   @Input() showHeader = true;
   @Input() maxHeight = 'auto';
@@ -33,8 +47,13 @@ export class RequestCardComponent {
 
   defaultAvatar = '/default_avatar.png';
 
-  getImageUrl(imageUrl?: string): string {
-    return imageUrl || this.defaultAvatar;
+  ngOnChanges() {
+    this.requests.forEach((request) => {
+      request.photoUrl = request.photo || this.defaultAvatar;
+      request.createdAtFormatted = request.createdAt
+        ? new Date(request.createdAt).toLocaleDateString('pt-BR')
+        : '';
+    });
   }
 
   onImageError(event: any): void {

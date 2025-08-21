@@ -2,9 +2,9 @@ import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import type { Observable } from 'rxjs';
 import { BaseApiService } from '../base/base-api.service';
 import { HttpClient } from '@angular/common/http';
-import { ProjectRole } from '../../interfaces/project/role.interface';
 import type { ProjectTopic } from '../../interfaces/project/topic.interface';
-import { CreateProjectTopic } from '../../interfaces/project/topic.interface';
+// import { ProjectRole } from '../../interfaces/project/role.interface';
+// import { CreateProjectTopic } from '../../interfaces/project/topic.interface';
 
 @Injectable({
   providedIn: 'root',

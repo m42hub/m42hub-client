@@ -1,13 +1,8 @@
+import type { ValidationErrors } from '@angular/forms';
 import type { OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { Component, Input, Output, EventEmitter, PLATFORM_ID, Inject } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import {
-  FormBuilder,
-  FormGroup,
-  FormArray,
-  AbstractControl,
-  ValidationErrors,
-} from '@angular/forms';
+import { FormBuilder, FormGroup, FormArray, AbstractControl } from '@angular/forms';
 import { ReactiveFormsModule, FormControl, Validators, FormsModule } from '@angular/forms';
 import { CardModule } from 'primeng/card';
 import { InputTextModule } from 'primeng/inputtext';
@@ -231,6 +226,37 @@ export class ProjectFormComponent implements OnInit, OnChanges {
     }
   }
 
+  // Getters para evitar chamadas de métodos no template (para lint)
+  get showTeamCard(): boolean {
+    return !!(
+      this.isFormReady &&
+      this.isEditMode &&
+      this.isBrowser &&
+      this.projectForm &&
+      this.projectForm.get('team')
+    );
+  }
+  get showTagsCard(): boolean {
+    return !!(this.isFormReady && this.projectForm && this.projectForm.get('tags'));
+  }
+  get showManagerCard(): boolean {
+    return !!(
+      !this.isEditMode &&
+      this.isFormReady &&
+      this.isBrowser &&
+      this.projectForm &&
+      this.projectForm.get('managerRoleId')
+    );
+  }
+  get showUnfilledRolesCard(): boolean {
+    return !!(
+      this.isFormReady &&
+      this.isBrowser &&
+      this.projectForm &&
+      this.projectForm.get('unfilledRoles')
+    );
+  }
+
   private initForm(): void {
     // Criar o FormArray para team
     const teamArray = this.fb.array([]);
@@ -384,19 +410,19 @@ export class ProjectFormComponent implements OnInit, OnChanges {
     return this.projectForm.get('tags') as FormArray;
   }
 
-  onTecnologiasFerramentasChange(event: any): void {
+  onTecnologiasFerramentasChange(): void {
     this.updateTagsFromSelects();
   }
 
-  onAssuntosChange(event: any): void {
+  onAssuntosChange(): void {
     this.updateTagsFromSelects();
   }
 
-  onTempoEstimadoChange(event: any): void {
+  onTempoEstimadoChange(): void {
     this.updateTagsFromSelects();
   }
 
-  onComplexidadeChange(event: any): void {
+  onComplexidadeChange(): void {
     this.updateTagsFromSelects();
   }
 
@@ -511,13 +537,13 @@ export class ProjectFormComponent implements OnInit, OnChanges {
     });
   }
 
-  onTeamCardRemoveMember(event: { index: number; member: any }): void {
-    this.removeTeamMember(event.index);
+  onTeamCardRemoveMember(_event: { index: number; member: any }): void {
+    this.removeTeamMember(_event.index);
   }
 
-  onTeamCardEditMember(event: { index: number; member: any }): void {
-    this.editingMemberIndex = event.index;
-    this.initEditMemberForm(event.member);
+  onTeamCardEditMember(_event: { index: number; member: any }): void {
+    this.editingMemberIndex = _event.index;
+    this.initEditMemberForm(_event.member);
     this.showEditMemberDialog = true;
   }
 
@@ -666,7 +692,7 @@ export class ProjectFormComponent implements OnInit, OnChanges {
     if (markdownText) {
       try {
         this.markdownPreview = marked.parse(markdownText) as string;
-      } catch (error) {
+      } catch {
         this.markdownPreview = markdownText;
       }
     } else {
@@ -700,7 +726,7 @@ export class ProjectFormComponent implements OnInit, OnChanges {
       return;
     }
     this.memberService.approve(request.id).subscribe({
-      next: (updatedMember) => {
+      next: () => {
         const teamArray = this.projectForm.get('team') as FormArray;
         if (!teamArray) {
           return;
@@ -735,7 +761,7 @@ export class ProjectFormComponent implements OnInit, OnChanges {
     }
     const feedback = this.feedbackTextControl.value || '';
     this.memberService.reject(this.feedbackRequest.id, feedback).subscribe({
-      next: (updatedMember) => {
+      next: () => {
         const teamArray = this.projectForm.get('team') as FormArray;
         if (!teamArray) {
           return;
@@ -760,5 +786,37 @@ export class ProjectFormComponent implements OnInit, OnChanges {
     this.feedbackDialogVisible = false;
     this.feedbackTextControl.reset('');
     this.feedbackRequest = null;
+  }
+
+  // Getters para uso no template (evita chamada de métodos no HTML)
+  get teamApproved() {
+    return this.getTeamForCard('approved');
+  }
+  get teamPending() {
+    return this.getTeamForCard('pending');
+  }
+  get tagsArray() {
+    return this.getTagsArray().value;
+  }
+  get nameControl() {
+    return this.projectForm.get('name');
+  }
+  get summaryControl() {
+    return this.projectForm.get('summary');
+  }
+  get descriptionControl() {
+    return this.projectForm.get('description');
+  }
+  get teamControl() {
+    return this.projectForm.get('team');
+  }
+  get tagsControl() {
+    return this.projectForm.get('tags');
+  }
+  get managerRoleIdControl() {
+    return this.projectForm.get('managerRoleId');
+  }
+  get unfilledRolesControl() {
+    return this.projectForm.get('unfilledRoles');
   }
 }

@@ -3,7 +3,6 @@ import type { Observable } from 'rxjs';
 import { BaseApiService } from '../base/base-api.service';
 import { HttpClient } from '@angular/common/http';
 import type { ProjectStatus } from '../../interfaces/project/status.interface';
-import { CreateProjectStatus } from '../../interfaces/project/status.interface';
 
 @Injectable({
   providedIn: 'root',

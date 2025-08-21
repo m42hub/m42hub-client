@@ -3,11 +3,10 @@ import { HttpHeaders } from '@angular/common/http';
 import { ENVIRONMENT } from '../../../environments/environment';
 import type { Observable } from 'rxjs';
 import { catchError, throwError, of } from 'rxjs';
-import { options } from 'marked';
 import { Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 
-export abstract class BaseApiService<T> {
+export abstract class BaseApiService<_T> {
   protected readonly apiUrl = ENVIRONMENT.apiUrl;
 
   constructor(

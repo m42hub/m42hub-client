@@ -26,14 +26,14 @@ export class HomeComponent {
 
   createProject() {
     if (this.authService.isLoggedIn) {
-      this.router.navigate(['/projects/new']);
+      void this.router.navigate(['/projects/new']);
     } else {
       this.authService.setRedirectUrl('/projects/new');
-      this.router.navigate(['/login']);
+      void this.router.navigate(['/login']);
     }
   }
 
   exploreProjects() {
-    this.router.navigate(['/projects']);
+    void this.router.navigate(['/projects']);
   }
 }

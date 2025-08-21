@@ -27,6 +27,7 @@ import { JoinProjectModalComponent } from '../../modals/join-project-modal/join-
   styleUrl: './project-info-sidebar.component.css',
 })
 export class ProjectInfoSidebarComponent implements OnInit {
+  teamMembersForCard: TeamMember[] = [];
   @Input() project!: Project;
 
   private rolesMap: Map<number, string> = new Map();
@@ -42,6 +43,7 @@ export class ProjectInfoSidebarComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadRoles();
+    this.teamMembersForCard = this.getTeamMembers();
   }
 
   private loadRoles(): void {

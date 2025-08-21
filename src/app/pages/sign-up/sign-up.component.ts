@@ -58,7 +58,7 @@ export class SignUpComponent implements OnInit {
 
     // Se já estiver logado, redireciona para home
     if (this.authService.isLoggedIn) {
-      this.router.navigate(['/projects']);
+      void this.router.navigate(['/projects']);
     } else {
       // Ao entrar na tela, exibe o disclaimer
       this.showDisclaimerModal = true;
@@ -105,15 +105,15 @@ export class SignUpComponent implements OnInit {
       this.errorMessage = '';
       this.successMessage = '';
 
-      const { confirmPassword, ...registerData } = this.signUpForm.value;
+      const { confirmPassword: _confirmPassword, ...registerData } = this.signUpForm.value;
       const requestData: RegisterRequest = registerData;
 
-      this.authService.register(requestData).subscribe({
-        next: (response) => {
+      void this.authService.register(requestData).subscribe({
+        next: () => {
           this.loading = false;
           this.successMessage = 'Conta criada com sucesso! Redirecionando para o login...';
           setTimeout(() => {
-            this.router.navigate(['/login']);
+            void this.router.navigate(['/login']);
           }, 2000);
         },
         error: (error) => {
@@ -152,15 +152,13 @@ export class SignUpComponent implements OnInit {
   }
 
   onDisclaimerCancelled(): void {
-    // Volta para a última tela; se não houver histórico, vai para home
     if (this.isBrowser && window.history.length > 1) {
       this.location.back();
     } else {
-      this.router.navigate(['/projects']);
+      void this.router.navigate(['/projects']);
     }
   }
 
-  // Getters para facilitar acesso aos controles do formulário
   get usernameControl() {
     return this.signUpForm.get('username');
   }

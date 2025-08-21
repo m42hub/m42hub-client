@@ -1,5 +1,5 @@
 <div class="flex flex-col gap-4 sm:gap-6 w-full">
-  <app-team-card [team]="getTeamMembers()"></app-team-card>
+  <app-team-card [team]="teamMembersForCard"></app-team-card>
 
   <p-card *ngIf="project.unfilledRoles && project.unfilledRoles.length > 0" class="w-full">
     <ng-template pTemplate="header">

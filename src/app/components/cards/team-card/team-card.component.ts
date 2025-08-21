@@ -32,8 +32,11 @@ export class TeamCardComponent {
 
   defaultAvatar = '/default_avatar.png';
 
-  getImageUrl(imageUrl?: string): string {
-    return imageUrl || this.defaultAvatar;
+  get teamWithPhotoUrl(): Array<TeamMember & { photoUrl: string }> {
+    return this.team.map((member) => ({
+      ...member,
+      photoUrl: member.photo || this.defaultAvatar,
+    }));
   }
 
   onImageError(event: any): void {

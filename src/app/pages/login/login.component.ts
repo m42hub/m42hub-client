@@ -46,7 +46,7 @@ export class LoginComponent implements OnInit {
     if (this.authService.isLoggedIn) {
       const redirectUrl = this.authService.getRedirectUrl() || '/';
       this.authService.clearRedirectUrl();
-      this.router.navigate([redirectUrl]);
+      void this.router.navigate([redirectUrl]);
     }
   }
 
@@ -65,11 +65,11 @@ export class LoginComponent implements OnInit {
       const { username, password } = this.loginForm.value;
 
       this.authService.login(username, password).subscribe({
-        next: (response) => {
+        next: () => {
           this.loading = false;
           const redirectUrl = this.authService.getRedirectUrl() || '/';
           this.authService.clearRedirectUrl();
-          this.router.navigate([redirectUrl]);
+          void this.router.navigate([redirectUrl]);
         },
         error: (error) => {
           this.loading = false;

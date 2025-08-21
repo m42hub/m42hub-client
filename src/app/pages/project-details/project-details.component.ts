@@ -48,7 +48,7 @@ export class ProjectDetailsComponent implements OnInit {
       return;
     }
 
-    this.projectService.getById(id).subscribe({
+    void this.projectService.getById(id).subscribe({
       next: (project) => {
         if (project) {
           this.project = project;
@@ -65,6 +65,6 @@ export class ProjectDetailsComponent implements OnInit {
   }
 
   goBack(): void {
-    this.router.navigate(['/projects']);
+    void this.router.navigate(['/projects']);
   }
 }

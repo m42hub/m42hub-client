@@ -19,6 +19,37 @@ import { AuthService } from '../../../services/auth/auth.service';
   styleUrl: './project-description-card.component.css',
 })
 export class ProjectDescriptionCardComponent implements OnInit {
+  // Getter para verificar se o usuário é manager
+  get isUserManager(): boolean {
+    const currentUser = this.authService.currentUser;
+    if (!currentUser || !this.project?.members) {
+      return false;
+    }
+    return this.project.members.some(
+      (member) => member.user.username === currentUser.username && member.isManager,
+    );
+  }
+
+  // Getter para função de editar projeto (usado como property binding)
+  get onEditProject(): () => void {
+    return () => this.editProject(this.project.id);
+  }
+
+  // Getters para datas formatadas
+  get creationDateFormatado(): string {
+    return this.formatDate(this.project?.creationDate);
+  }
+  get startDateFormatado(): string {
+    return this.formatDate(this.project?.startDate);
+  }
+  get endDateFormatado(): string {
+    return this.formatDate(this.project?.endDate);
+  }
+
+  // Getter para tooltip de tag (usado como property binding)
+  get getTagTooltipFn(): (tag: any) => string {
+    return (tag: any) => this.getTagTooltip(tag);
+  }
   @Input() project!: Project;
   descriptionHtml: SafeHtml = '';
 
@@ -29,7 +60,7 @@ export class ProjectDescriptionCardComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.renderDescription();
+    void this.renderDescription();
   }
 
   private async renderDescription(): Promise<void> {
@@ -39,23 +70,31 @@ export class ProjectDescriptionCardComponent implements OnInit {
     }
   }
 
-  getTools() {
+  get tools() {
     return this.project.tools || [];
   }
 
-  getTopics() {
+  get topics() {
     return this.project.topics || [];
   }
 
-  getGeneralTags() {
+  get generalTags() {
+    const typeLabels: { [key: string]: string } = {
+      ferramentas: 'Tecnologia/Ferramenta',
+      assuntos: 'Assunto/Tema',
+      tempoEstimado: 'Tempo Estimado',
+      complexidade: 'Complexidade',
+    };
     const allTags = [
       ...(this.project.tools || []).map((tool) => ({
         ...tool,
         type: 'ferramentas',
+        tooltipLabel: typeLabels['ferramentas'],
       })),
       ...(this.project.topics || []).map((topic) => ({
         ...topic,
         type: 'assuntos',
+        tooltipLabel: typeLabels['assuntos'],
       })),
     ];
     return allTags;
@@ -82,18 +121,7 @@ export class ProjectDescriptionCardComponent implements OnInit {
 
   editProject(id: number | string): void {
     if (this.authService.isLoggedIn) {
-      this.router.navigate([`/projects/${id}/edit`]);
+      void this.router.navigate([`/projects/${id}/edit`]);
     }
-  }
-
-  isUserManager(): boolean {
-    const currentUser = this.authService.currentUser;
-    if (!currentUser || !this.project.members) {
-      return false;
-    }
-
-    return this.project.members.some(
-      (member) => member.user.username === currentUser.username && member.isManager,
-    );
   }
 }

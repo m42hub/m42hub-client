@@ -2,9 +2,7 @@ import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import type { Observable } from 'rxjs';
 import { BaseApiService } from '../base/base-api.service';
 import { HttpClient } from '@angular/common/http';
-import { ProjectComplexity } from '../../interfaces/project/complexity.interface';
 import type { ProjectTool } from '../../interfaces/project/tool.interface';
-import { CreateProjectTool } from '../../interfaces/project/tool.interface';
 
 @Injectable({
   providedIn: 'root',
