@@ -1,6 +1,5 @@
 <div class="flex flex-col min-h-screen bg-surface-ground p-2 sm:p-4 md:p-6">
   <div class="flex flex-col w-full max-w-6xl mx-auto">
-    <!-- Back Button -->
     <div class="flex mb-2 sm:mb-4">
       <p-button
         label="Voltar"
@@ -11,12 +10,10 @@
       </p-button>
     </div>
 
-    <!-- Header -->
     <h1 class="text-xl sm:text-2xl md:text-3xl font-bold text-surface-950 text-center mb-4">
       {{ isEditMode ? 'Editar Projeto' : 'Criar Novo Projeto' }}
     </h1>
 
-    <!-- Content -->
     <div class="flex flex-col w-full">
       <ng-container *ngIf="(!isEditMode && !showDisclaimerModal) || (isEditMode && projectLoaded)">
         <app-project-form
@@ -28,10 +25,8 @@
       </ng-container>
     </div>
 
-    <!-- Toast messages -->
     <p-toast *ngIf="isBrowser"></p-toast>
 
-    <!-- Disclaimer Modal -->
     <app-disclaimer-modal
       [(visible)]="showDisclaimerModal"
       (accepted)="onDisclaimerAccepted()"

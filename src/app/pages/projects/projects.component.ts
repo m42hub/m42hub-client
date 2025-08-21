@@ -47,20 +47,16 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   totalPages = 1;
   totalElements = 0;
 
-  // Expose Math for template
   Math = Math;
 
-  // Controle de exibição dos filtros
   showFilters = false;
 
-  // Dados para os filtros
   complexities: ProjectComplexity[] = [];
   statuses: ProjectStatus[] = [];
   tools: ProjectTool[] = [];
   topics: ProjectTopic[] = [];
   roles: ProjectRole[] = [];
 
-  // Filtros
   filters: ProjectSearchParams = {
     page: 0,
     limit: this.pageSize,
@@ -104,16 +100,14 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.updatePageSizeForScreen();
 
-    // Só carrega dados se estivermos no browser (não durante SSR)
     if (isPlatformBrowser(this.platformId)) {
       this.loadFilterData();
       this.loadProjects();
     }
   }
 
-  ngOnDestroy(): void {
-    // Cleanup se necessário
-  }
+  //TODO: validar se realmente é necessário ngOnDestroy
+  ngOnDestroy(): void {}
 
   @HostListener('window:resize', ['$event'])
   onResize(): void {
@@ -122,13 +116,12 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     }
   }
 
-  // Breakpoints para responsividade
   private breakpoints = {
-    sm: 640, // Tailwind sm breakpoint
-    md: 768, // Tailwind md breakpoint
-    lg: 1024, // Tailwind lg breakpoint
+    sm: 640,
+    md: 768,
+    lg: 1024,
     xl: 1280,
-    xl2: 1536
+    xl2: 1536,
   };
 
   private updatePageSizeForScreen(): void {
@@ -139,45 +132,31 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     const width = window.innerWidth;
     let newPageSize: number;
 
-    if (width < this.breakpoints.sm) {
-      // Extra small screens: 1 item
+    if (width < this.breakpoints.lg) {
       newPageSize = 1;
-    } else if (width < this.breakpoints.md) {
-      // Small screens: 1 item
-      newPageSize = 1;
-    } else if (width < this.breakpoints.lg) {
-      // Medium screens: 2 items
-      newPageSize = 1;
-    } else if (width < this.breakpoints.xl) {
-      // Medium screens: 2 items
-      newPageSize = 2;
     } else if (width < this.breakpoints.xl2) {
-      // Medium screens: 2 items
       newPageSize = 2;
     } else {
-      // Large screens and above: 3 items
       newPageSize = 3;
     }
 
     if (newPageSize !== this.pageSize) {
       this.pageSize = newPageSize;
       this.filters.limit = this.pageSize;
-      this.currentPage = 1; // Reset to first page when page size changes
+      this.currentPage = 1;
 
-      // Só recarrega os projetos se o componente já foi inicializado
       if (this.projects.length > 0 || this.totalElements > 0) {
         this.loadProjects();
       }
     }
   }
 
+  //TODO: Mover lógica de filtros para o  componente "filters/project-filter"
   loadFilterData(): void {
-    // Só carrega dados se estivermos no browser
     if (!isPlatformBrowser(this.platformId)) {
       return;
     }
 
-    // Carregar dados para os filtros
     this.complexityService.getAll().subscribe((complexities) => {
       this.complexities = complexities;
     });
@@ -199,19 +178,17 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     });
   }
 
+  //TODO: Corrigir lógica de acordo com o componente  componente "filters/project-filter"
   loadProjects(): void {
-    // Só carrega dados se estivermos no browser
     if (!isPlatformBrowser(this.platformId)) {
       return;
     }
 
-    // Limpar valores undefined/null antes de enviar
     const searchParams: ProjectSearchParams = {
       page: this.currentPage - 1,
       limit: this.pageSize,
     };
 
-    // Adicionar filtros apenas se tiverem valor
     if (this.filters.sortBy) {
       searchParams.sortBy = this.filters.sortBy;
       searchParams.sortDirection = this.filters.sortDirection;
@@ -280,6 +257,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     this.loadProjects();
   }
 
+  //TODO: Mover lógica de filtros para o  componente "filters/project-filter"
   onSortChange(): void {
     if (this.selectedSort && this.selectedSort.value) {
       this.filters.sortBy = this.selectedSort.value.sortBy;
@@ -291,6 +269,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     this.onFilterChange();
   }
 
+  //TODO: Mover lógica de filtros para o  componente "filters/project-filter"
   clearFilters(): void {
     this.filters = {
       page: 0,
@@ -322,7 +301,6 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     if (this.authService.isLoggedIn) {
       this.router.navigate(['/projects/new']);
     } else {
-      // Armazena a URL de destino antes de redirecionar para login
       this.authService.setRedirectUrl('/projects/new');
       this.router.navigate(['/login']);
     }

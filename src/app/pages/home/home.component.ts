@@ -33,7 +33,6 @@ export class HomeComponent {
     if (this.authService.isLoggedIn) {
       this.router.navigate(['/projects/new']);
     } else {
-      // Armazena a URL de destino antes de redirecionar para login
       this.authService.setRedirectUrl('/projects/new');
       this.router.navigate(['/login']);
     }

@@ -1,7 +1,6 @@
 import { Component, OnInit, PLATFORM_ID, Inject } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
@@ -15,7 +14,6 @@ import { ProjectService } from '../../services/project/project.service';
   standalone: true,
   imports: [
     CommonModule,
-    CardModule,
     ButtonModule,
     ToastModule,
     ProjectFormComponent,
@@ -47,7 +45,6 @@ export class ProjectEditorComponent implements OnInit {
   }
 
   private checkEditMode(): void {
-    // Permite buscar o id tanto por param quanto por query
     let projectId = this.route.snapshot.paramMap.get('id');
     if (!projectId) {
       projectId = this.route.snapshot.queryParamMap.get('id');
@@ -59,16 +56,15 @@ export class ProjectEditorComponent implements OnInit {
       this.project = undefined;
       this.projectLoaded = true;
       this.showDisclaimerModal = true;
-    } else if ((url.includes('/edit') || !!projectId) && projectId) {
+    } else if (url.includes('/edit') && projectId) {
       this.isEditMode = true;
       this.loadProject(projectId);
     } else {
-      this.router.navigate(['/projects/new']);
+      this.router.navigate(['/projects']);
     }
   }
 
   private loadProject(projectId: string): void {
-    // Só carrega dados se estivermos no browser
     if (!isPlatformBrowser(this.platformId)) {
       this.projectLoaded = true;
       return;
@@ -100,7 +96,6 @@ export class ProjectEditorComponent implements OnInit {
     });
   }
 
-
   onSave(request: CreateProjectRequest | UpdateProjectRequest): void {
     if (this.isEditMode && this.project) {
       this.updateProject(this.project.id, request as UpdateProjectRequest);
@@ -108,7 +103,6 @@ export class ProjectEditorComponent implements OnInit {
       this.createProject(request as CreateProjectRequest);
     }
   }
-
 
   private createProject(request: CreateProjectRequest): void {
     this.projectService.create(request).subscribe({
@@ -130,7 +124,6 @@ export class ProjectEditorComponent implements OnInit {
       }
     });
   }
-
 
   private updateProject(id: number, request: UpdateProjectRequest): void {
     this.projectService.update(id, request).subscribe({

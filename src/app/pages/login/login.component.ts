@@ -21,10 +21,10 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
     PasswordModule,
     CardModule,
     MessageModule,
-    ProgressSpinnerModule
+    ProgressSpinnerModule,
   ],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  styleUrl: './login.component.css',
 })
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
@@ -40,7 +40,6 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
     this.initializeForm();
 
-    // Se já estiver logado, redireciona para home ou URL de redirecionamento
     if (this.authService.isLoggedIn) {
       const redirectUrl = this.authService.getRedirectUrl() || '/';
       this.authService.clearRedirectUrl();
@@ -51,7 +50,7 @@ export class LoginComponent implements OnInit {
   private initializeForm() {
     this.loginForm = this.fb.group({
       username: ['', [Validators.required, Validators.minLength(3)]],
-      password: ['', [Validators.required, Validators.minLength(6)]]
+      password: ['', [Validators.required, Validators.minLength(6)]],
     });
   }
 
@@ -65,7 +64,6 @@ export class LoginComponent implements OnInit {
       this.authService.login(username, password).subscribe({
         next: (response) => {
           this.loading = false;
-          // Sucesso - navega para a URL de redirecionamento ou página inicial
           const redirectUrl = this.authService.getRedirectUrl() || '/';
           this.authService.clearRedirectUrl();
           this.router.navigate([redirectUrl]);
@@ -73,11 +71,18 @@ export class LoginComponent implements OnInit {
         error: (error) => {
           this.loading = false;
           this.errorMessage = this.getErrorMessage(error);
-        }
+        },
       });
     } else {
       this.markFormGroupTouched();
     }
+  }
+
+  private markFormGroupTouched() {
+    Object.keys(this.loginForm.controls).forEach((key) => {
+      const control = this.loginForm.get(key);
+      control?.markAsTouched();
+    });
   }
 
   private getErrorMessage(error: any): string {
@@ -94,14 +99,6 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  private markFormGroupTouched() {
-    Object.keys(this.loginForm.controls).forEach(key => {
-      const control = this.loginForm.get(key);
-      control?.markAsTouched();
-    });
-  }
-
-  // Getters para facilitar acesso aos controles do formulário
   get usernameControl() {
     return this.loginForm.get('username');
   }
