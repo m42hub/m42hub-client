@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import type { OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CardModule } from 'primeng/card';
 import { TagModule } from 'primeng/tag';
@@ -6,7 +7,7 @@ import { TooltipModule } from 'primeng/tooltip';
 import { ButtonModule } from 'primeng/button';
 import { marked } from 'marked';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { Project } from '../../../interfaces/project/project.interface';
+import type { Project } from '../../../interfaces/project/project.interface';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../services/auth/auth.service';
 
@@ -24,7 +25,7 @@ export class ProjectDescriptionCardComponent implements OnInit {
   constructor(
     private sanitizer: DomSanitizer,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
   ) {}
 
   ngOnInit(): void {
@@ -72,7 +73,9 @@ export class ProjectDescriptionCardComponent implements OnInit {
   }
 
   formatDate(date?: string | Date): string {
-    if (!date) return 'Não definida';
+    if (!date) {
+      return 'Não definida';
+    }
     const dateCorrectType = typeof date === 'string' ? new Date(date) : date;
     return dateCorrectType.toLocaleDateString('pt-BR');
   }
@@ -85,11 +88,12 @@ export class ProjectDescriptionCardComponent implements OnInit {
 
   isUserManager(): boolean {
     const currentUser = this.authService.currentUser;
-    if (!currentUser || !this.project.members) return false;
+    if (!currentUser || !this.project.members) {
+      return false;
+    }
 
     return this.project.members.some(
-      (member) =>
-        member.user.username === currentUser.username && member.isManager
+      (member) => member.user.username === currentUser.username && member.isManager,
     );
   }
 }

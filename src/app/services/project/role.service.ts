@@ -1,8 +1,9 @@
 import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
-import { Observable } from 'rxjs';
+import type { Observable } from 'rxjs';
 import { BaseApiService } from '../base/base-api.service';
 import { HttpClient } from '@angular/common/http';
-import { CreateProjectRole, ProjectRole } from '../../interfaces/project/role.interface';
+import type { ProjectRole } from '../../interfaces/project/role.interface';
+import { CreateProjectRole } from '../../interfaces/project/role.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -10,10 +11,7 @@ import { CreateProjectRole, ProjectRole } from '../../interfaces/project/role.in
 export class ProjectRoleService extends BaseApiService<ProjectRole> {
   private readonly endpoint = '/v1/project/role';
 
-  constructor(
-    http: HttpClient,
-    @Inject(PLATFORM_ID) platformId: Object
-  ) {
+  constructor(http: HttpClient, @Inject(PLATFORM_ID) platformId: Object) {
     super(http, platformId);
   }
 

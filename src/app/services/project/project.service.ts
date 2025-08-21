@@ -1,25 +1,22 @@
 import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
-import { Observable } from 'rxjs';
+import type { Observable } from 'rxjs';
 import { BaseApiService } from '../base/base-api.service';
 import { HttpClient } from '@angular/common/http';
-import {
+import type {
   Project,
   CreateProjectRequest,
   UpdateProjectRequest,
   ProjectSearchParams,
 } from '../../interfaces/project/project.interface';
-import { PaginatedResponse } from '../../interfaces/utils/utils.interface';
+import type { PaginatedResponse } from '../../interfaces/utils/utils.interface';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ProjectService extends BaseApiService<Project> {
   private readonly endpoint = '/v1/project';
 
-  constructor(
-    http: HttpClient,
-    @Inject(PLATFORM_ID) platformId: Object
-  ) {
+  constructor(http: HttpClient, @Inject(PLATFORM_ID) platformId: Object) {
     super(http, platformId);
   }
 

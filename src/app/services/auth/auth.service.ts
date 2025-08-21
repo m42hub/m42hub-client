@@ -1,41 +1,34 @@
 import { Injectable, PLATFORM_ID, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, catchError, of, tap } from 'rxjs';
+import type { Observable } from 'rxjs';
+import { BehaviorSubject, catchError, of, tap } from 'rxjs';
 import { isPlatformBrowser } from '@angular/common';
-import { User, RegisterRequest } from '../../interfaces/user/user.interface';
+import type { User, RegisterRequest } from '../../interfaces/user/user.interface';
 import { ENVIRONMENT } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-
   protected readonly apiUrl = ENVIRONMENT.apiUrl;
-  private userSubject = new BehaviorSubject<User| null>(null);
+  private userSubject = new BehaviorSubject<User | null>(null);
   user$ = this.userSubject.asObservable();
   private _isInitialized = false;
   private redirectUrl: string | null = null;
 
   constructor(
     private http: HttpClient,
-    @Inject(PLATFORM_ID) private platformId: Object
+    @Inject(PLATFORM_ID) private platformId: Object,
   ) {}
 
   login(username: string, password: string): Observable<{ user: User }> {
     return this.http
-      .post<{ user: User }>(
-        `${this.apiUrl}/v1/auth/login`,
-        { username, password }
-      )
-      .pipe(tap(response => this.userSubject.next(response.user)));
+      .post<{ user: User }>(`${this.apiUrl}/v1/auth/login`, { username, password })
+      .pipe(tap((response) => this.userSubject.next(response.user)));
   }
 
   register(registerData: RegisterRequest): Observable<User> {
-    return this.http
-      .post<User>(
-        `${this.apiUrl}/v1/auth/register`,
-        registerData
-      );
+    return this.http.post<User>(`${this.apiUrl}/v1/auth/register`, registerData);
   }
 
   loadUser(): Observable<User | null> {
@@ -43,19 +36,17 @@ export class AuthService {
       return of(null);
     }
 
-    return this.http
-      .get<User>(`${this.apiUrl}/v1/user/me`)
-      .pipe(
-        tap((user) => {
-          this.userSubject.next(user);
-          this._isInitialized = true;
-        }),
-        catchError(() => {
-          this.userSubject.next(null);
-          this._isInitialized = true;
-          return of(null);
-        })
-      );
+    return this.http.get<User>(`${this.apiUrl}/v1/user/me`).pipe(
+      tap((user) => {
+        this.userSubject.next(user);
+        this._isInitialized = true;
+      }),
+      catchError(() => {
+        this.userSubject.next(null);
+        this._isInitialized = true;
+        return of(null);
+      }),
+    );
   }
 
   initializeAuth(): Observable<User | null> {

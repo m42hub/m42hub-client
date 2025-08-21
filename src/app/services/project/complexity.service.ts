@@ -1,9 +1,10 @@
 import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
-import { Observable } from 'rxjs';
+import type { Observable } from 'rxjs';
 import { BaseApiService } from '../base/base-api.service';
 import { HttpClient } from '@angular/common/http';
 import { CreateProjectStatus, ProjectStatus } from '../../interfaces/project/status.interface';
-import { CreateProjectComplexity, ProjectComplexity } from '../../interfaces/project/complexity.interface';
+import type { ProjectComplexity } from '../../interfaces/project/complexity.interface';
+import { CreateProjectComplexity } from '../../interfaces/project/complexity.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -11,10 +12,7 @@ import { CreateProjectComplexity, ProjectComplexity } from '../../interfaces/pro
 export class ProjectComplexityService extends BaseApiService<ProjectComplexity> {
   private readonly endpoint = '/v1/project/complexity';
 
-  constructor(
-    http: HttpClient,
-    @Inject(PLATFORM_ID) platformId: Object
-  ) {
+  constructor(http: HttpClient, @Inject(PLATFORM_ID) platformId: Object) {
     super(http, platformId);
   }
 

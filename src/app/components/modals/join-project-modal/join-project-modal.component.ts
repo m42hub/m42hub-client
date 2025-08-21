@@ -1,9 +1,9 @@
-
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { ProjectRole } from '../../../interfaces/project/role.interface';
-import { ApplyProjectMember } from '../../../interfaces/project/member.interface';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { Validators, ReactiveFormsModule } from '@angular/forms';
+import type { ProjectRole } from '../../../interfaces/project/role.interface';
+import type { ApplyProjectMember } from '../../../interfaces/project/member.interface';
 import { DialogModule } from 'primeng/dialog';
 import { SelectModule } from 'primeng/select';
 import { TextareaModule } from 'primeng/textarea';
@@ -30,8 +30,8 @@ export class JoinProjectModalComponent {
   @Input() visible = false;
   @Input() availableRoles: ProjectRole[] = [];
   @Input() project: any;
-  @Output() close = new EventEmitter<void>();
-  @Output() completed = new EventEmitter<void>();
+  @Output() closeModal = new EventEmitter<void>();
+  @Output() completedModal = new EventEmitter<void>();
 
   joinForm: FormGroup;
   isSubmitting = false;
@@ -40,23 +40,25 @@ export class JoinProjectModalComponent {
 
   constructor(
     private formBuilder: FormBuilder,
-    private memberService: ProjectMemberService
+    private memberService: ProjectMemberService,
   ) {
     this.joinForm = this.formBuilder.group({
       roleId: ['', Validators.required],
-      applicationMessage: ['', [Validators.maxLength(500)]]
+      applicationMessage: ['', [Validators.maxLength(500)]],
     });
   }
 
   onClose(): void {
-    this.close.emit();
+    this.closeModal.emit();
     this.joinForm.reset();
     this.submitMessage = '';
     this.submitMessageType = null;
   }
 
   onSubmit(): void {
-    if (this.joinForm.invalid || this.isSubmitting) return;
+    if (this.joinForm.invalid || this.isSubmitting) {
+      return;
+    }
 
     this.isSubmitting = true;
     this.submitMessage = '';
@@ -71,13 +73,13 @@ export class JoinProjectModalComponent {
     };
 
     this.memberService.apply(applicationData).subscribe({
-      next: (response: any) => {
+      next: (_response: any) => {
         this.submitMessage = 'Solicitação enviada com sucesso!';
         this.submitMessageType = 'success';
         this.isSubmitting = false;
 
         setTimeout(() => {
-          this.close.emit();
+          this.closeModal.emit();
           window.location.reload();
         }, 2000);
       },

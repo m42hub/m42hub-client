@@ -4,10 +4,9 @@ import { CardModule } from 'primeng/card';
 import { TagModule } from 'primeng/tag';
 import { ButtonModule } from 'primeng/button';
 import { TooltipModule } from 'primeng/tooltip';
-import { Project } from '../../../interfaces/project/project.interface';
+import type { Project } from '../../../interfaces/project/project.interface';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../services/auth/auth.service';
-
 
 @Component({
   selector: 'app-project-summary-card',
@@ -17,10 +16,13 @@ import { AuthService } from '../../../services/auth/auth.service';
   styleUrl: './project-summary-card.component.css',
 })
 export class ProjectSummaryCardComponent {
-  constructor(private router: Router, private authService: AuthService) {}
+  constructor(
+    private router: Router,
+    private authService: AuthService,
+  ) {}
 
   @Input() project!: Project;
-  showImage: boolean = true;
+  showImage = true;
 
   getTools(): string[] {
     return this.project.tools?.map((t) => t.name) || [];
@@ -46,10 +48,14 @@ export class ProjectSummaryCardComponent {
     const tags: { label: string; tooltip: string }[] = [];
 
     const complexity = this.getComplexity();
-    if (complexity) tags.push({ label: complexity, tooltip: 'Complexidade' });
+    if (complexity) {
+      tags.push({ label: complexity, tooltip: 'Complexidade' });
+    }
 
     const status = this.getStatus();
-    if (status) tags.push({ label: status, tooltip: 'Status' });
+    if (status) {
+      tags.push({ label: status, tooltip: 'Status' });
+    }
 
     return tags;
   }
@@ -59,7 +65,9 @@ export class ProjectSummaryCardComponent {
   }
 
   formatDate(date?: string | Date): string {
-    if (!date) return 'Não definida';
+    if (!date) {
+      return 'Não definida';
+    }
     const d = typeof date === 'string' ? new Date(date) : date;
     return d.toLocaleDateString('pt-BR');
   }
@@ -96,8 +104,8 @@ export class ProjectSummaryCardComponent {
       return false;
     }
 
-    const userMember = this.project.members.find(member =>
-      member.user.username === currentUser.username && member.isManager
+    const userMember = this.project.members.find(
+      (member) => member.user.username === currentUser.username && member.isManager,
     );
 
     return !!userMember;

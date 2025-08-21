@@ -19,16 +19,16 @@ export interface TeamMember {
   standalone: true,
   imports: [CommonModule, CardModule, TagModule, TooltipModule, AvatarModule],
   templateUrl: './team-card.component.html',
-  styleUrl: './team-card.component.css'
+  styleUrl: './team-card.component.css',
 })
 export class TeamCardComponent {
   @Input() team: TeamMember[] = [];
   @Input() mode: 'display' | 'edit' = 'display';
-  @Input() showHeader: boolean = true;
-  @Input() maxHeight: string = 'auto';
+  @Input() showHeader = true;
+  @Input() maxHeight = 'auto';
 
-  @Output() removeMember = new EventEmitter<{ index: number, member: TeamMember }>();
-  @Output() editMember = new EventEmitter<{ index: number, member: TeamMember }>();
+  @Output() removeMember = new EventEmitter<{ index: number; member: TeamMember }>();
+  @Output() editMember = new EventEmitter<{ index: number; member: TeamMember }>();
 
   defaultAvatar = '/default_avatar.png';
 

@@ -1,16 +1,18 @@
-import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { ENVIRONMENT } from "../../../environments/environment";
-import { catchError, Observable, throwError, of } from "rxjs";
-import { options } from "marked";
-import { Inject, PLATFORM_ID } from "@angular/core";
-import { isPlatformBrowser } from "@angular/common";
+import type { HttpClient } from '@angular/common/http';
+import { HttpHeaders } from '@angular/common/http';
+import { ENVIRONMENT } from '../../../environments/environment';
+import type { Observable } from 'rxjs';
+import { catchError, throwError, of } from 'rxjs';
+import { options } from 'marked';
+import { Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 
 export abstract class BaseApiService<T> {
   protected readonly apiUrl = ENVIRONMENT.apiUrl;
 
   constructor(
     protected http: HttpClient,
-    @Inject(PLATFORM_ID) private platformId: Object
+    @Inject(PLATFORM_ID) private platformId: Object,
   ) {}
 
   private getHeaders(): HttpHeaders {
@@ -21,15 +23,13 @@ export abstract class BaseApiService<T> {
 
   private buildQueryString(params: Record<string, any>): string {
     const filteredEntries = Object.entries(params).filter(
-      ([_, value]) => value !== undefined && value !== null
+      ([_, value]) => value !== undefined && value !== null,
     );
 
     const query = filteredEntries
       .map(([key, value]) => {
         if (Array.isArray(value)) {
-          return `${encodeURIComponent(key)}=${value
-            .map((v) => encodeURIComponent(v))
-            .join(',')}`;
+          return `${encodeURIComponent(key)}=${value.map((v) => encodeURIComponent(v)).join(',')}`;
         }
         return `${encodeURIComponent(key)}=${encodeURIComponent(value)}`;
       })
@@ -38,10 +38,7 @@ export abstract class BaseApiService<T> {
     return query ? `${query}` : '';
   }
 
-  protected get<T>(
-    endpoint: string,
-    params?: Record<string, any>
-  ): Observable<T> {
+  protected get<T>(endpoint: string, params?: Record<string, any>): Observable<T> {
     // Durante SSR, retornar observable vazio para evitar requisições
     if (!isPlatformBrowser(this.platformId) || !this.apiUrl) {
       return of([] as unknown as T);

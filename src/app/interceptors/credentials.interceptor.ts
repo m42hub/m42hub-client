@@ -1,4 +1,4 @@
-import { HttpInterceptorFn } from '@angular/common/http';
+import type { HttpInterceptorFn } from '@angular/common/http';
 import { ENVIRONMENT } from '../../environments/environment';
 
 export const credentialsInterceptor: HttpInterceptorFn = (req, next) => {
@@ -6,7 +6,7 @@ export const credentialsInterceptor: HttpInterceptorFn = (req, next) => {
 
   if (req.url.startsWith(`${apiUrl}`)) {
     const modifiedReq = req.clone({
-      withCredentials: true
+      withCredentials: true,
     });
     return next(modifiedReq);
   }

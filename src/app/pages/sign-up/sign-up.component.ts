@@ -1,7 +1,11 @@
-import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
-import { CommonModule, isPlatformBrowser, Location } from '@angular/common';
+import type { OnInit } from '@angular/core';
+import { Component, Inject, PLATFORM_ID } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { Validators, ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { RouterModule } from '@angular/router';
+import { Location } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { AuthService } from '../../services/auth/auth.service';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
@@ -10,7 +14,7 @@ import { CardModule } from 'primeng/card';
 import { MessageModule } from 'primeng/message';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { CheckboxModule } from 'primeng/checkbox';
-import { RegisterRequest } from '../../interfaces/user/user.interface';
+import type { RegisterRequest } from '../../interfaces/user/user.interface';
 import { DisclaimerModalComponent } from '../../components/modals/disclaimer-modal/disclaimer-modal.component';
 
 @Component({
@@ -26,10 +30,10 @@ import { DisclaimerModalComponent } from '../../components/modals/disclaimer-mod
     MessageModule,
     ProgressSpinnerModule,
     CheckboxModule,
-    DisclaimerModalComponent
+    DisclaimerModalComponent,
   ],
   templateUrl: './sign-up.component.html',
-  styleUrl: './sign-up.component.css'
+  styleUrl: './sign-up.component.css',
 })
 export class SignUpComponent implements OnInit {
   signUpForm!: FormGroup;
@@ -44,7 +48,7 @@ export class SignUpComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private location: Location,
-    @Inject(PLATFORM_ID) private platformId: Object
+    @Inject(PLATFORM_ID) private platformId: Object,
   ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
   }
@@ -62,15 +66,18 @@ export class SignUpComponent implements OnInit {
   }
 
   private initializeForm() {
-    this.signUpForm = this.fb.group({
-      username: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
-      email: ['', [Validators.required, Validators.email]],
-      firstName: ['', [Validators.required, Validators.minLength(2)]],
-      lastName: ['', [Validators.required, Validators.minLength(2)]],
-      password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(255)]],
-      confirmPassword: ['', [Validators.required]],
-      isActive: [true]
-    }, { validators: this.passwordMatchValidator });
+    this.signUpForm = this.fb.group(
+      {
+        username: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
+        email: ['', [Validators.required, Validators.email]],
+        firstName: ['', [Validators.required, Validators.minLength(2)]],
+        lastName: ['', [Validators.required, Validators.minLength(2)]],
+        password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(255)]],
+        confirmPassword: ['', [Validators.required]],
+        isActive: [true],
+      },
+      { validators: this.passwordMatchValidator },
+    );
   }
 
   private passwordMatchValidator(form: FormGroup) {
@@ -112,7 +119,7 @@ export class SignUpComponent implements OnInit {
         error: (error) => {
           this.loading = false;
           this.errorMessage = this.getErrorMessage(error);
-        }
+        },
       });
     } else {
       this.markFormGroupTouched();
@@ -134,7 +141,7 @@ export class SignUpComponent implements OnInit {
   }
 
   private markFormGroupTouched() {
-    Object.keys(this.signUpForm.controls).forEach(key => {
+    Object.keys(this.signUpForm.controls).forEach((key) => {
       const control = this.signUpForm.get(key);
       control?.markAsTouched();
     });

@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import type { OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { ProjectService } from '../../services/project/project.service';
-import { Project } from '../../interfaces/project/project.interface';
+import type { Project } from '../../interfaces/project/project.interface';
 import { ProjectDescriptionCardComponent } from '../../components/cards/project-description-card/project-description-card.component';
 import { ProjectInfoSidebarComponent } from '../../components/sidebars/project-info-sidebar/project-info-sidebar.component';
 
@@ -14,10 +15,10 @@ import { ProjectInfoSidebarComponent } from '../../components/sidebars/project-i
     CommonModule,
     ButtonModule,
     ProjectDescriptionCardComponent,
-    ProjectInfoSidebarComponent
+    ProjectInfoSidebarComponent,
   ],
   templateUrl: './project-details.component.html',
-  styleUrl: './project-details.component.css'
+  styleUrl: './project-details.component.css',
 })
 export class ProjectDetailsComponent implements OnInit {
   project?: Project;
@@ -27,11 +28,11 @@ export class ProjectDetailsComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private projectService: ProjectService
+    private projectService: ProjectService,
   ) {}
 
   ngOnInit(): void {
-    this.route.params.subscribe(params => {
+    this.route.params.subscribe((params) => {
       const projectId = params['id'];
       if (projectId) {
         this.loadProject(projectId);
@@ -59,7 +60,7 @@ export class ProjectDetailsComponent implements OnInit {
       error: () => {
         this.error = true;
         this.loading = false;
-      }
+      },
     });
   }
 

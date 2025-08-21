@@ -1,11 +1,12 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import type { OnInit } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { Router } from '@angular/router';
 import { PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser, CommonModule } from '@angular/common';
 import { AuthService } from '../../../services/auth/auth.service';
-import { Observable } from 'rxjs';
-import { User } from '../../../interfaces/user/user.interface';
+import type { Observable } from 'rxjs';
+import type { User } from '../../../interfaces/user/user.interface';
 import { TagModule } from 'primeng/tag';
 
 @Component({
@@ -22,7 +23,7 @@ export class HeaderComponent implements OnInit {
   constructor(
     private router: Router,
     private authService: AuthService,
-    @Inject(PLATFORM_ID) private platformId: Object
+    @Inject(PLATFORM_ID) private platformId: Object,
   ) {
     this.user$ = this.authService.user$;
   }
@@ -44,9 +45,7 @@ export class HeaderComponent implements OnInit {
           this.darkMode = false;
         }
       } else {
-        const prefersDark = window.matchMedia(
-          '(prefers-color-scheme: dark)'
-        ).matches;
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
         if (prefersDark) {
           html.classList.add('dark');
           localStorage.setItem('theme', 'dark');

@@ -1,13 +1,15 @@
-import { Component, Input, OnInit } from '@angular/core';
+import type { OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Project } from '../../../interfaces/project/project.interface';
-import { TeamCardComponent, TeamMember } from '../../cards/team-card/team-card.component';
+import type { Project } from '../../../interfaces/project/project.interface';
+import type { TeamMember } from '../../cards/team-card/team-card.component';
+import { TeamCardComponent } from '../../cards/team-card/team-card.component';
 import { CardModule } from 'primeng/card';
 import { TagModule } from 'primeng/tag';
 import { ButtonModule } from 'primeng/button';
 import { ProjectRoleService } from '../../../services/project/role.service';
 import { AuthService } from '../../../services/auth/auth.service';
-import { ProjectRole } from '../../../interfaces/project/role.interface';
+import type { ProjectRole } from '../../../interfaces/project/role.interface';
 import { JoinProjectModalComponent } from '../../modals/join-project-modal/join-project-modal.component';
 
 @Component({
@@ -19,7 +21,7 @@ import { JoinProjectModalComponent } from '../../modals/join-project-modal/join-
     CardModule,
     TagModule,
     ButtonModule,
-    JoinProjectModalComponent
+    JoinProjectModalComponent,
   ],
   templateUrl: './project-info-sidebar.component.html',
   styleUrl: './project-info-sidebar.component.css',
@@ -64,14 +66,17 @@ export class ProjectInfoSidebarComponent implements OnInit {
   }
 
   private getUserAvatar(user: any): string {
-    if (user.photo) return user.photo;
+    if (user.photo) {
+      return user.photo;
+    }
     return this.defaultAvatar;
   }
 
   getTeamMembers(): TeamMember[] {
     return (
-      this.project.members?.filter(member => member.memberStatus.id == 2)
-        .map(member => {
+      this.project.members
+        ?.filter((member) => member.memberStatus.id == 2)
+        .map((member) => {
           let roleName = this.getRoleName(member.role);
 
           if (member.isManager) {
@@ -97,14 +102,16 @@ export class ProjectInfoSidebarComponent implements OnInit {
     }
 
     const isAlreadyMember = this.project.members?.some(
-      member => member.user.username === currentUser.username
+      (member) => member.user.username === currentUser.username,
     );
 
     return !isAlreadyMember;
   }
 
   openJoinModal(): void {
-    if (!this.canJoinProject) return;
+    if (!this.canJoinProject) {
+      return;
+    }
     this.availableRoles = this.project.unfilledRoles || [];
     this.showJoinModal = true;
   }

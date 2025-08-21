@@ -1,8 +1,9 @@
-import { Component, OnInit, afterNextRender } from '@angular/core';
+import type { OnInit } from '@angular/core';
+import { Component, afterNextRender } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { PrimeNG } from 'primeng/config';
-import { HeaderComponent } from "./components/layout/header/header.component";
-import { FooterComponent } from "./components/layout/footer/footer.component";
+import { HeaderComponent } from './components/layout/header/header.component';
+import { FooterComponent } from './components/layout/footer/footer.component';
 import { AuthService } from './services/auth/auth.service';
 
 @Component({
@@ -14,7 +15,10 @@ import { AuthService } from './services/auth/auth.service';
 export class AppComponent implements OnInit {
   title = 'm42hub-client';
 
-  constructor(private primeng: PrimeNG, private authService: AuthService) {
+  constructor(
+    private primeng: PrimeNG,
+    private authService: AuthService,
+  ) {
     // Inicializa a autenticação apenas após a hidratação no cliente
     afterNextRender(() => {
       this.authService.initializeAuth().subscribe();

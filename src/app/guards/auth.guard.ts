@@ -1,10 +1,15 @@
 import { inject, Injectable, PLATFORM_ID } from '@angular/core';
-import { CanActivateFn, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import type { CanActivateFn, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { Router } from '@angular/router';
 import { isPlatformBrowser } from '@angular/common';
 import { AuthService } from '../services/auth/auth.service';
-import { map, Observable, of } from 'rxjs';
+import type { Observable } from 'rxjs';
+import { map, of } from 'rxjs';
 
-export const authGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> => {
+export const authGuard: CanActivateFn = (
+  route: ActivatedRouteSnapshot,
+  state: RouterStateSnapshot,
+): Observable<boolean> => {
   const authService = inject(AuthService);
   const router = inject(Router);
   const platformId = inject(PLATFORM_ID);
@@ -30,13 +35,13 @@ export const authGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state: R
 
   if (!authService.isInitialized) {
     return authService.initializeAuth().pipe(
-      map(user => {
+      map((user) => {
         if (user) {
           return true;
         } else {
           return redirectToLogin();
         }
-      })
+      }),
     );
   }
 

@@ -21,12 +21,12 @@ export interface TeamRequest {
   standalone: true,
   imports: [CommonModule, CardModule, TagModule, TooltipModule, ButtonModule, AvatarModule],
   templateUrl: './request-card.component.html',
-  styleUrl: './request-card.component.css'
+  styleUrl: './request-card.component.css',
 })
 export class RequestCardComponent {
   @Input() requests: TeamRequest[] = [];
-  @Input() showHeader: boolean = true;
-  @Input() maxHeight: string = 'auto';
+  @Input() showHeader = true;
+  @Input() maxHeight = 'auto';
 
   @Output() acceptRequest = new EventEmitter<TeamRequest>();
   @Output() rejectRequest = new EventEmitter<TeamRequest>();

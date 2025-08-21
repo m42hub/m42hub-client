@@ -1,6 +1,14 @@
-import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges, PLATFORM_ID, Inject } from '@angular/core';
+import type { OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, PLATFORM_ID, Inject } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, FormGroup, FormArray, FormControl, Validators, AbstractControl, ValidationErrors, FormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  FormArray,
+  AbstractControl,
+  ValidationErrors,
+} from '@angular/forms';
+import { ReactiveFormsModule, FormControl, Validators, FormsModule } from '@angular/forms';
 import { CardModule } from 'primeng/card';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
@@ -10,12 +18,16 @@ import { ChipModule } from 'primeng/chip';
 import { TagModule } from 'primeng/tag';
 import { AvatarModule } from 'primeng/avatar';
 import { DialogModule } from 'primeng/dialog';
-import { TabsModule  } from 'primeng/tabs';
+import { TabsModule } from 'primeng/tabs';
 import { TextareaModule } from 'primeng/textarea';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { TooltipModule } from 'primeng/tooltip';
 import { marked } from 'marked';
-import { Project, CreateProjectRequest, UpdateProjectRequest } from '../../../interfaces/project/project.interface';
+import type {
+  Project,
+  CreateProjectRequest,
+  UpdateProjectRequest,
+} from '../../../interfaces/project/project.interface';
 import { ProjectStatusService } from '../../../services/project/status.service';
 import { ProjectComplexityService } from '../../../services/project/complexity.service';
 import { ProjectToolService } from '../../../services/project/tool.service';
@@ -57,18 +69,16 @@ export interface TeamRequest {
     MultiSelectModule,
     TooltipModule,
     TeamCardComponent,
-    RequestCardComponent
-],
+    RequestCardComponent,
+  ],
   templateUrl: './project-form.component.html',
   styleUrl: './project-form.component.css',
 })
 export class ProjectFormComponent implements OnInit, OnChanges {
   @Input() project?: Project;
-  @Input() isEditMode: boolean = false;
-  @Output() save = new EventEmitter<
-    CreateProjectRequest | UpdateProjectRequest
-  >();
-  @Output() cancel = new EventEmitter<void>();
+  @Input() isEditMode = false;
+  @Output() save = new EventEmitter<CreateProjectRequest | UpdateProjectRequest>();
+  @Output() cancelAction = new EventEmitter<void>();
 
   projectForm!: FormGroup;
   defaultAvatar = '/default_avatar.png';
@@ -109,7 +119,7 @@ export class ProjectFormComponent implements OnInit, OnChanges {
     private toolService: ProjectToolService,
     private topicService: ProjectTopicService,
     private roleService: ProjectRoleService,
-    private memberService: ProjectMemberService
+    private memberService: ProjectMemberService,
   ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
   }
@@ -274,10 +284,12 @@ export class ProjectFormComponent implements OnInit, OnChanges {
   }
 
   private patchFormWithProject(): void {
-    if (!this.project || !this.projectForm) return;
+    if (!this.project || !this.projectForm) {
+      return;
+    }
 
     // Buscar o manager do projeto para obter seu roleId
-    const manager = this.project.members?.find(member => member.isManager);
+    const manager = this.project.members?.find((member) => member.isManager);
     const managerRoleId = manager?.role ? Number(manager.role) : null;
 
     this.projectForm.patchValue({
@@ -290,19 +302,16 @@ export class ProjectFormComponent implements OnInit, OnChanges {
       endDate: this.project.endDate ? new Date(this.project.endDate) : null,
       managerRoleId: managerRoleId,
       unfilledRoles: this.project.unfilledRoles?.map((r) => Number(r.id)) || [],
-      selectedTecnologiasFerramentas:
-        this.project.tools?.map((t) => Number(t.id)) || [],
+      selectedTecnologiasFerramentas: this.project.tools?.map((t) => Number(t.id)) || [],
       selectedAssuntos: this.project.topics?.map((t) => Number(t.id)) || [],
-      selectedComplexidade: this.project.complexity?.id
-        ? Number(this.project.complexity.id)
-        : null,
+      selectedComplexidade: this.project.complexity?.id ? Number(this.project.complexity.id) : null,
     });
 
     // Patch da equipe
     const teamArray = this.projectForm.get('team') as FormArray;
     teamArray.clear();
     (this.project.members || []).forEach((member) => {
-      let memberFullname: string = `${member.user.firstName}  ${member.user.lastName}`;
+      let memberFullname = `${member.user.firstName}  ${member.user.lastName}`;
       teamArray.push(
         this.fb.group({
           id: [member.id],
@@ -313,7 +322,7 @@ export class ProjectFormComponent implements OnInit, OnChanges {
           isManager: [member.isManager || false],
           applicationMessage: [member.applicationMessage],
           createdAt: [member.createdAt],
-        })
+        }),
       );
     });
 
@@ -325,29 +334,25 @@ export class ProjectFormComponent implements OnInit, OnChanges {
 
   // Métodos para gerenciar tags
   addTag(
-    type:
-      | 'tecnologias/ferramentas'
-      | 'assuntos'
-      | 'tempoEstimado'
-      | 'complexidade',
+    type: 'tecnologias/ferramentas' | 'assuntos' | 'tempoEstimado' | 'complexidade',
     value: string,
-    color?: string
+    color?: string,
   ): void {
     const tagsArray = this.projectForm.get('tags') as FormArray;
     let label = value;
     if (type === 'tecnologias/ferramentas') {
       const found = this.toolOptions.find(
-        (t) => String(t.value) === String(value) || t.label === value
+        (t) => String(t.value) === String(value) || t.label === value,
       );
       label = found ? found.label : value;
     } else if (type === 'assuntos') {
       const found = this.topicOptions.find(
-        (t) => String(t.value) === String(value) || t.label === value
+        (t) => String(t.value) === String(value) || t.label === value,
       );
       label = found ? found.label : value;
     } else if (type === 'complexidade') {
       const found = this.complexityOptions.find(
-        (c) => String(c.value) === String(value) || c.label === value
+        (c) => String(c.value) === String(value) || c.label === value,
       );
       label = found ? found.label : value;
     }
@@ -372,9 +377,7 @@ export class ProjectFormComponent implements OnInit, OnChanges {
 
   isTagSelected(type: string, value: string): boolean {
     const tagsArray = this.projectForm.get('tags') as FormArray;
-    return tagsArray.value.some(
-      (tag: any) => tag.type === type && tag.name === value
-    );
+    return tagsArray.value.some((tag: any) => tag.type === type && tag.name === value);
   }
 
   getTagsArray(): FormArray {
@@ -401,32 +404,23 @@ export class ProjectFormComponent implements OnInit, OnChanges {
     const tagsArray = this.projectForm.get('tags') as FormArray;
     const selectedTecnologiasFerramentas =
       this.projectForm.get('selectedTecnologiasFerramentas')?.value || [];
-    const selectedAssuntos =
-      this.projectForm.get('selectedAssuntos')?.value || [];
-    const selectedTempoEstimado = this.projectForm.get(
-      'selectedTempoEstimado'
-    )?.value;
-    const selectedComplexidade = this.projectForm.get(
-      'selectedComplexidade'
-    )?.value;
+    const selectedAssuntos = this.projectForm.get('selectedAssuntos')?.value || [];
+    const selectedTempoEstimado = this.projectForm.get('selectedTempoEstimado')?.value;
+    const selectedComplexidade = this.projectForm.get('selectedComplexidade')?.value;
 
     tagsArray.clear();
 
     // Adicionar tags de tecnologias/ferramentas
 
     selectedTecnologiasFerramentas.forEach((id: string | number) => {
-      const found = this.toolOptions.find(
-        (t) => String(t.value) === String(id)
-      );
+      const found = this.toolOptions.find((t) => String(t.value) === String(id));
       const color = found?.color || '';
       this.addTag('tecnologias/ferramentas', String(id), color);
     });
 
     // Adicionar tags de assuntos
     selectedAssuntos.forEach((id: string | number) => {
-      const found = this.topicOptions.find(
-        (t) => String(t.value) === String(id)
-      );
+      const found = this.topicOptions.find((t) => String(t.value) === String(id));
       const color = found?.color || '';
       this.addTag('assuntos', String(id), color);
     });
@@ -439,7 +433,7 @@ export class ProjectFormComponent implements OnInit, OnChanges {
     // Adicionar tag de complexidade
     if (selectedComplexidade) {
       const found = this.complexityOptions.find(
-        (c) => String(c.value) === String(selectedComplexidade)
+        (c) => String(c.value) === String(selectedComplexidade),
       );
       const color = found?.color || '';
       this.addTag('complexidade', selectedComplexidade, color);
@@ -471,11 +465,11 @@ export class ProjectFormComponent implements OnInit, OnChanges {
 
     if (filter === 'approved') {
       filteredControls = filteredControls.filter(
-        (control) => control.get('memberStatus')?.value?.id == 2
+        (control) => control.get('memberStatus')?.value?.id == 2,
       );
     } else if (filter === 'pending') {
       filteredControls = filteredControls.filter(
-        (control) => control.get('memberStatus')?.value?.id == 1
+        (control) => control.get('memberStatus')?.value?.id == 1,
       );
     }
 
@@ -495,9 +489,7 @@ export class ProjectFormComponent implements OnInit, OnChanges {
       }
 
       const roleId = control.get('role')?.value;
-      const roleObj = this.roleOptions.find(
-        (r) => r.value === roleId || r.label === roleId
-      );
+      const roleObj = this.roleOptions.find((r) => r.value === roleId || r.label === roleId);
 
       const role = roleObj ? roleObj.label : roleId;
 
@@ -514,7 +506,7 @@ export class ProjectFormComponent implements OnInit, OnChanges {
         role,
         photo,
         applicationMessage,
-        createdAt
+        createdAt,
       };
     });
   }
@@ -598,7 +590,8 @@ export class ProjectFormComponent implements OnInit, OnChanges {
           description: formValue.description,
           statusId: formValue.status,
           complexityId: formValue.selectedComplexidade,
-          imageUrl: formValue.image && formValue.image.trim() !== '' ? formValue.image.trim() : null,
+          imageUrl:
+            formValue.image && formValue.image.trim() !== '' ? formValue.image.trim() : null,
           startDate: formValue.startDate ? formValue.startDate.toISOString() : null,
           endDate: formValue.endDate ? formValue.endDate.toISOString() : null,
           toolIds: formValue.selectedTecnologiasFerramentas,
@@ -614,7 +607,8 @@ export class ProjectFormComponent implements OnInit, OnChanges {
           description: formValue.description,
           statusId: formValue.status,
           complexityId: formValue.selectedComplexidade,
-          imageUrl: formValue.image && formValue.image.trim() !== '' ? formValue.image.trim() : null,
+          imageUrl:
+            formValue.image && formValue.image.trim() !== '' ? formValue.image.trim() : null,
           startDate: formValue.startDate ? formValue.startDate.toISOString() : null,
           endDate: formValue.endDate ? formValue.endDate.toISOString() : null,
           toolIds: formValue.selectedTecnologiasFerramentas,
@@ -630,7 +624,7 @@ export class ProjectFormComponent implements OnInit, OnChanges {
   }
 
   onCancel(): void {
-    this.cancel.emit();
+    this.cancelAction.emit();
   }
 
   private markFormGroupTouched(): void {
@@ -702,17 +696,20 @@ export class ProjectFormComponent implements OnInit, OnChanges {
   feedbackRequest: any = null;
 
   onRequestCardAcceptRequest(request: any): void {
-    console.log('[ProjectFormComponent] Evento de aceitar recebido:', request);
-    if (!request?.id) return;
+    if (!request?.id) {
+      return;
+    }
     this.memberService.approve(request.id).subscribe({
       next: (updatedMember) => {
         const teamArray = this.projectForm.get('team') as FormArray;
-        if (!teamArray) return;
+        if (!teamArray) {
+          return;
+        }
         for (let i = 0; i < teamArray.length; i++) {
           const member = teamArray.at(i);
           if (member.get('id')?.value === request.id) {
             member.patchValue({
-              memberStatus: { id: 2, name: 'Aprovado' }
+              memberStatus: { id: 2, name: 'Aprovado' },
             });
             break;
           }
@@ -720,13 +717,12 @@ export class ProjectFormComponent implements OnInit, OnChanges {
       },
       error: (err) => {
         console.error('Erro ao aprovar membro:', err);
-      }
+      },
     });
   }
 
   // Abre o diálogo de feedback ao rejeitar
   onRequestCardRejectRequest(request: any): void {
-    console.log('[ProjectFormComponent] Evento de rejeitar recebido:', request);
     this.feedbackRequest = request;
     this.feedbackTextControl.reset('');
     this.feedbackDialogVisible = true;
@@ -734,12 +730,16 @@ export class ProjectFormComponent implements OnInit, OnChanges {
 
   // Confirma rejeição com feedback
   confirmRejectRequest(): void {
-    if (!this.feedbackRequest?.id) return;
+    if (!this.feedbackRequest?.id) {
+      return;
+    }
     const feedback = this.feedbackTextControl.value || '';
     this.memberService.reject(this.feedbackRequest.id, feedback).subscribe({
       next: (updatedMember) => {
         const teamArray = this.projectForm.get('team') as FormArray;
-        if (!teamArray) return;
+        if (!teamArray) {
+          return;
+        }
         for (let i = 0; i < teamArray.length; i++) {
           const member = teamArray.at(i);
           if (member.get('id')?.value === this.feedbackRequest.id) {
@@ -752,7 +752,7 @@ export class ProjectFormComponent implements OnInit, OnChanges {
       error: (err) => {
         console.error('Erro ao rejeitar membro:', err);
         this.closeFeedbackDialog();
-      }
+      },
     });
   }
 

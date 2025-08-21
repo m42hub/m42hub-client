@@ -1,4 +1,4 @@
-import { AuthenticatedUser } from "../user/user.interface";
+import type { AuthenticatedUser } from '../user/user.interface';
 
 export interface ProjectMember {
   id: number;

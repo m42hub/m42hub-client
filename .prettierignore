@@ -1,0 +1,15 @@
+# Build e output
+dist
+coverage
+node_modules
+out-tsc
+
+# Arquivos minificados
+*.min.js
+*.bundle.js
+
+# Declarações TypeScript geradas
+**/*.d.ts
+
+# Configuração de VSCode
+.vscode

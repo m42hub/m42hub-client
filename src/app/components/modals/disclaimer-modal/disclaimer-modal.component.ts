@@ -6,16 +6,12 @@ import { ButtonModule } from 'primeng/button';
 @Component({
   selector: 'app-disclaimer-modal',
   standalone: true,
-  imports: [
-    CommonModule,
-    DialogModule,
-    ButtonModule
-  ],
+  imports: [CommonModule, DialogModule, ButtonModule],
   templateUrl: './disclaimer-modal.component.html',
-  styleUrl: './disclaimer-modal.component.css'
+  styleUrl: './disclaimer-modal.component.css',
 })
 export class DisclaimerModalComponent {
-  @Input() visible: boolean = false;
+  @Input() visible = false;
   @Output() visibleChange = new EventEmitter<boolean>();
   @Output() accepted = new EventEmitter<void>();
   @Output() cancelled = new EventEmitter<void>();

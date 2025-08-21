@@ -1,4 +1,5 @@
-import { Component, OnInit, OnDestroy, HostListener, Inject, PLATFORM_ID } from '@angular/core';
+import type { OnInit, OnDestroy } from '@angular/core';
+import { Component, HostListener, Inject, PLATFORM_ID } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -9,7 +10,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { CardModule } from 'primeng/card';
 import { TooltipModule } from 'primeng/tooltip';
 import { ProjectSummaryCardComponent } from '../../components/cards/project-summary-card/project-summary-card.component';
-import { Project, ProjectSearchParams } from '../../interfaces/project/project.interface';
+import type { Project, ProjectSearchParams } from '../../interfaces/project/project.interface';
 import { ProjectService } from '../../services/project/project.service';
 import { ProjectComplexityService } from '../../services/project/complexity.service';
 import { ProjectStatusService } from '../../services/project/status.service';
@@ -17,11 +18,11 @@ import { ProjectToolService } from '../../services/project/tool.service';
 import { ProjectTopicService } from '../../services/project/topic.service';
 import { ProjectRoleService } from '../../services/project/role.service';
 import { AuthService } from '../../services/auth/auth.service';
-import { ProjectComplexity } from '../../interfaces/project/complexity.interface';
-import { ProjectStatus } from '../../interfaces/project/status.interface';
-import { ProjectTool } from '../../interfaces/project/tool.interface';
-import { ProjectTopic } from '../../interfaces/project/topic.interface';
-import { ProjectRole } from '../../interfaces/project/role.interface';
+import type { ProjectComplexity } from '../../interfaces/project/complexity.interface';
+import type { ProjectStatus } from '../../interfaces/project/status.interface';
+import type { ProjectTool } from '../../interfaces/project/tool.interface';
+import type { ProjectTopic } from '../../interfaces/project/topic.interface';
+import type { ProjectRole } from '../../interfaces/project/role.interface';
 
 @Component({
   selector: 'app-projects-page',
@@ -94,7 +95,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     private topicService: ProjectTopicService,
     private roleService: ProjectRoleService,
     private authService: AuthService,
-    @Inject(PLATFORM_ID) private platformId: Object
+    @Inject(PLATFORM_ID) private platformId: Object,
   ) {}
 
   ngOnInit(): void {
@@ -107,7 +108,9 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   }
 
   //TODO: validar se realmente é necessário ngOnDestroy
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    // Método intencionalmente vazio para cumprir interface OnDestroy
+  }
 
   @HostListener('window:resize', ['$event'])
   onResize(): void {
@@ -196,18 +199,14 @@ export class ProjectsComponent implements OnInit, OnDestroy {
 
     if (
       this.filters.complexity &&
-      (Array.isArray(this.filters.complexity)
-        ? this.filters.complexity.length > 0
-        : true)
+      (Array.isArray(this.filters.complexity) ? this.filters.complexity.length > 0 : true)
     ) {
       searchParams.complexity = this.filters.complexity;
     }
 
     if (
       this.filters.status &&
-      (Array.isArray(this.filters.status)
-        ? this.filters.status.length > 0
-        : true)
+      (Array.isArray(this.filters.status) ? this.filters.status.length > 0 : true)
     ) {
       searchParams.status = this.filters.status;
     }
@@ -221,18 +220,14 @@ export class ProjectsComponent implements OnInit, OnDestroy {
 
     if (
       this.filters.topics &&
-      (Array.isArray(this.filters.topics)
-        ? this.filters.topics.length > 0
-        : true)
+      (Array.isArray(this.filters.topics) ? this.filters.topics.length > 0 : true)
     ) {
       searchParams.topics = this.filters.topics;
     }
 
     if (
       this.filters.unfilledRoles &&
-      (Array.isArray(this.filters.unfilledRoles)
-        ? this.filters.unfilledRoles.length > 0
-        : true)
+      (Array.isArray(this.filters.unfilledRoles) ? this.filters.unfilledRoles.length > 0 : true)
     ) {
       searchParams.unfilledRoles = this.filters.unfilledRoles;
     }
@@ -299,10 +294,10 @@ export class ProjectsComponent implements OnInit, OnDestroy {
 
   createNewProject(): void {
     if (this.authService.isLoggedIn) {
-      this.router.navigate(['/projects/new']);
+      void this.router.navigate(['/projects/new']);
     } else {
       this.authService.setRedirectUrl('/projects/new');
-      this.router.navigate(['/login']);
+      void this.router.navigate(['/login']);
     }
   }
 
