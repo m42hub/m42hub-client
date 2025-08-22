@@ -39,14 +39,17 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   currentPage = 1;
   totalPages = 1;
   totalElements = 0;
-
+  showFilters = false;
   Math = Math;
 
-  showFilters = false;
+  filters: ProjectSearchParams = { page: 0, limit: this.pageSize };
 
-  filters: ProjectSearchParams = {
-    page: 0,
-    limit: this.pageSize,
+  private readonly breakpoints = {
+    sm: 640,
+    md: 768,
+    lg: 1024,
+    xl: 1280,
+    xl2: 1536,
   };
 
   constructor(
@@ -57,8 +60,8 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.updatePageSizeForScreen();
-    if (isPlatformBrowser(this.platformId)) {
+    this.handleResponsivePageSize();
+    if (this.isBrowser()) {
       this.loadProjects();
     }
   }
@@ -67,111 +70,86 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     // Método intencionalmente vazio para cumprir interface OnDestroy
   }
 
-  @HostListener('window:resize', ['$event'])
+  @HostListener('window:resize')
   onResize(): void {
-    if (isPlatformBrowser(this.platformId)) {
-      this.updatePageSizeForScreen();
+    if (this.isBrowser()) {
+      this.handleResponsivePageSize();
     }
   }
 
-  private breakpoints = {
-    sm: 640,
-    md: 768,
-    lg: 1024,
-    xl: 1280,
-    xl2: 1536,
-  };
+  private isBrowser(): boolean {
+    return isPlatformBrowser(this.platformId);
+  }
 
-  private updatePageSizeForScreen(): void {
-    if (!isPlatformBrowser(this.platformId)) {
-      return;
-    }
-
+  private handleResponsivePageSize(): void {
+    if (!this.isBrowser()) return;
     const width = window.innerWidth;
-    let newPageSize: number;
-
-    if (width < this.breakpoints.lg) {
-      newPageSize = 1;
-    } else if (width < this.breakpoints.xl2) {
-      newPageSize = 2;
-    } else {
-      newPageSize = 3;
-    }
-
+    const newPageSize = this.getPageSizeForWidth(width);
     if (newPageSize !== this.pageSize) {
       this.pageSize = newPageSize;
       this.filters.limit = this.pageSize;
       this.currentPage = 1;
-
       if (this.projects.length > 0 || this.totalElements > 0) {
         this.loadProjects();
       }
     }
   }
 
-  loadProjects(): void {
-    if (!isPlatformBrowser(this.platformId)) {
-      return;
-    }
+  private getPageSizeForWidth(width: number): number {
+    if (width < this.breakpoints.lg) return 1;
+    if (width < this.breakpoints.xl2) return 2;
+    return 3;
+  }
 
-    const searchParams: ProjectSearchParams = {
+  private buildSearchParams(): ProjectSearchParams {
+    const { sortBy, sortDirection, complexity, status, tools, topics, unfilledRoles } =
+      this.filters;
+    const params: ProjectSearchParams = {
       page: this.currentPage - 1,
       limit: this.pageSize,
     };
-
-    if (this.filters.sortBy) {
-      searchParams.sortBy = this.filters.sortBy;
-      searchParams.sortDirection = this.filters.sortDirection;
+    if (sortBy) {
+      params.sortBy = sortBy;
+      params.sortDirection = sortDirection;
     }
+    this.addIfValid(params, 'complexity', complexity);
+    this.addIfValid(params, 'status', status);
+    this.addIfValid(params, 'tools', tools);
+    this.addIfValid(params, 'topics', topics);
+    this.addIfValid(params, 'unfilledRoles', unfilledRoles);
+    return params;
+  }
 
-    if (
-      this.filters.complexity &&
-      (Array.isArray(this.filters.complexity) ? this.filters.complexity.length > 0 : true)
-    ) {
-      searchParams.complexity = this.filters.complexity;
+  private addIfValid<T>(
+    params: ProjectSearchParams,
+    key: keyof ProjectSearchParams,
+    value: T | T[],
+  ): void {
+    if (value && (!Array.isArray(value) || value.length > 0)) {
+      params[key] = value as any;
     }
+  }
 
-    if (
-      this.filters.status &&
-      (Array.isArray(this.filters.status) ? this.filters.status.length > 0 : true)
-    ) {
-      searchParams.status = this.filters.status;
-    }
-
-    if (
-      this.filters.tools &&
-      (Array.isArray(this.filters.tools) ? this.filters.tools.length > 0 : true)
-    ) {
-      searchParams.tools = this.filters.tools;
-    }
-
-    if (
-      this.filters.topics &&
-      (Array.isArray(this.filters.topics) ? this.filters.topics.length > 0 : true)
-    ) {
-      searchParams.topics = this.filters.topics;
-    }
-
-    if (
-      this.filters.unfilledRoles &&
-      (Array.isArray(this.filters.unfilledRoles) ? this.filters.unfilledRoles.length > 0 : true)
-    ) {
-      searchParams.unfilledRoles = this.filters.unfilledRoles;
-    }
-
+  loadProjects(): void {
+    if (!this.isBrowser()) return;
+    const searchParams = this.buildSearchParams();
     this.projectService.search(searchParams).subscribe({
-      next: (res) => {
-        this.projects = res.content;
-        this.totalPages = res.pagination.totalPages;
-        this.totalElements = res.pagination.totalElements;
-      },
-      error: (error) => {
-        console.error('Erro ao carregar projetos:', error);
-        this.projects = [];
-        this.totalPages = 1;
-        this.totalElements = 0;
-      },
+      next: (res) => this.handleProjectsResponse(res),
+      error: (error) => this.handleProjectsError(error),
     });
+  }
+
+  private handleProjectsResponse(res: any): void {
+    this.projects = res.content;
+    this.totalPages = res.pagination.totalPages;
+    this.totalElements = res.pagination.totalElements;
+  }
+
+  private handleProjectsError(error: any): void {
+    console.error('Erro ao carregar projetos:', error);
+    this.projects = [];
+    this.totalPages = 1;
+    this.totalElements = 0;
   }
 
   onFiltersChange(newFilters: ProjectSearchParams): void {
@@ -184,26 +162,17 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     this.showFilters = !this.showFilters;
   }
 
-  nextPage() {
+  nextPage(): void {
     if (this.currentPage < this.totalPages) {
       this.currentPage++;
       this.loadProjects();
     }
   }
 
-  prevPage() {
+  prevPage(): void {
     if (this.currentPage > 1) {
       this.currentPage--;
       this.loadProjects();
-    }
-  }
-
-  createNewProject(): void {
-    if (this.authService.isLoggedIn) {
-      void this.router.navigate(['/projects/new']);
-    } else {
-      this.authService.setRedirectUrl('/projects/new');
-      void this.router.navigate(['/login']);
     }
   }
 
@@ -218,5 +187,14 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     this.filters.limit = this.pageSize;
     this.currentPage = 1;
     this.loadProjects();
+  }
+
+  createNewProject(): void {
+    if (this.authService.isLoggedIn) {
+      void this.router.navigate(['/projects/new']);
+    } else {
+      this.authService.setRedirectUrl('/projects/new');
+      void this.router.navigate(['/login']);
+    }
   }
 }

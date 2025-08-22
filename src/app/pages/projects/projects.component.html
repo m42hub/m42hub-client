@@ -45,7 +45,6 @@
     </div>
   </div>
 
-  <!-- TODO: Tentar utilizar componente de paginação do próprio PrimeNG, mas sem alterar a lógica de request por paginação -->
   <!-- Paginação -->
   <div *ngIf="totalPages > 1" class="flex flex-col sm:flex-row justify-center items-center gap-2 sm:gap-4 m-2 sm:m-4 rounded-2xl">
     <div class="flex items-center gap-1 sm:gap-2">
@@ -92,6 +91,7 @@
         pTooltip="Última página">
       </button>
     </div>
+  </div>
 
   <!-- FALLBACK -->
   <div *ngIf="projects.length === 0" class="text-center py-16">
