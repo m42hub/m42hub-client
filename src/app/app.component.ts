@@ -19,7 +19,6 @@ export class AppComponent implements OnInit {
     private primeng: PrimeNG,
     private authService: AuthService,
   ) {
-    // Inicializa a autenticação apenas após a hidratação no cliente
     afterNextRender(() => {
       this.authService.initializeAuth().subscribe();
     });

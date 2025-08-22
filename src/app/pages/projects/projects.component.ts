@@ -10,19 +10,10 @@ import { InputTextModule } from 'primeng/inputtext';
 import { CardModule } from 'primeng/card';
 import { TooltipModule } from 'primeng/tooltip';
 import { ProjectSummaryCardComponent } from '../../components/cards/project-summary-card/project-summary-card.component';
+import { ProjectFilterComponent } from '../../components/filters/project-filter/project-filter.component';
 import type { Project, ProjectSearchParams } from '../../interfaces/project/project.interface';
 import { ProjectService } from '../../services/project/project.service';
-import { ProjectComplexityService } from '../../services/project/complexity.service';
-import { ProjectStatusService } from '../../services/project/status.service';
-import { ProjectToolService } from '../../services/project/tool.service';
-import { ProjectTopicService } from '../../services/project/topic.service';
-import { ProjectRoleService } from '../../services/project/role.service';
 import { AuthService } from '../../services/auth/auth.service';
-import type { ProjectComplexity } from '../../interfaces/project/complexity.interface';
-import type { ProjectStatus } from '../../interfaces/project/status.interface';
-import type { ProjectTool } from '../../interfaces/project/tool.interface';
-import type { ProjectTopic } from '../../interfaces/project/topic.interface';
-import type { ProjectRole } from '../../interfaces/project/role.interface';
 
 @Component({
   selector: 'app-projects-page',
@@ -37,6 +28,7 @@ import type { ProjectRole } from '../../interfaces/project/role.interface';
     CardModule,
     TooltipModule,
     ProjectSummaryCardComponent,
+    ProjectFilterComponent,
   ],
   templateUrl: './projects.component.html',
   styleUrl: './projects.component.css',
@@ -52,62 +44,25 @@ export class ProjectsComponent implements OnInit, OnDestroy {
 
   showFilters = false;
 
-  complexities: ProjectComplexity[] = [];
-  statuses: ProjectStatus[] = [];
-  tools: ProjectTool[] = [];
-  topics: ProjectTopic[] = [];
-  roles: ProjectRole[] = [];
-
   filters: ProjectSearchParams = {
     page: 0,
     limit: this.pageSize,
   };
 
-  sortOptions = [
-    { label: 'Nome (A-Z)', value: { sortBy: 'name', sortDirection: 'ASC' } },
-    { label: 'Nome (Z-A)', value: { sortBy: 'name', sortDirection: 'DESC' } },
-    {
-      label: 'Mais Recentes (Criação)',
-      value: { sortBy: 'createdAt', sortDirection: 'DESC' },
-    },
-    {
-      label: 'Mais Antigos (Criação)',
-      value: { sortBy: 'createdAt', sortDirection: 'ASC' },
-    },
-    {
-      label: 'Mais Recentes (Início)',
-      value: { sortBy: 'startDate', sortDirection: 'DESC' },
-    },
-    {
-      label: 'Mais Antigos (Início)',
-      value: { sortBy: 'startDate', sortDirection: 'ASC' },
-    },
-  ];
-
-  selectedSort: any = null;
-
   constructor(
     private router: Router,
     private projectService: ProjectService,
-    private complexityService: ProjectComplexityService,
-    private statusService: ProjectStatusService,
-    private toolService: ProjectToolService,
-    private topicService: ProjectTopicService,
-    private roleService: ProjectRoleService,
     private authService: AuthService,
     @Inject(PLATFORM_ID) private platformId: Object,
   ) {}
 
   ngOnInit(): void {
     this.updatePageSizeForScreen();
-
     if (isPlatformBrowser(this.platformId)) {
-      this.loadFilterData();
       this.loadProjects();
     }
   }
 
-  //TODO: validar se realmente é necessário ngOnDestroy
   ngOnDestroy(): void {
     // Método intencionalmente vazio para cumprir interface OnDestroy
   }
@@ -154,34 +109,6 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     }
   }
 
-  //TODO: Mover lógica de filtros para o  componente "filters/project-filter"
-  loadFilterData(): void {
-    if (!isPlatformBrowser(this.platformId)) {
-      return;
-    }
-
-    this.complexityService.getAll().subscribe((complexities) => {
-      this.complexities = complexities;
-    });
-
-    this.statusService.getAll().subscribe((statuses) => {
-      this.statuses = statuses;
-    });
-
-    this.toolService.getAll().subscribe((tools) => {
-      this.tools = tools;
-    });
-
-    this.topicService.getAll().subscribe((topics) => {
-      this.topics = topics;
-    });
-
-    this.roleService.getAll().subscribe((roles) => {
-      this.roles = roles;
-    });
-  }
-
-  //TODO: Corrigir lógica de acordo com o componente  componente "filters/project-filter"
   loadProjects(): void {
     if (!isPlatformBrowser(this.platformId)) {
       return;
@@ -247,31 +174,10 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     });
   }
 
-  onFilterChange(): void {
-    this.currentPage = 1;
+  onFiltersChange(newFilters: ProjectSearchParams): void {
+    this.filters = { ...newFilters, limit: this.pageSize };
+    this.currentPage = (this.filters.page || 0) + 1;
     this.loadProjects();
-  }
-
-  //TODO: Mover lógica de filtros para o  componente "filters/project-filter"
-  onSortChange(): void {
-    if (this.selectedSort && this.selectedSort.value) {
-      this.filters.sortBy = this.selectedSort.value.sortBy;
-      this.filters.sortDirection = this.selectedSort.value.sortDirection;
-    } else {
-      delete this.filters.sortBy;
-      delete this.filters.sortDirection;
-    }
-    this.onFilterChange();
-  }
-
-  //TODO: Mover lógica de filtros para o  componente "filters/project-filter"
-  clearFilters(): void {
-    this.filters = {
-      page: 0,
-      limit: this.pageSize,
-    };
-    this.selectedSort = null;
-    this.onFilterChange();
   }
 
   toggleFilters(): void {
