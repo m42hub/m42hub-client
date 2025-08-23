@@ -43,7 +43,6 @@ export class ProjectInfoSidebarComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadRoles();
-    this.teamMembersForCard = this.getTeamMembers();
   }
 
   private loadRoles(): void {
@@ -52,6 +51,7 @@ export class ProjectInfoSidebarComponent implements OnInit {
         roles.forEach((role) => {
           this.rolesMap.set(role.id, role.name);
         });
+        this.teamMembersForCard = this.getTeamMembers();
       },
       error: (error) => {
         console.error('Erro ao carregar roles:', error);
