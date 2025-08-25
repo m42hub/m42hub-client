@@ -23,7 +23,16 @@
           (cancel)="onCancel()"
         ></app-project-form>
       </ng-container>
-    </div>
+
+      <div *ngIf="projectNotFound" class="flex flex-col items-center justify-center min-h-64 sm:min-h-96">
+          <h2 class="text-xl sm:text-2xl font-bold text-red-500 mb-2 sm:mb-4">
+            Projeto não encontrado
+          </h2>
+          <p class="text-sm sm:text-base text-surface-600 mb-4 sm:mb-6 text-center">
+            O projeto que você está procurando não existe ou foi removido.
+          </p>
+          <p-button label="Voltar aos Projetos" icon="pi pi-arrow-left" severity="primary" (onClick)="goBack()"></p-button>
+      </div>
 
     <p-toast *ngIf="isBrowser"></p-toast>
 

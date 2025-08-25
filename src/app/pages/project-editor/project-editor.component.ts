@@ -1,5 +1,5 @@
 import type { OnInit } from '@angular/core';
-import { Component, PLATFORM_ID, Inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, PLATFORM_ID, Inject } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
@@ -28,10 +28,10 @@ import { ProjectService } from '../../services/project/project.service';
   providers: [MessageService],
   templateUrl: './project-editor.component.html',
   styleUrl: './project-editor.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProjectEditorComponent implements OnInit {
   project?: Project;
+  projectNotFound = false;
   isEditMode = false;
   isBrowser = false;
   projectLoaded = false;
@@ -80,25 +80,11 @@ export class ProjectEditorComponent implements OnInit {
     this.projectLoaded = false;
     this.projectService.getById(Number(projectId)).subscribe({
       next: (project) => {
-        if (project) {
-          this.project = project;
-          this.projectLoaded = true;
-        } else {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Erro',
-            detail: 'Projeto não encontrado',
-          });
-          void this.router.navigate(['/projects']);
-        }
+        this.project = project;
+        this.projectLoaded = true;
       },
       error: (_error) => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Erro',
-          detail: 'Não foi possível carregar o projeto',
-        });
-        void this.router.navigate(['/projects']);
+        this.projectNotFound = true;
       },
     });
   }

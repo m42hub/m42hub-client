@@ -1,14 +1,6 @@
 <div class="flex flex-col w-full mx-auto p-2 md:p-6">
-  <!-- Loading state -->
-  <div *ngIf="!isFormReady" class="flex flex-col items-center justify-center p-8">
-    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-    <p class="text-surface-600">Carregando formulário...</p>
-  </div>
-
   <!-- Form content -->
-  <form [formGroup]="projectForm" (ngSubmit)="onSubmit()" class="flex flex-col" *ngIf="isFormReady" styleClass="rounded-none">
-
-    <!-- Informações Básicas -->
+  <form *ngIf="isFormReady" [formGroup]="projectForm" (ngSubmit)="onSubmit()" class="flex flex-col" styleClass="rounded-none">
     <p-card header="Informações Básicas" styleClass="rounded-b-none">
       <div class="flex flex-col md:flex-row gap-4">
         <div class="flex flex-col gap-2 flex-3">
@@ -46,20 +38,19 @@
           ></p-select>
         </div>
 
-                    <!-- Complexidade -->
         <div class="flex flex-col gap-2 flex-1">
           <label class="flex items-start font-semibold">
             <i class="pi pi-cog mr-2 text-primary"></i>
             Complexidade
           </label>
           <p-select
-            [options]="tagOptions.complexidade"
+            [options]="tagOptions.complexity"
             placeholder="Selecione"
             class="w-full"
             optionLabel="label"
             optionValue="value"
-            (onChange)="onComplexidadeChange()"
-            formControlName="selectedComplexidade"
+            (onChange)="onComplexityChange()"
+            formControlName="selectedComplexity"
           ></p-select>
         </div>
       </div>
@@ -278,22 +269,21 @@
   <p-card header="Tags do Projeto" *ngIf="showTagsCard" styleClass="rounded-none">
       <div class="flex flex-col gap-6">
         <div class="flex flex-col gap-4">
-                  <!-- Tecnologias/Ferramentas -->
           <div class="flex flex-col gap-2">
             <label class="flex items-center font-semibold">
               <i class="pi pi-cog mr-2 text-primary"></i>
               Tecnologias/Ferramentas
             </label>
             <p-multiSelect
-              [options]="tagOptions['tecnologias/ferramentas']"
+              [options]="tagOptions.tools"
               placeholder="Selecione as tecnologias"
               class="w-full"
               optionLabel="label"
               optionValue="value"
               display="chip"
               [maxSelectedLabels]="10"
-              (onChange)="onTecnologiasFerramentasChange()"
-              formControlName="selectedTecnologiasFerramentas"
+              (onChange)="onToolsChange()"
+              formControlName="selectedTools"
             ></p-multiSelect>
           </div>
 
@@ -304,15 +294,15 @@
               Assuntos (Temas do Projeto)
             </label>
             <p-multiSelect
-              [options]="tagOptions.assuntos"
+              [options]="tagOptions.topics"
               placeholder="Selecione os temas do projeto"
               class="w-full"
               optionLabel="label"
               optionValue="value"
               display="chip"
               [maxSelectedLabels]="5"
-              (onChange)="onAssuntosChange()"
-              formControlName="selectedAssuntos"
+              (onChange)="onTopicsChange()"
+              formControlName="selectedTopics"
             ></p-multiSelect>
           </div>
         </div>
