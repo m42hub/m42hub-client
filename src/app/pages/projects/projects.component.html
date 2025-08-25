@@ -1,7 +1,7 @@
 <div class="container mx-auto py-2 sm:py-4 min-h-screen p-2">
   <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-4 sm:mb-0">
     <div>
-      <h1 class="text-2xl sm:text-3xl font-bold text-surface-900">Projetos</h1>
+      <h1 class="text-2xl sm:text-3xl font-bold">Projetos</h1>
       <p class="text-sm sm:text-base text-surface-600">Encontre projetos para colaborar</p>
     </div>
 
@@ -32,6 +32,7 @@
     class="my-2 sm:my-4 animate-fade-in-up relative z-50"
     (filtersChange)="onFiltersChange($event)"
     (closeFilters)="toggleFilters()"
+    (preEventLoadingSearch)="onPreEventLoadingSearch()" 
   ></app-project-filter>
 
   <div class="flex justify-center mt-4 sm:mt-6">
@@ -45,8 +46,15 @@
     </div>
   </div>
 
+  <div *ngIf="loadingSearch" class="flex flex-col justify-center items-center gap-2 sm:gap-4 m-20">
+    <div class="card flex justify-center">
+      <p-progress-spinner ariaLabel="loading" animationDuration=".5s" strokeWidth="5" />
+    </div>
+    <h1 class="text-xl">Pesquisando Projetos...</h1>
+  </div>
+
   <!-- Paginação -->
-  <div *ngIf="totalPages > 1" class="flex flex-col sm:flex-row justify-center items-center gap-2 sm:gap-4 m-2 sm:m-4 rounded-2xl">
+  <div *ngIf="totalPages > 1 && !loadingSearch" class="flex flex-col sm:flex-row justify-center items-center gap-2 sm:gap-4 m-2 sm:m-4 rounded-2xl">
     <div class="flex items-center gap-1 sm:gap-2">
       <button
         pButton
@@ -94,7 +102,7 @@
   </div>
 
   <!-- FALLBACK -->
-  <div *ngIf="projects.length === 0" class="text-center py-16">
+  <div *ngIf="projects.length === 0 && !loadingSearch" class="text-center py-16">
     <div class="max-w-md mx-auto">
       <i class="pi pi-search text-6xl text-surface-300 mb-6"></i>
       <h3 class="text-xl font-semibold text-surface-600 mb-3">Nenhum projeto encontrado</h3>
@@ -108,7 +116,7 @@
           icon="pi pi-times"
           severity="secondary"
           [outlined]="true"
-          (onClick)="showFilters = true">
+          (onClick)="clearFilter()">
         </p-button>
         <p-button
           label="Criar Projeto"
