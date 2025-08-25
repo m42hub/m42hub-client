@@ -17,18 +17,18 @@ const lightSurface = {
 };
 
 const darkSurface = {
-  0: '#1F1F1F', // Preto mais profundo
-  50: '#2A2A2A', // Cinza muito escuro
-  100: '#3A3A3A', // Cinza escuro
-  200: '#39497A', // Cinza médio-escuro
-  300: '#1E212C', // Cinza médio
-  400: '#20284C', // Cinza médio-claro
-  500: '#4455EE', // Cor primária (mantida)
-  600: '#5A6BFF', // Primária mais clara
-  700: '#7A8BFF', // Primária ainda mais clara
-  800: '#7891EC', // Primária bem clara
-  900: '#D3D9EC', // Primária muito clara
-  950: '#EEF3FF', // Branco (mantido)
+  0: '#BFCBEE',   // Branco azulado muito claro
+  50: '#1E2337',  // Fundo secundário
+  100: '#2A334D', // Azul escuro suave
+  200: '#3A4A78', // Azul médio escuro
+  300: '#5068B0', // Azul médio
+  400: '#677FE0', // Azul claro
+  500: '#7B93FF', // Azul mais intenso, destaque
+  600: '#5C6FBF', // Azul escuro
+  700: '#434C8C', // Azul mais fechado
+  800: '#2C3759', // Azul profundo
+  900: '#1B2233', // Azul quase preto
+  950: '#0D111C', // Preto absoluto
 };
 
 const primary = {

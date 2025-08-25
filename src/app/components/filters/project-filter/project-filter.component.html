@@ -8,10 +8,10 @@
 		</button>
 	</div>
 
-	<div class="p-2 sm:p-4">
-		<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 sm:gap-4 justify-center">
-			<div class="flex flex-col">
-				<label class="text-xs sm:text-sm font-medium text-surface-700 mb-1">Ordenar por</label>
+	<div class="p-2 w-full sm:p-4">
+		<div class="grid grid-cols-4 gap-4 sm:gap-4 justify-center">
+			<div class="2xl:w-90 xl:w-90 lg:w-60 md:w-60 sm:w-100 w-100">
+				<label class="text-xs sm:text-sm font-medium mb-1">Ordenar por</label>
 				<p-select
 					[options]="sortOptions"
 					[(ngModel)]="selectedSort"
@@ -24,8 +24,8 @@
 				</p-select>
 			</div>
 
-			<div class="flex flex-col">
-				<label class="text-xs sm:text-sm font-medium text-surface-700 mb-1">Complexidades</label>
+			<div class="2xl:w-90 xl:w-90 lg:w-60 md:w-60 sm:w-100 w-100">
+				<label class="text-xs sm:text-sm font-medium mb-1">Complexidades</label>
 				<p-multiselect
 					[options]="complexities"
 					[(ngModel)]="filters.complexity"
@@ -40,8 +40,8 @@
 				</p-multiselect>
 			</div>
 
-			<div class="flex flex-col">
-				<label class="text-xs sm:text-sm font-medium text-surface-700 mb-1">Status</label>
+			<div class="2xl:w-90 xl:w-90 lg:w-60 md:w-60 sm:w-100 w-100">
+				<label class="text-xs sm:text-sm font-medium mb-1">Status</label>
 				<p-multiselect
 					[options]="statuses"
 					[(ngModel)]="filters.status"
@@ -56,8 +56,8 @@
 				</p-multiselect>
 			</div>
 
-			<div class="flex flex-col">
-				<label class="text-xs sm:text-sm font-medium text-surface-700 mb-1">Ferramentas</label>
+			<div class="2xl:w-90 xl:w-90 lg:w-60 md:w-60 sm:w-100 w-100">
+				<label class="text-xs sm:text-sm font-medium mb-1">Ferramentas</label>
 				<p-multiselect
 					[options]="tools"
 					[(ngModel)]="filters.tools"
@@ -72,8 +72,8 @@
 				</p-multiselect>
 			</div>
 
-			<div class="flex flex-col">
-				<label class="text-xs sm:text-sm font-medium text-surface-700 mb-1">Tópicos</label>
+			<div class="2xl:w-90 xl:w-90 lg:w-60 md:w-60 sm:w-100 w-100">
+				<label class="text-xs sm:text-sm font-medium mb-1">Tópicos</label>
 				<p-multiselect
 					[options]="topics"
 					[(ngModel)]="filters.topics"
@@ -88,8 +88,8 @@
 				</p-multiselect>
 			</div>
 
-			<div class="flex flex-col">
-				<label class="text-sm font-medium text-surface-700">Vagas Disponíveis</label>
+			<div class="2xl:w-90 xl:w-90 lg:w-60 md:w-60 sm:w-100 w-100">
+				<label class="text-xs sm:text-sm font-medium mb-1">Vagas Disponíveis</label>
 				<p-multiselect
 					[options]="roles"
 					[(ngModel)]="filters.unfilledRoles"
@@ -98,7 +98,7 @@
 					placeholder="Todas"
 					[showClear]="true"
 					display="chip"
-					class="w-[220px]"
+					class="w-full"
 					(onChange)="onFilterChange()">
 				</p-multiselect>
 			</div>
