@@ -80,7 +80,6 @@ export class ProjectFormComponent implements OnInit, OnChanges {
   markdownPreview = '';
   isFormReady = false;
 
-  //TODO: validar se realmente existe editingMember e addMember
   showEditMemberDialog = false;
   editingMemberIndex = -1;
   editingMemberForm!: FormGroup;
@@ -143,16 +142,12 @@ export class ProjectFormComponent implements OnInit, OnChanges {
       return;
     }
 
-    //TODO: Entender o que é totalServices e o que isso faz
     let loadedCount = 0;
     const totalServices = 5;
-
     const checkAndPatch = () => {
       loadedCount++;
       if (loadedCount === totalServices && this.project && this.isEditMode) {
-        setTimeout(() => {
-          this.patchFormWithProject();
-        }, 0);
+        this.patchFormWithProject();
       }
     };
 
@@ -259,7 +254,6 @@ export class ProjectFormComponent implements OnInit, OnChanges {
   }
 
   private initDialogForms(): void {
-    //TODO: validar se realmente existe editingMember e addMember
     this.editingMemberForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(2)]],
       username: ['', [Validators.required, Validators.minLength(2)]],
@@ -267,7 +261,6 @@ export class ProjectFormComponent implements OnInit, OnChanges {
       photo: [''],
       isManager: [false],
     });
-
     this.addMemberForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(2)]],
       username: ['', [Validators.required, Validators.minLength(2)]],
@@ -284,10 +277,7 @@ export class ProjectFormComponent implements OnInit, OnChanges {
       this.isEditMode &&
       this.projectForm
     ) {
-      //TODO: KINDA SUS
-      setTimeout(() => {
-        this.patchFormWithProject();
-      }, 0);
+      this.patchFormWithProject();
     }
   }
 
@@ -311,7 +301,7 @@ export class ProjectFormComponent implements OnInit, OnChanges {
       unfilledRoles: this.project.unfilledRoles?.map((r) => Number(r.id)) || [],
       selectedTools: this.project.tools?.map((t) => Number(t.id)) || [],
       selectedTopics: this.project.topics?.map((t) => Number(t.id)) || [],
-      selectedComplexidade: this.project.complexity?.id ? Number(this.project.complexity.id) : null,
+      selectedComplexity: this.project.complexity?.id ? Number(this.project.complexity.id) : null,
     });
 
     const teamArray = this.projectForm.get('team') as FormArray;
@@ -332,10 +322,7 @@ export class ProjectFormComponent implements OnInit, OnChanges {
       );
     });
 
-    //TODO: KINDA SUS
-    setTimeout(() => {
-      this.updateTagsFromSelects();
-    }, 0);
+    this.updateTagsFromSelects();
   }
 
   addTag(type: 'tool' | 'topic' | 'complexity', value: string, color?: string): void {
@@ -364,25 +351,6 @@ export class ProjectFormComponent implements OnInit, OnChanges {
       color: color || '',
     };
     tagsArray.push(this.fb.group(newTag));
-  }
-
-  removeTag(index: number): void {
-    const tagsArray = this.projectForm.get('tags') as FormArray;
-    tagsArray.removeAt(index);
-  }
-
-  getTagsByType(type: string): any[] {
-    const tagsArray = this.projectForm.get('tags') as FormArray;
-    return tagsArray.value.filter((tag: any) => tag.type === type);
-  }
-
-  isTagSelected(type: string, value: string): boolean {
-    const tagsArray = this.projectForm.get('tags') as FormArray;
-    return tagsArray.value.some((tag: any) => tag.type === type && tag.name === value);
-  }
-
-  getTagsArray(): FormArray {
-    return this.projectForm.get('tags') as FormArray;
   }
 
   onToolsChange(): void {
@@ -527,7 +495,6 @@ export class ProjectFormComponent implements OnInit, OnChanges {
     this.editingMemberIndex = -1;
   }
 
-  //TODO: Validar se AddMember está sendo utilizado
   onAddMember(): void {
     this.initAddMemberForm();
     this.showAddMemberDialog = true;
@@ -565,7 +532,7 @@ export class ProjectFormComponent implements OnInit, OnChanges {
         summary: formValue.summary,
         description: formValue.description,
         statusId: formValue.status,
-        complexityId: formValue.selectedComplexidade,
+        complexityId: formValue.selectedComplexity,
         imageUrl: formValue.image && formValue.image.trim() !== '' ? formValue.image.trim() : null,
         startDate: formValue.startDate ? formValue.startDate.toISOString() : null,
         endDate: formValue.endDate ? formValue.endDate.toISOString() : null,
@@ -670,14 +637,12 @@ export class ProjectFormComponent implements OnInit, OnChanges {
     });
   }
 
-  // Abre o diálogo de feedback ao rejeitar
   onRequestCardRejectRequest(request: any): void {
     this.feedbackRequest = request;
     this.feedbackTextControl.reset('');
     this.feedbackDialogVisible = true;
   }
 
-  // Confirma rejeição com feedback
   confirmRejectRequest(): void {
     if (!this.feedbackRequest?.id) {
       return;
@@ -719,15 +684,20 @@ export class ProjectFormComponent implements OnInit, OnChanges {
     event.target.src = this.defaultAvatar;
   }
 
-  // Getters para uso no template (evita chamada de métodos no HTML)
+  removeTag(index: number): void {
+    const tagsArray = this.projectForm.get('tags') as FormArray;
+    tagsArray.removeAt(index);
+  }
+
+  get tagsArray(): any[] {
+    return (this.projectForm.get('tags') as FormArray).value;
+  }
+
   get teamApproved() {
     return this.getTeamForCard('approved');
   }
   get teamPending() {
     return this.getTeamForCard('pending');
-  }
-  get tagsArray() {
-    return this.getTagsArray().value;
   }
   get nameControl() {
     return this.projectForm.get('name');
