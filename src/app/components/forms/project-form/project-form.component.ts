@@ -23,6 +23,18 @@ import type {
   CreateProjectRequest,
   UpdateProjectRequest,
 } from '../../../interfaces/project/project.interface';
+
+interface OptionWithColor {
+  label: string;
+  value: number;
+  color?: string;
+}
+
+interface Option {
+  label: string;
+  value: number;
+}
+
 import { ProjectStatusService } from '../../../services/project/status.service';
 import { ProjectComplexityService } from '../../../services/project/complexity.service';
 import { ProjectToolService } from '../../../services/project/tool.service';
@@ -65,6 +77,7 @@ export interface TeamRequest {
     TeamCardComponent,
     RequestCardComponent,
   ],
+
   templateUrl: './project-form.component.html',
   styleUrl: './project-form.component.css',
 })
@@ -86,17 +99,16 @@ export class ProjectFormComponent implements OnInit, OnChanges {
   showAddMemberDialog = false;
   addMemberForm!: FormGroup;
 
-  statusOptions: { label: string; value: number }[] = [];
-
-  tagOptions: any = {
-    tools: [],
-    topics: [],
-    complexity: [],
-  };
-  complexityOptions: { label: string; value: number; color?: string }[] = [];
-  toolOptions: { label: string; value: number; color?: string }[] = [];
-  topicOptions: { label: string; value: number; color?: string }[] = [];
-  roleOptions: { label: string; value: number }[] = [];
+  statusOptions: Option[] = [];
+  complexityOptions: OptionWithColor[] = [];
+  toolOptions: OptionWithColor[] = [];
+  topicOptions: OptionWithColor[] = [];
+  roleOptions: Option[] = [];
+  tagOptions: {
+    tools: OptionWithColor[];
+    topics: OptionWithColor[];
+    complexity: OptionWithColor[];
+  } = { tools: [], topics: [], complexity: [] };
 
   constructor(
     private fb: FormBuilder,
@@ -206,16 +218,15 @@ export class ProjectFormComponent implements OnInit, OnChanges {
   }
 
   get showTagsCard(): boolean {
-    return !!(this.isFormReady && this.projectForm && this.projectForm.get('tags'));
+    return this.isFormReady && !!this.projectForm?.get('tags');
   }
 
   get showManagerCard(): boolean {
-    return !!(
+    return (
       !this.isEditMode &&
       this.isFormReady &&
       this.isBrowser &&
-      this.projectForm &&
-      this.projectForm.get('managerRoleId')
+      !!this.projectForm?.get('managerRoleId')
     );
   }
 
@@ -325,32 +336,21 @@ export class ProjectFormComponent implements OnInit, OnChanges {
     this.updateTagsFromSelects();
   }
 
-  addTag(type: 'tool' | 'topic' | 'complexity', value: string, color?: string): void {
+  private addTag(type: 'tool' | 'topic' | 'complexity', value: string, color?: string): void {
     const tagsArray = this.projectForm.get('tags') as FormArray;
     let label = value;
+    let found;
     if (type === 'tool') {
-      const found = this.toolOptions.find(
-        (t) => String(t.value) === String(value) || t.label === value,
-      );
-      label = found ? found.label : value;
+      found = this.toolOptions.find((t) => String(t.value) === String(value) || t.label === value);
     } else if (type === 'topic') {
-      const found = this.topicOptions.find(
-        (t) => String(t.value) === String(value) || t.label === value,
-      );
-      label = found ? found.label : value;
+      found = this.topicOptions.find((t) => String(t.value) === String(value) || t.label === value);
     } else if (type === 'complexity') {
-      const found = this.complexityOptions.find(
+      found = this.complexityOptions.find(
         (c) => String(c.value) === String(value) || c.label === value,
       );
-      label = found ? found.label : value;
     }
-    const newTag = {
-      id: this.generateId(),
-      name: label,
-      type: type,
-      color: color || '',
-    };
-    tagsArray.push(this.fb.group(newTag));
+    if (found) label = found.label;
+    tagsArray.push(this.fb.group({ id: this.generateId(), name: label, type, color: color || '' }));
   }
 
   onToolsChange(): void {
@@ -367,30 +367,21 @@ export class ProjectFormComponent implements OnInit, OnChanges {
 
   private updateTagsFromSelects(): void {
     const tagsArray = this.projectForm.get('tags') as FormArray;
-    const selectedTools = this.projectForm.get('selectedTools')?.value || [];
-    const selectedTopics = this.projectForm.get('selectedTopics')?.value || [];
-    const selectedComplexity = this.projectForm.get('selectedComplexity')?.value;
-
     tagsArray.clear();
-
-    selectedTools.forEach((id: string | number) => {
+    (this.projectForm.get('selectedTools')?.value || []).forEach((id: string | number) => {
       const found = this.toolOptions.find((t) => String(t.value) === String(id));
-      const color = found?.color || '';
-      this.addTag('tool', String(id), color);
+      this.addTag('tool', String(id), found?.color);
     });
-
-    selectedTopics.forEach((id: string | number) => {
+    (this.projectForm.get('selectedTopics')?.value || []).forEach((id: string | number) => {
       const found = this.topicOptions.find((t) => String(t.value) === String(id));
-      const color = found?.color || '';
-      this.addTag('topic', String(id), color);
+      this.addTag('topic', String(id), found?.color);
     });
-
+    const selectedComplexity = this.projectForm.get('selectedComplexity')?.value;
     if (selectedComplexity) {
       const found = this.complexityOptions.find(
         (c) => String(c.value) === String(selectedComplexity),
       );
-      const color = found?.color || '';
-      this.addTag('complexity', selectedComplexity, color);
+      this.addTag('complexity', selectedComplexity, found?.color);
     }
   }
 
@@ -401,90 +392,51 @@ export class ProjectFormComponent implements OnInit, OnChanges {
   get teamArray(): FormArray {
     return this.projectForm.get('team') as FormArray;
   }
-
-  updateMemberRole(index: number, newRole: string): void {
-    const member = this.teamArray.at(index);
-    member.patchValue({ role: newRole });
-  }
-
   removeTeamMember(index: number): void {
     this.teamArray.removeAt(index);
   }
 
   getTeamForCard(filter?: 'approved' | 'pending'): any[] {
-    let filteredControls = this.teamArray.controls;
-
+    let controls = this.teamArray.controls;
     if (filter === 'approved') {
-      filteredControls = filteredControls.filter(
-        (control) => control.get('memberStatus')?.value?.id == 2,
-      );
+      controls = controls.filter((c) => c.get('memberStatus')?.value?.id == 2);
     } else if (filter === 'pending') {
-      filteredControls = filteredControls.filter(
-        (control) => control.get('memberStatus')?.value?.id == 1,
-      );
+      controls = controls.filter((c) => c.get('memberStatus')?.value?.id == 1);
     }
-
-    return filteredControls.map((control, index) => {
-      const id = control.get('id')?.value || `temp-${index}`;
-
-      let name = '';
+    return controls.map((control, idx) => {
       const user = control.get('user')?.value;
-      if (user && (user.firstName || user.lastName)) {
-        name = `${user.firstName || ''} ${user.lastName || ''}`.trim();
-      }
-
-      let username = '';
-      if (user && user.username) {
-        username = user.username;
-      }
-
-      const roleId = control.get('role')?.value;
-      const roleObj = this.roleOptions.find((r) => r.value === roleId || r.label === roleId);
-
-      const role = roleObj ? roleObj.label : roleId;
-
-      const photo = control.get('photo')?.value || (user && user.photo) || '';
-
-      const applicationMessage = control.get('applicationMessage')?.value || '';
-
-      const createdAt = control.get('createdAt')?.value || '';
-
       return {
-        id,
-        name,
-        username,
-        role,
-        photo,
-        applicationMessage,
-        createdAt,
+        id: control.get('id')?.value || `temp-${idx}`,
+        name: `${user.firstName} ${user.lastName}`,
+        username: user?.username || '',
+        role:
+          this.roleOptions.find(
+            (r) => r.value === control.get('role')?.value || r.label === control.get('role')?.value,
+          )?.label || control.get('role')?.value,
+        photo: control.get('photo')?.value || user?.photo || '',
+        applicationMessage: control.get('applicationMessage')?.value || '',
+        createdAt: control.get('createdAt')?.value || '',
       };
     });
   }
-
-  onTeamCardRemoveMember(_event: { index: number; member: any }): void {
-    this.removeTeamMember(_event.index);
+  onTeamCardRemoveMember(event: { index: number }): void {
+    this.removeTeamMember(event.index);
   }
-
-  onTeamCardEditMember(_event: { index: number; member: any }): void {
-    this.editingMemberIndex = _event.index;
-    this.initEditMemberForm(_event.member);
-    this.showEditMemberDialog = true;
-  }
-
-  private initEditMemberForm(member: any): void {
+  onTeamCardEditMember(event: { index: number; member: any }): void {
+    this.editingMemberIndex = event.index;
     this.editingMemberForm.patchValue({
-      name: member.name,
-      username: member.username,
-      role: member.role,
-      photo: member.photo || '',
-      isManager: member.isManager || false,
+      name: event.member.name,
+      username: event.member.username,
+      role: event.member.role,
+      photo: event.member.photo || '',
+      isManager: event.member.isManager || false,
     });
+    this.showEditMemberDialog = true;
   }
 
   onSaveEditMember(): void {
     if (this.editingMemberForm.valid && this.editingMemberIndex >= 0) {
-      const memberControl = this.teamArray.at(this.editingMemberIndex);
-      memberControl.patchValue(this.editingMemberForm.value);
+      this.teamArray.at(this.editingMemberIndex).patchValue(this.editingMemberForm.value);
       this.showEditMemberDialog = false;
       this.editingMemberIndex = -1;
     }
@@ -496,26 +448,21 @@ export class ProjectFormComponent implements OnInit, OnChanges {
   }
 
   onAddMember(): void {
-    this.initAddMemberForm();
+    this.addMemberForm.reset();
     this.showAddMemberDialog = true;
   }
-
-  private initAddMemberForm(): void {
-    this.addMemberForm.reset();
-  }
-
   onSaveAddMember(): void {
     if (this.addMemberForm.valid) {
-      const newMember = this.fb.group({
-        id: [this.generateId()],
-        name: [this.addMemberForm.value.name],
-        username: [this.addMemberForm.value.username],
-        role: [this.addMemberForm.value.role],
-        photo: [this.addMemberForm.value.photo || ''],
-        isManager: [this.addMemberForm.value.isManager || false],
-      });
-
-      this.teamArray.push(newMember);
+      this.teamArray.push(
+        this.fb.group({
+          id: [this.generateId()],
+          name: [this.addMemberForm.value.name],
+          username: [this.addMemberForm.value.username],
+          role: [this.addMemberForm.value.role],
+          photo: [this.addMemberForm.value.photo || ''],
+          isManager: [this.addMemberForm.value.isManager || false],
+        }),
+      );
       this.showAddMemberDialog = false;
     }
   }
@@ -525,33 +472,26 @@ export class ProjectFormComponent implements OnInit, OnChanges {
   }
 
   onSubmit(): void {
-    if (this.projectForm.valid) {
-      const formValue = this.projectForm.value;
-      const baseRequest = {
-        name: formValue.name,
-        summary: formValue.summary,
-        description: formValue.description,
-        statusId: formValue.status,
-        complexityId: formValue.selectedComplexity,
-        imageUrl: formValue.image && formValue.image.trim() !== '' ? formValue.image.trim() : null,
-        startDate: formValue.startDate ? formValue.startDate.toISOString() : null,
-        endDate: formValue.endDate ? formValue.endDate.toISOString() : null,
-        toolIds: formValue.selectedTools,
-        topicIds: formValue.selectedTopics,
-        unfilledRoleIds: formValue.unfilledRoles,
-      };
-
-      if (this.isEditMode) {
-        this.save.emit(baseRequest as UpdateProjectRequest);
-      } else {
-        this.save.emit({
-          ...baseRequest,
-          managerRoleId: formValue.managerRoleId,
-        } as CreateProjectRequest);
-      }
-    } else {
+    if (!this.projectForm.valid) {
       this.markFormGroupTouched();
+      return;
     }
+    const formValue = this.projectForm.value;
+    const req = {
+      name: formValue.name,
+      summary: formValue.summary,
+      description: formValue.description,
+      statusId: formValue.status,
+      complexityId: formValue.selectedComplexity,
+      imageUrl: formValue.image && formValue.image.trim() !== '' ? formValue.image.trim() : null,
+      startDate: formValue.startDate ? formValue.startDate.toISOString() : null,
+      endDate: formValue.endDate ? formValue.endDate.toISOString() : null,
+      toolIds: formValue.selectedTools,
+      topicIds: formValue.selectedTopics,
+      unfilledRoleIds: formValue.unfilledRoles,
+    };
+    if (this.isEditMode) this.save.emit(req as UpdateProjectRequest);
+    else this.save.emit({ ...req, managerRoleId: formValue.managerRoleId } as CreateProjectRequest);
   }
 
   onCancel(): void {
@@ -559,10 +499,7 @@ export class ProjectFormComponent implements OnInit, OnChanges {
   }
 
   private markFormGroupTouched(): void {
-    Object.keys(this.projectForm.controls).forEach((key) => {
-      const control = this.projectForm.get(key);
-      control?.markAsTouched();
-    });
+    Object.values(this.projectForm.controls).forEach((control) => control?.markAsTouched());
   }
 
   formatDate(date: Date): string {
@@ -595,14 +532,9 @@ export class ProjectFormComponent implements OnInit, OnChanges {
 
   private maxItemsValidator(maxItems: number) {
     return (control: AbstractControl): ValidationErrors | null => {
-      if (!control.value || !Array.isArray(control.value)) {
-        return null;
-      }
-
-      if (control.value.length > maxItems) {
+      if (!control.value || !Array.isArray(control.value)) return null;
+      if (control.value.length > maxItems)
         return { maxItems: { max: maxItems, actual: control.value.length } };
-      }
-
       return null;
     };
   }
