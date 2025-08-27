@@ -22,6 +22,22 @@ export interface Project {
   unfilledRoles?: ProjectUnfilledRole[];
 }
 
+export interface ProjectListItem {
+  id: number;
+  name: string;
+  summary: string;
+  statusName?: string;
+  complexityName?: string;
+  imageUrl?: string;
+  creationDate: string;
+  startDate: string;
+  endDate?: string;
+  toolNames?: string[];
+  topicNames?: string[];
+  unfilledRoleNames?: string[];
+  manager?: string;
+}
+
 export interface CreateProjectRequest {
   name: string;
   summary: string;

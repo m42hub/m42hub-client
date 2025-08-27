@@ -4,7 +4,7 @@ import { CardModule } from 'primeng/card';
 import { TagModule } from 'primeng/tag';
 import { ButtonModule } from 'primeng/button';
 import { TooltipModule } from 'primeng/tooltip';
-import type { Project } from '../../../interfaces/project/project.interface';
+import type { ProjectListItem } from '../../../interfaces/project/project.interface';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../services/auth/auth.service';
 
@@ -21,27 +21,27 @@ export class ProjectSummaryCardComponent {
     private authService: AuthService,
   ) {}
 
-  @Input() project!: Project;
+  @Input() project!: ProjectListItem;
   showImage = true;
 
   getTools(): string[] {
-    return this.project.tools?.map((t) => t.name) || [];
+    return this.project.toolNames || [];
   }
 
   getTopics(): string[] {
-    return this.project.topics?.map((t) => t.name) || [];
+    return this.project.topicNames || [];
   }
 
   getComplexity(): string {
-    return this.project.complexity?.name || '';
+    return this.project.complexityName || '';
   }
 
   getStatus(): string {
-    return this.project.status?.name || '';
+    return this.project.statusName || '';
   }
 
   getUnfilledRoles(): string[] {
-    return this.project.unfilledRoles?.map((r) => r.name) || [];
+    return this.project.unfilledRoleNames || [];
   }
 
   getGeneralTags(): { label: string; tooltip: string }[] {
@@ -72,11 +72,6 @@ export class ProjectSummaryCardComponent {
     return d.toLocaleDateString('pt-BR');
   }
 
-  onDetailsClick() {
-    // TODO: Implementar navegação ou emissão de evento para detalhes
-    // console.log('Ver detalhes do projeto:', this.project.id);
-  }
-
   onImageError() {
     this.showImage = false;
   }
@@ -98,7 +93,6 @@ export class ProjectSummaryCardComponent {
     }
   }
 
-  // Getters para uso no template (evita chamada de métodos)
   get tools(): string[] {
     return this.getTools();
   }
@@ -113,12 +107,10 @@ export class ProjectSummaryCardComponent {
   }
   get isUserManager(): boolean {
     const currentUser = this.authService.currentUser;
-    if (!currentUser || !this.project?.members) {
-      return false;
+    if (currentUser && this.project?.manager && currentUser.username === this.project?.manager) {
+      return true;
     }
-    return this.project.members.some(
-      (member) => member.user.username === currentUser.username && member.isManager,
-    );
+    return false;
   }
   get creationDateFormatado(): string {
     return this.formatDate(this.project?.creationDate);
