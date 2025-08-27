@@ -52,7 +52,7 @@
 
       <!-- Edit Mode -->
       <div *ngIf="mode === 'edit'" class="flex flex-col gap-2">
-  <div *ngFor="let member of teamWithPhotoUrl; let i = index" class="flex items-start gap-2 sm:gap-3 p-2 sm:p-3 border border-surface-200 rounded-lg bg-surface-card dark:bg-surface-50">
+        <div *ngFor="let member of teamWithPhotoUrl; let i = index" class="flex items-start gap-2 sm:gap-3 p-2 sm:p-3 border border-surface-200 rounded-lg bg-surface-card dark:bg-surface-50">
           <div class="flex-shrink-0">
             <p-avatar
               [image]="member.photoUrl"
@@ -62,14 +62,21 @@
               class="w-10 h-10 sm:w-12 sm:h-12">
             </p-avatar>
           </div>
-          <div class="flex-1 min-w-0 flex flex-col gap-1">
-            <p class="text-md sm:text-sm font-bold text-surface-950 truncate">{{ member.name }}</p>
-            <p *ngIf="member.username" class="text-xs text-surface-900 truncate mb-2"> {{ `@${member.username}` }}</p>
-            <p class="text-sm text-surface-600 dark:text-surface-800 truncate">{{ member.role }}</p>
-            <div class="flex items-center gap-1 sm:gap-2">
-              <p-tag *ngIf="member.isManager" value="Manager" severity="primary" class="text-xs"></p-tag>
+            <div class="flex-1 min-w-0 flex flex-col gap-1">
+              <div class="flex items-center gap-2">
+                <p class="text-md sm:text-sm font-bold text-surface-950 truncate">{{ member.name }}</p>
+                <p-tag *ngIf="member.isManager"
+                  [pTooltip]="'Idealizador'"
+                  tooltipPosition="top"
+                  tooltipStyleClass="text-xs"
+                  value="M"
+                  severity="primary"
+                  class="text-xs flex-shrink-0">
+                </p-tag>
+              </div>
+              <p *ngIf="member.username" class="text-xs text-surface-900 truncate mb-2"> {{ `@${member.username}` }}</p>
+              <p class="text-sm text-surface-600 dark:text-surface-800 truncate">{{ member.role }}</p>
             </div>
-          </div>
         </div>
 
         <div *ngIf="team.length === 0" class="text-center p-6 text-surface-500 dark:text-surface-800 border-2 border-dashed border-surface-border rounded-lg">

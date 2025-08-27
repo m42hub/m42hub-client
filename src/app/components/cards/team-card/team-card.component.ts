@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CardModule } from 'primeng/card';
 import { TagModule } from 'primeng/tag';
@@ -27,9 +27,6 @@ export class TeamCardComponent {
   @Input() showHeader = true;
   @Input() maxHeight = 'auto';
 
-  @Output() removeMember = new EventEmitter<{ index: number; member: TeamMember }>();
-  @Output() editMember = new EventEmitter<{ index: number; member: TeamMember }>();
-
   defaultAvatar = '/default_avatar.png';
 
   get teamWithPhotoUrl(): Array<TeamMember & { photoUrl: string }> {
@@ -41,13 +38,5 @@ export class TeamCardComponent {
 
   onImageError(event: any): void {
     event.target.src = this.defaultAvatar;
-  }
-
-  onRemoveMember(index: number, member: TeamMember): void {
-    this.removeMember.emit({ index, member });
-  }
-
-  onEditMember(index: number, member: TeamMember): void {
-    this.editMember.emit({ index, member });
   }
 }

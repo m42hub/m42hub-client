@@ -4,7 +4,7 @@ export interface ProjectMember {
   id: number;
   isManager: boolean;
   project: number;
-  role: number;
+  roleId: number;
   user: AuthenticatedUser;
   memberStatus: ProjectMemberStatus;
   applicationMessage: string | null;

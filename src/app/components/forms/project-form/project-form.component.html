@@ -1,5 +1,4 @@
 <div class="flex flex-col w-full mx-auto p-2 md:p-6">
-  <!-- Form content -->
   <form *ngIf="isFormReady" [formGroup]="projectForm" (ngSubmit)="onSubmit()" class="flex flex-col" styleClass="rounded-none">
     <p-card header="Informações Básicas" styleClass="rounded-b-none">
       <div class="flex flex-col md:flex-row gap-4">
@@ -141,30 +140,12 @@
                 Digite algo no editor para ver o preview...
               </div>
             </div>
-        </p-tabpanel>
+          </p-tabpanel>
         </p-tabpanels>
       </p-tabs>
-
-      <!-- Fallback para SSR -->
-      <div *ngIf="!isBrowser" class="flex flex-col gap-2">
-        <textarea
-          pTextarea
-          id="description-ssr"
-          formControlName="description"
-          placeholder="Descrição detalhada do projeto (suporta Markdown)"
-          rows="6"
-          class="w-full p-3 border border-surface-border rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-        ></textarea>
-        <small
-          class="p-error block"
-          *ngIf="projectForm.get('description')?.invalid && projectForm.get('description')?.touched"
-        >
-          Descrição é obrigatória e deve ter pelo menos 10 caracteres
-        </small>
-      </div>
     </p-card>
 
-    <!-- Datas -->
+    <!-- Dates -->
     <p-card header="Datas do Projeto" styleClass="rounded-none">
       <div class="flex flex-col md:flex-row">
         <div class="flex flex-col gap-2 ">
@@ -196,9 +177,9 @@
           ></p-datepicker>
         </div>
       </div>
-    </p-card>
+  </p-card>
 
-    <!-- Equipe (apenas na edição) -->
+  <!-- Team (Edit mode only) -->
   <p-card header="Equipe do Projeto" *ngIf="showTeamCard" styleClass="rounded-none">
       <p-tabs value="0" size="small" >
         <div class="flex justify-center ">
@@ -208,64 +189,37 @@
           </p-tablist>
         </div>
         <p-tabpanels>
-          <!-- Aba: Membros Atuais -->
           <p-tabpanel value="0">
             <div class="flex flex-col gap-4">
               <div class="flex justify-center items-center">
                 <h4 class="text-lg font-semibold">Membros da Equipe</h4>
               </div>
-              <!-- Team Card Component -->
               <app-team-card
                 [team]="teamApproved"
                 mode="edit"
-                [showHeader]="false"
-                (removeMember)="onTeamCardRemoveMember($event)"
-                (editMember)="onTeamCardEditMember($event)">
+                [showHeader]="false">
               </app-team-card>
             </div>
           </p-tabpanel>
-          <!-- Aba: Solicitações Pendentes (mock) -->
+
           <p-tabpanel value="1">
             <div class="flex flex-col gap-4">
               <div class="flex justify-center items-center">
                 <h4 class="text-lg font-semibold">Solicitações</h4>
               </div>
-
               <app-request-card
                 [requests]="teamPending"
                 [showHeader]="false"
                 (acceptRequest)="onRequestCardAcceptRequest($event)"
                 (rejectRequest)="onRequestCardRejectRequest($event)">
               </app-request-card>
-
-              <!-- Diálogo de feedback para rejeição -->
-              <p-dialog
-                *ngIf="isBrowser"
-                header="Motivo da Rejeição"
-                [(visible)]="feedbackDialogVisible"
-                [modal]="true"
-                [closable]="false"
-                [dismissableMask]="true"
-                [style]="{width: '400px'}">
-                <div class="flex flex-col gap-3">
-                  <label for="feedbackText">Por favor, informe o motivo da rejeição:</label>
-                  <textarea id="feedbackText" pInputText [formControl]="feedbackTextControl" rows="4" class="w-full"></textarea>
-                  <small class="p-error block" *ngIf="feedbackTextControl.invalid && (feedbackTextControl.dirty || feedbackTextControl.touched)">
-                    O feedback é obrigatório.
-                  </small>
-                </div>
-                <ng-template pTemplate="footer">
-                  <button pButton type="button" label="Cancelar" (click)="closeFeedbackDialog()" class="p-button-text"></button>
-                  <button pButton type="button" label="Rejeitar" severity="danger" (click)="confirmRejectRequest()" [disabled]="feedbackTextControl.invalid"></button>
-                </ng-template>
-              </p-dialog>
             </div>
           </p-tabpanel>
         </p-tabpanels>
       </p-tabs>
-    </p-card>
+  </p-card>
 
-    <!-- Tags -->
+  <!-- Tags -->
   <p-card header="Tags do Projeto" *ngIf="showTagsCard" styleClass="rounded-none">
       <div class="flex flex-col gap-6">
         <div class="flex flex-col gap-4">
@@ -287,7 +241,6 @@
             ></p-multiSelect>
           </div>
 
-          <!-- Assuntos (Temas do Projeto) -->
           <div class="flex flex-col gap-2">
             <label class="flex items-center font-semibold">
               <i class="pi pi-tags mr-2 text-primary"></i>
@@ -307,7 +260,6 @@
           </div>
         </div>
 
-        <!-- Preview das tags selecionadas -->
         <div class="flex flex-col gap-3" *ngIf="tagsArray.length > 0">
           <h5 class="font-semibold">Tags Selecionadas:</h5>
           <div class="flex flex-wrap gap-2">
@@ -320,9 +272,9 @@
           </div>
         </div>
       </div>
-    </p-card>
+  </p-card>
 
-    <!-- Função do Manager - apenas para criação de novos projetos -->
+  <!-- Manager Role (New project only) -->
   <p-card header="Função do Manager" *ngIf="showManagerCard" styleClass="rounded-none">
       <div class="flex flex-col gap-4">
         <div class="flex flex-col gap-2">
@@ -347,9 +299,9 @@
           É obrigatório selecionar sua função no projeto.
         </small>
       </div>
-    </p-card>
+  </p-card>
 
-    <!-- Vagas Não Preenchidas -->
+  <!-- Unfilled Roles -->
   <p-card header="Vagas Não Preenchidas" *ngIf="showUnfilledRolesCard" styleClass="rounded-t-none">
       <div class="flex flex-col gap-4">
         <div class="flex flex-col gap-2">
@@ -385,32 +337,18 @@
         <p class="text-surface-500 dark:text-surface-400 text-xs">
           Em caso de bug ou dúvida,
           <a href="https://discord.gg/E5xy62Eus2" target="_blank" rel="noopener" class="text-primary-500 hover:text-primary-400 dark:text-primary-400 dark:hover:text-primary-300 font-medium hover:underline transition-colors">
-            conte o suporte
+            contate o suporte
           </a>
         </p>
       </div>
     </p-card>
 
-    <!-- Fallback para SSR - Equipe -->
-    <p-card header="Equipe do Projeto" *ngIf="isEditMode && !isBrowser">
-      <div class="flex flex-col items-center justify-center p-8 text-surface-600 bg-surface-ground border-2 border-dashed border-surface-border rounded-lg">
-        <p class="italic">Gerenciamento de equipe disponível apenas no navegador.</p>
-      </div>
-    </p-card>
-
-    <!-- Fallback para SSR - Vagas -->
-    <p-card header="Vagas Não Preenchidas" *ngIf="!isBrowser">
-      <div class="flex flex-col items-center justify-center p-8 text-surface-600 bg-surface-ground border-2 border-dashed border-surface-border rounded-lg">
-        <p class="italic">Seleção de vagas disponível apenas no navegador.</p>
-      </div>
-    </p-card>
-
-    <!-- Ações -->
+    <!-- Actions -->
     <div class="flex justify-end gap-3 pt-6">
       <p-button
         label="Cancelar"
         severity="secondary"
-  (onClick)="onCancel()"
+        (onClick)="onCancel()"
       ></p-button>
       <p-button
         type="submit"

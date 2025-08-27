@@ -71,5 +71,39 @@
         <p class="text-sm">Nenhuma solicitação pendente</p>
       </div>
     </div>
+
+    <p-dialog
+      header="Motivo da Rejeição"
+      [(visible)]="feedbackDialogVisible"
+      [modal]="true"
+      [closable]="false"
+      [dismissableMask]="true">
+      <div class="flex flex-col gap-2 min-w-sm">
+        <textarea
+          id="feedbackText"
+          pInputTextarea
+          [formControl]="feedbackTextControl"
+          rows="4"
+          class="p-inputtext p-component w-full rounded-lg border border-surface-border focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition-all shadow-sm bg-surface-0 dark:bg-surface-900 text-surface-900 dark:text-surface-0 resize-none"
+          placeholder="Descreva o motivo da rejeição..."
+        ></textarea>
+        <div class="flex justify-end gap-2 mt-4">
+          <button
+            pButton
+            type="button"
+            label="Cancelar"
+            (click)="closeFeedbackDialog()"
+          ></button>
+          <button
+            pButton
+            type="button"
+            label="Rejeitar"
+            severity="danger"
+            (click)="confirmRejectRequest()"
+            [disabled]="feedbackTextControl.invalid"
+          ></button>
+        </div>
+      </div>
+    </p-dialog>
   </ng-template>
 </p-card>
