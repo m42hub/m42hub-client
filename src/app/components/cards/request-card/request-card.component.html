@@ -23,17 +23,11 @@
           <div class="flex-1 min-w-0 space-y-2">
             <div class="flex justify-between items-start">
               <div class="flex-1 min-w-0">
-                <p class="text-md font-bold text-surface-950 truncate"
-                  [pTooltip]="request.name"
-                  tooltipPosition="top"
-                  tooltipStyleClass="text-xs">{{ request.name }}</p>
+                <p class="text-md font-bold text-surface-950 truncate">{{ request.name }}</p>
 
                 <p *ngIf="request.username" class="text-xs text-surface-900 truncate mb-2"> {{ `@${request.username}` }}</p>
 
-                <p class="text-sm text-surface-800 truncate"
-                   [pTooltip]="request.role"
-                   tooltipPosition="top"
-                   tooltipStyleClass="text-xs">Solicitou: {{ request.role }}</p>
+                <p class="text-sm text-surface-800 truncate">Solicitou: {{ request.role }}</p>
 
                 <p class="text-xs text-surface-800" *ngIf="request.createdAtFormatted">
                   {{ request.createdAtFormatted }}

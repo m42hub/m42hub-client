@@ -82,7 +82,7 @@ export class ProjectInfoSidebarComponent implements OnInit {
           let roleName = this.getRoleName(member.roleId);
 
           if (member.isManager) {
-            roleName = `${roleName} (​​Idealizador)`;
+            roleName = `${roleName}`;
           }
 
           return {

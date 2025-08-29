@@ -22,10 +22,7 @@
           <p-tag
             *ngFor="let tool of tools"
             [value]="tool"
-            class="text-sm font-medium bg-surface-300 cursor-help"
-            [pTooltip]="'Tecnologias/Ferramentas'"
-            tooltipPosition="top"
-            tooltipStyleClass="text-xs">
+            class="text-sm font-medium bg-surface-300">
           </p-tag>
           <span *ngIf="tools.length === 0" class="text-sm text-surface-500">Nenhuma</span>
         </div>
@@ -38,10 +35,7 @@
           <p-tag
             *ngFor="let topic of topics"
             [value]="topic"
-            class="text-sm font-medium bg-surface-300 cursor-help"
-            [pTooltip]="'Tópicos'"
-            tooltipPosition="top"
-            tooltipStyleClass="text-xs">
+            class="text-sm font-medium bg-surface-300">
           </p-tag>
           <span *ngIf="topics.length === 0" class="text-sm text-surface-500">Nenhum</span>
         </div>
