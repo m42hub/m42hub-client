@@ -39,4 +39,9 @@ export const routes: Routes = [
     component: ProjectDetailsComponent,
     canActivate: [authGuard],
   },
+  {
+    path: '**',
+    redirectTo: '',
+    pathMatch: 'full',
+  },
 ];
