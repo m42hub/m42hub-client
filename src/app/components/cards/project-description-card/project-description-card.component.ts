@@ -1,4 +1,4 @@
-import type { OnInit } from '@angular/core';
+import type { AfterViewChecked, OnInit } from '@angular/core';
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CardModule } from 'primeng/card';
@@ -10,6 +10,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import type { Project } from '../../../interfaces/project/project.interface';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../services/auth/auth.service';
+import mermaid from 'mermaid';
 
 @Component({
   selector: 'app-project-description-card',
@@ -18,7 +19,7 @@ import { AuthService } from '../../../services/auth/auth.service';
   templateUrl: './project-description-card.component.html',
   styleUrl: './project-description-card.component.css',
 })
-export class ProjectDescriptionCardComponent implements OnInit {
+export class ProjectDescriptionCardComponent implements OnInit, AfterViewChecked {
   // Getter para verificar se o usuário é manager
   get isUserManager(): boolean {
     const currentUser = this.authService.currentUser;
@@ -68,6 +69,31 @@ export class ProjectDescriptionCardComponent implements OnInit {
       const html = await marked.parse(this.project.description);
       this.descriptionHtml = this.sanitizer.bypassSecurityTrustHtml(html);
     }
+  }
+
+  private processMermaidDiagrams(): void {
+    if (!this.descriptionHtml) return;
+
+    setTimeout(() => {
+      const mermaidBlocks = document.querySelectorAll('.language-mermaid');
+      mermaidBlocks.forEach((block) => {
+        const code = block.textContent || '';
+        const container = document.createElement('div');
+        container.className = 'mermaid';
+        container.textContent = code;
+        block.parentNode?.replaceChild(container, block);
+
+        try {
+          mermaid.init(undefined, container);
+        } catch (err) {
+          container.textContent = 'Erro ao renderizar diagrama Mermaid';
+        }
+      });
+    }, 0);
+  }
+
+  ngAfterViewChecked(): void {
+    this.processMermaidDiagrams();
   }
 
   get tools() {
