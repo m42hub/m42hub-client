@@ -1,5 +1,5 @@
 import type { ValidationErrors } from '@angular/forms';
-import type { OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import type { OnInit, OnChanges, SimpleChanges, AfterViewChecked } from '@angular/core';
 import { Component, Input, Output, EventEmitter, PLATFORM_ID, Inject } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormBuilder, FormGroup, FormArray, AbstractControl } from '@angular/forms';
@@ -16,6 +16,7 @@ import { TextareaModule } from 'primeng/textarea';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { TooltipModule } from 'primeng/tooltip';
 import { marked } from 'marked';
+import mermaid from 'mermaid';
 import { ProjectStatusService } from '../../../services/project/status.service';
 import { ProjectComplexityService } from '../../../services/project/complexity.service';
 import { ProjectToolService } from '../../../services/project/tool.service';
@@ -67,7 +68,7 @@ interface Option {
   templateUrl: './project-form.component.html',
   styleUrl: './project-form.component.css',
 })
-export class ProjectFormComponent implements OnInit, OnChanges {
+export class ProjectFormComponent implements OnInit, OnChanges, AfterViewChecked {
   @Input() project?: Project;
   @Input() isEditMode = false;
   @Output() save = new EventEmitter<CreateProjectRequest | UpdateProjectRequest>();
@@ -76,7 +77,7 @@ export class ProjectFormComponent implements OnInit, OnChanges {
   projectForm!: FormGroup;
   defaultAvatar = '/default_avatar.png';
   isBrowser = false;
-  markdownPreview = '';
+  markdownPreview:string | undefined = '';
   isFormReady = false;
 
   statusOptions: Option[] = [];
@@ -408,6 +409,32 @@ export class ProjectFormComponent implements OnInit, OnChanges {
         .toString()
         .padStart(2, '0')}/${d.getFullYear()}`;
     }
+  }
+  
+  private processMermaidDiagrams(): void {
+    if (!this.isBrowser) return;
+    if (!this.markdownPreview) return;
+
+    setTimeout(() => {
+      const mermaidBlocks = document.querySelectorAll('.language-mermaid');
+      mermaidBlocks.forEach((block) => {
+        const code = block.textContent || '';
+        const container = document.createElement('div');
+        container.className = 'mermaid';
+        container.textContent = code;
+        block.parentNode?.replaceChild(container, block);
+
+        try {
+          mermaid.init(undefined, container);
+        } catch (err) {
+          container.textContent = 'Erro ao renderizar diagrama Mermaid';
+        }
+      });
+    }, 0);
+  }
+
+  ngAfterViewChecked(): void {
+    this.processMermaidDiagrams();
   }
 
   private updateMarkdownPreview(markdownText: string): void {
