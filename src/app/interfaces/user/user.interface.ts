@@ -1,3 +1,5 @@
+import { ProjectRole } from '../project/role.interface';
+
 export interface SystemRole {
   id: number;
   name: string;
@@ -25,6 +27,12 @@ export interface AuthenticatedUser {
   lastName: string;
   roleId: number;
   roleName: string;
+  biography: string;
+  discord: string;
+  linkedin: string;
+  github: string;
+  personalWebsite: string;
+  interestRoles: ProjectRole[];
 }
 
 export interface RegisterRequest {
@@ -34,4 +42,20 @@ export interface RegisterRequest {
   firstName: string;
   lastName: string;
   isActive: boolean;
+}
+
+export interface UserInfoRequest {
+  firstName: string;
+  lastName: string;
+  biography: string;
+  discord: string;
+  linkedin: string;
+  github: string;
+  personalWebsite: string;
+  interestRoles: number[];
+}
+
+export interface UserPasswordChangeRequest {
+  oldPassword: string;
+  newPassword: string;
 }
