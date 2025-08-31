@@ -68,8 +68,8 @@ export class ProjectInfoSidebarComponent implements OnInit {
   }
 
   private getUserAvatar(user: any): string {
-    if (user.photo) {
-      return user.photo;
+    if (user.profilePicUrl) {
+      return user.profilePicUrl;
     }
     return this.defaultAvatar;
   }
