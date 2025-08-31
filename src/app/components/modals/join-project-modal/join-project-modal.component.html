@@ -48,11 +48,11 @@
 					class="w-full p-3 border border-surface-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
 					[disabled]="isSubmitting">
 				</textarea>
-				<small class="text-surface-500">Máximo 500 caracteres</small>
+				<small class="text-surface-500">Máximo 255 caracteres</small>
 				<small
 					class="p-error block"
 					*ngIf="joinForm.get('applicationMessage')?.invalid && joinForm.get('applicationMessage')?.touched">
-					A mensagem deve ter no máximo 500 caracteres.
+					A mensagem deve ter no máximo 255 caracteres.
 				</small>
 			</div>
 

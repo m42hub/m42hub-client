@@ -25,12 +25,12 @@ import { ProjectRoleService } from '../../../services/project/role.service';
 import { ProjectMemberService } from '../../../services/project/member.service';
 import { TeamCardComponent } from '../../cards/team-card/team-card.component';
 import { RequestCardComponent } from '../../cards/request-card/request-card.component';
-import type { TeamRequest } from '../../cards/request-card/request-card.component';
 import type {
   Project,
   CreateProjectRequest,
   UpdateProjectRequest,
 } from '../../../interfaces/project/project.interface';
+import type { TeamRequest } from '../../cards/request-card/request-card.component';
 
 interface OptionWithColor {
   label: string;
@@ -74,10 +74,11 @@ export class ProjectFormComponent implements OnInit, OnChanges, AfterViewChecked
   @Output() save = new EventEmitter<CreateProjectRequest | UpdateProjectRequest>();
   @Output() cancelAction = new EventEmitter<void>();
 
+  private _teamPending: any[] = [];
   projectForm!: FormGroup;
   defaultAvatar = '/default_avatar.png';
   isBrowser = false;
-  markdownPreview:string | undefined = '';
+  markdownPreview: string | undefined = '';
   isFormReady = false;
 
   statusOptions: Option[] = [];
@@ -298,6 +299,7 @@ export class ProjectFormComponent implements OnInit, OnChanges, AfterViewChecked
     });
 
     this.updateTagsFromSelects();
+    this.updateTeamPending();
   }
 
   private getRoleName(roleId: number): string {
@@ -410,7 +412,7 @@ export class ProjectFormComponent implements OnInit, OnChanges, AfterViewChecked
         .padStart(2, '0')}/${d.getFullYear()}`;
     }
   }
-  
+
   private processMermaidDiagrams(): void {
     if (!this.isBrowser) return;
     if (!this.markdownPreview) return;
@@ -425,8 +427,8 @@ export class ProjectFormComponent implements OnInit, OnChanges, AfterViewChecked
         block.parentNode?.replaceChild(container, block);
 
         try {
-          mermaid.init(undefined, container);
-        } catch (err) {
+          void mermaid.init(undefined, container);
+        } catch {
           container.textContent = 'Erro ao renderizar diagrama Mermaid';
         }
       });
@@ -463,12 +465,43 @@ export class ProjectFormComponent implements OnInit, OnChanges, AfterViewChecked
     };
   }
 
-  onRequestCardAcceptRequest(request: any): void {
-    this.memberService.approve(request.id).subscribe();
+  private updateTeamPending() {
+    if (!this.teamArray?.controls) {
+      this._teamPending = [];
+      return;
+    }
+    this._teamPending = this.teamArray.controls
+      .map((control) => control.value)
+      .filter((member: any) => member.memberStatus?.id === 1);
+  }
+
+  onRequestCardAcceptRequest(request: TeamRequest): void {
+    this.memberService.approve(request.id).subscribe({
+      next: () => {
+        this.setMemberStatus(request.id, 2, 'Aprovado');
+        this.updateTeamPending();
+      },
+    });
   }
 
   onRequestCardRejectRequest(request: TeamRequest): void {
-    this.memberService.reject(Number(request.id), request.feedback || '').subscribe();
+    this.memberService.reject(request.id, request.feedback || '').subscribe({
+      next: () => {
+        this.setMemberStatus(request.id, 3, 'Recusado');
+        this.updateTeamPending();
+      },
+    });
+  }
+
+  private setMemberStatus(memberId: number, statusId: number, statusName: string): void {
+    const teamArray = this.projectForm.get('team') as FormArray;
+    const memberControl = teamArray.controls.find((control) => control.value.id === memberId);
+    if (memberControl) {
+      const memberStatus = memberControl.value.memberStatus || {};
+      memberControl.patchValue({
+        memberStatus: { ...memberStatus, id: statusId, name: statusName },
+      });
+    }
   }
 
   removeTag(index: number): void {
@@ -486,10 +519,7 @@ export class ProjectFormComponent implements OnInit, OnChanges, AfterViewChecked
       .filter((member: any) => member.memberStatus?.id === 2);
   }
   get teamPending() {
-    if (!this.teamArray?.controls) return [];
-    return this.teamArray.controls
-      .map((control) => control.value)
-      .filter((member: any) => member.memberStatus?.id === 1);
+    return this._teamPending;
   }
   get nameControl() {
     return this.projectForm.get('name');

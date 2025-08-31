@@ -44,7 +44,7 @@ export class JoinProjectModalComponent {
   ) {
     this.joinForm = this.formBuilder.group({
       roleId: ['', Validators.required],
-      applicationMessage: ['', [Validators.maxLength(500)]],
+      applicationMessage: ['', [Validators.maxLength(255)]],
     });
   }
 

@@ -10,7 +10,7 @@ import { ButtonModule } from 'primeng/button';
 import { AvatarModule } from 'primeng/avatar';
 
 export interface TeamRequest {
-  id: string;
+  id: number;
   name: string;
   role: string;
   photo: string;
@@ -42,18 +42,7 @@ export class RequestCardComponent implements OnChanges {
   feedbackDialogVisible = false;
   feedbackTextControl = new FormControl('', [Validators.required, Validators.minLength(1)]);
   feedbackRequest: TeamRequest | null = null;
-  get requestsWithFormattedDate(): Array<
-    TeamRequest & {
-      createdAtFormatted?: string;
-      photoUrl?: string;
-    }
-  > {
-    return this.requests.map((r) => ({
-      ...r,
-      createdAtFormatted: r.createdAt ? new Date(r.createdAt).toLocaleDateString('pt-BR') : '',
-      photoUrl: r.photo || this.defaultAvatar,
-    }));
-  }
+  requestsWithFormattedDate: Array<TeamRequest> = [];
   @Input() requests: TeamRequest[] = [];
   @Input() showHeader = true;
   @Input() maxHeight = 'auto';
@@ -64,12 +53,11 @@ export class RequestCardComponent implements OnChanges {
   defaultAvatar = '/default_avatar.png';
 
   ngOnChanges() {
-    this.requests.forEach((request) => {
-      request.photoUrl = request.photo || this.defaultAvatar;
-      request.createdAtFormatted = request.createdAt
-        ? new Date(request.createdAt).toLocaleDateString('pt-BR')
-        : '';
-    });
+    this.requestsWithFormattedDate = (this.requests || []).map((r) => ({
+      ...r,
+      createdAtFormatted: r.createdAt ? new Date(r.createdAt).toLocaleDateString('pt-BR') : '',
+      photoUrl: r.photo || this.defaultAvatar,
+    }));
   }
 
   onAcceptRequest(request: TeamRequest): void {
