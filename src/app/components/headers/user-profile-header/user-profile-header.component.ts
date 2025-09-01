@@ -17,8 +17,4 @@ export class UserProfileHeaderComponent {
   @Input() loading = false;
 
   defaultAvatar = '/default_avatar.png';
-
-  onImageError(event: any): void {
-    event.target.src = this.defaultAvatar;
-  }
 }
