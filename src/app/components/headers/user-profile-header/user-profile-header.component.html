@@ -1,7 +1,7 @@
 <div *ngIf="userInfo && !loading" class="bg-gradient-to-br from-indigo-600 to-gray-950 rounded-t-lg p-6 flex flex-col lg:flex-row items-center lg:items-start  gap-4 lg:gap-8 w-full">
   <div class="flex-shrink-0 flex justify-center lg:justify-start w-full lg:w-auto">
         <p-avatar
-          [image]="userInfo.profilePicUrl || 'assets/default_avatar.png'"
+          [image]="userInfo.profilePicUrl || this.defaultAvatar"
           shape="circle"
           size="xlarge"
           styleClass="border-2 border-primary-200 w-40 h-40"

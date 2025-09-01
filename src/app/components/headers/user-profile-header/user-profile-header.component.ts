@@ -15,4 +15,10 @@ import type { UserInfo } from '../../../interfaces/user/user.interface';
 export class UserProfileHeaderComponent {
   @Input() userInfo: UserInfo | null = null;
   @Input() loading = false;
+
+  defaultAvatar = '/default_avatar.png';
+
+  onImageError(event: any): void {
+    event.target.src = this.defaultAvatar;
+  }
 }
