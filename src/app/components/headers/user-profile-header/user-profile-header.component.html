@@ -1,0 +1,27 @@
+<div *ngIf="userInfo && !loading" class="bg-gradient-to-br from-indigo-600 to-gray-950 rounded-t-lg p-6 flex flex-col lg:flex-row items-center lg:items-start  gap-4 lg:gap-8 w-full">
+  <div class="flex-shrink-0 flex justify-center lg:justify-start w-full lg:w-auto">
+        <p-avatar
+          [image]="userInfo.profilePicUrl || 'assets/default_avatar.png'"
+          shape="circle"
+          size="xlarge"
+          styleClass="border-2 border-primary-200 w-40 h-40"
+        ></p-avatar>
+  </div>
+  <div class="flex flex-col flex-1 items-center lg:items-start w-full">
+    <h2 class="text-3xl font-bold text-surface-950">{{ userInfo.firstName }} {{ userInfo.lastName }}</h2>
+    <div class="flex items-center gap-2 mt-1">
+    <span class="text-lg">{{ `@${userInfo.username}` }}</span>
+    </div>
+        <div *ngIf="userInfo.biography" class="w-full flex-col items-center lg:items-start mt-4 flex">
+          <p class="text-gray-200 max-w-xl">{{ userInfo.biography }}</p>
+    </div>
+  </div>
+  <p-card styleClass="w-full flex text-white rounded-lg shadow-none bg-transparent">
+        <app-social-media-card
+          [discord]="userInfo.discord"
+          [linkedin]="userInfo.linkedin"
+          [github]="userInfo.github"
+          [personalWebsite]="userInfo.personalWebsite"
+        ></app-social-media-card>
+  </p-card>
+</div>

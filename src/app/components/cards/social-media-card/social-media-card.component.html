@@ -1,0 +1,20 @@
+<div class="flex flex-col lg:flex-row w-full md:px-6">
+	<ul class="flex flex-col gap-1 w-full">
+		<li *ngIf="discord">
+			<i class="pi pi-discord mr-1"></i>
+			<span class="truncate text-left pl-1">{{ discord }}</span>
+		</li>
+		<li *ngIf="linkedin">
+			<i class="pi pi-linkedin mr-1"></i>
+			<a [href]="linkedin" target="_blank" class="text-blue-200 underline pl-1">{{ linkedin }}</a>
+		</li>
+		<li *ngIf="github">
+			<i class="pi pi-github mr-1"></i>
+			<a [href]="github" target="_blank" class="text-blue-200 underline pl-1">{{ github }}</a>
+		</li>
+		<li *ngIf="personalWebsite">
+			<i class="pi pi-globe mr-1"></i>
+			<a [href]="personalWebsite" target="_blank" class="text-blue-200 underline pl-1">{{ personalWebsite }}</a>
+		</li>
+	</ul>
+</div>

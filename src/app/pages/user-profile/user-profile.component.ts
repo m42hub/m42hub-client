@@ -9,6 +9,7 @@ import { ButtonModule } from 'primeng/button';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { UserService } from '../../services/user/user.service';
 import type { UserInfo } from '../../interfaces/user/user.interface';
+import { UserProfileHeaderComponent } from '../../components/headers/user-profile-header/user-profile-header.component';
 @Component({
   selector: 'app-user-profile',
   standalone: true,
@@ -20,6 +21,7 @@ import type { UserInfo } from '../../interfaces/user/user.interface';
     DividerModule,
     ButtonModule,
     ProgressSpinnerModule,
+    UserProfileHeaderComponent,
   ],
   templateUrl: './user-profile.component.html',
   styleUrl: './user-profile.component.css',
