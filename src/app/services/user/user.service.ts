@@ -2,8 +2,8 @@ import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import type { Observable } from 'rxjs';
 import type {
-  AuthenticatedUser,
   User,
+  UserInfo,
   UserInfoRequest,
   UserPasswordChangeRequest,
 } from '../../interfaces/user/user.interface';
@@ -19,20 +19,16 @@ export class UserService extends BaseApiService<User> {
     super(http, platformId);
   }
 
-  getUserById(id: number): Observable<User> {
-    return this.get<User>(`${this.endpoint}/${id}`);
+  getUserByUsername(username: string): Observable<UserInfo> {
+    return this.get<UserInfo>(`${this.endpoint}/${username}`);
   }
 
-  getUserByUsername(id: number): Observable<User> {
-    return this.get<User>(`${this.endpoint}/${id}`);
+  editInfo(username: string, userInfo: UserInfoRequest): Observable<UserInfo> {
+    return this.patch<UserInfo>(`${this.endpoint}/info/${username}`, userInfo);
   }
 
-  editInfo(username: string, userInfo: UserInfoRequest): Observable<AuthenticatedUser> {
-    return this.patch<AuthenticatedUser>(`${this.endpoint}/info/${username}`, userInfo);
-  }
-
-  changeProfilePic(username: string, profilePicUrl: string): Observable<AuthenticatedUser> {
-    return this.patch<AuthenticatedUser>(`${this.endpoint}/profile-pic/${username}`, {
+  changeProfilePic(username: string, profilePicUrl: string): Observable<UserInfo> {
+    return this.patch<UserInfo>(`${this.endpoint}/profile-pic/${username}`, {
       profilePicUrl,
     });
   }
@@ -40,11 +36,8 @@ export class UserService extends BaseApiService<User> {
   changePassword(
     username: string,
     passwordChangeRequest: UserPasswordChangeRequest,
-  ): Observable<AuthenticatedUser> {
-    return this.patch<AuthenticatedUser>(
-      `${this.endpoint}/password/${username}`,
-      passwordChangeRequest,
-    );
+  ): Observable<UserInfo> {
+    return this.patch<UserInfo>(`${this.endpoint}/password/${username}`, passwordChangeRequest);
   }
 
   deactivateUser(username: string): Observable<User> {

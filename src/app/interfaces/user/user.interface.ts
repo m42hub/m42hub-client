@@ -25,6 +25,16 @@ export interface AuthenticatedUser {
   username: string;
   firstName: string;
   lastName: string;
+  profilePicUrl: string;
+  roleId: number;
+  roleName: string;
+}
+
+export interface UserInfo {
+  username: string;
+  firstName: string;
+  lastName: string;
+  profilePicUrl: string;
   roleId: number;
   roleName: string;
   biography: string;
