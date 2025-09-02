@@ -33,7 +33,6 @@
                tooltipPosition="top"
                tooltipStyleClass="text-xs">{{ member.role }}</p>
           </div>
-
           <p-tag *ngIf="member.isManager"
             [pTooltip]="'Idealizador'"
             tooltipPosition="top"
@@ -42,6 +41,16 @@
             severity="primary"
             class="text-xs flex-shrink-0">
           </p-tag>
+          <button
+            pButton
+            type="button"
+            class="p-button-sm p-button p-button-info"
+            (click)="viewProfile(member.username)"
+            [pTooltip]="'Ver perfil'"
+            tooltipPosition="top"
+            tooltipStyleClass="text-xs">
+            <i class="pi pi-eye"></i>
+          </button>
         </div>
 
         <div *ngIf="team.length === 0" class="text-center p-6 text-surface-500 dark:text-surface-800">
