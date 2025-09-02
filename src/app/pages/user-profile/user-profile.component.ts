@@ -16,6 +16,7 @@ import type { UserInfo, UserInfoRequest } from '../../interfaces/user/user.inter
 import { UserProfileHeaderComponent } from '../../components/headers/user-profile-header/user-profile-header.component';
 import { UserProfileFormComponent } from '../../components/forms/user-profile-form/user-profile-form.component';
 import { TextareaModule } from 'primeng/textarea';
+import { UserChangePasswordFormComponent } from '../../components/forms/user-change-password-form/user-change-password-form.component';
 @Component({
   selector: 'app-user-profile',
   standalone: true,
@@ -29,6 +30,7 @@ import { TextareaModule } from 'primeng/textarea';
     ProgressSpinnerModule,
     UserProfileHeaderComponent,
     UserProfileFormComponent,
+    UserChangePasswordFormComponent,
     ReactiveFormsModule,
     MultiSelectModule,
     InputTextModule,
@@ -49,6 +51,7 @@ export class UserProfileComponent implements OnInit {
   saveLoading = false;
   saveError: string | null = null;
   currentUser = this.authService.currentUser;
+  showChangePasswordForm = false;
 
   ngOnInit(): void {
     const username = this.route.snapshot.paramMap.get('username');
@@ -102,5 +105,13 @@ export class UserProfileComponent implements OnInit {
       this.userInfo &&
       this.currentUser.username === this.userInfo.username
     );
+  }
+
+  openChangePasswordForm() {
+    this.showChangePasswordForm = true;
+  }
+
+  closeChangePasswordForm() {
+    this.showChangePasswordForm = false;
   }
 }

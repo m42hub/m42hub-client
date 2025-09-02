@@ -1,4 +1,4 @@
-<div class="flex flex-col min-h-screen w-screen h-screen bg-surface-ground p-0 m-0">
+<div class="flex flex-col min-h-screen w-screen h-screen bg-gradient-to-br from-primary-500 to-primary-900 p-0 m-0 overflow-auto">
   <div *ngIf="loading" class="flex justify-center items-center flex-1 min-h-[200px]">
     <p-progressSpinner styleClass="w-8 h-8" strokeWidth="4"></p-progressSpinner>
   </div>
@@ -8,7 +8,7 @@
 
   <div
     *ngIf="userInfo && !loading"
-    class="flex flex-1 flex-col w-full h-full bg-gradient-to-br from-primary-500 to-primary-900 text-white m-0 p-0"
+    class="flex flex-1 flex-col w-full h-full text-white m-0 p-0"
   >
     <app-user-profile-header
       [userInfo]="userInfo"
@@ -17,7 +17,7 @@
     ></app-user-profile-header>
 
     <div class="flex flex-col gap-4 w-full h-full p-6">
-      <div *ngIf="isOwnProfile && !editMode" class="flex justify-end mb-2">
+      <div *ngIf="isOwnProfile && !editMode && !showChangePasswordForm" class="flex justify-end mb-2">
         <button
           pButton
           type="button"
@@ -26,10 +26,18 @@
           class="p-button-sm p-button-outlined p-button-info"
           (click)="enableEdit()"
         ></button>
+        <button
+          pButton
+          type="button"
+          icon="pi pi-key"
+          label="Alterar senha"
+          class="p-button-sm p-button-outlined p-button-warning ml-2"
+          (click)="openChangePasswordForm()"
+        ></button>
       </div>
 
       <app-user-profile-form
-        *ngIf="isOwnProfile && editMode"
+        *ngIf="isOwnProfile && editMode && !showChangePasswordForm"
         [userInfo]="userInfo"
         [saveLoading]="saveLoading"
         [saveError]="saveError"
@@ -37,8 +45,14 @@
         (cancelEdit)="cancelEdit()"
       ></app-user-profile-form>
 
+      <app-user-change-password-form
+        *ngIf="isOwnProfile && showChangePasswordForm && !editMode"
+        [userInfo]="userInfo"
+        (closeForm)="closeChangePasswordForm()"
+      ></app-user-change-password-form>
+
       <p-card
-        *ngIf="userInfo.interestRoles?.length && !(isOwnProfile && editMode)"
+        *ngIf="userInfo.interestRoles?.length && (!editMode && !showChangePasswordForm)"
         styleClass="w-full max-w-6xl mx-auto text-white rounded-lg shadow-lg bg-gray-900 "
       >
         <h3 class="font-bold mb-2">Áreas de Interesse:</h3>

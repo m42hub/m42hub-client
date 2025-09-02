@@ -1,5 +1,4 @@
-
-<form [formGroup]="editForm" class="rounded-lg p-4 flex flex-col gap-4">
+<form [formGroup]="editForm" class="rounded-lg p-4 flex flex-col gap-4 max-w-5xl mx-auto">
 	<div class="flex flex-col md:flex-row gap-4">
 		<div class="flex-1">
 			<label class="mb-1 text-sm ">Nome</label>
@@ -95,8 +94,8 @@
 		></p-multiSelect>
 	</div>
 	<div class="flex gap-2 mt-2">
+    <button pButton type="button" label="Salvar" class="p-button-success" (click)="onSave()" [loading]="saveLoading" [disabled]="!editForm.valid || saveLoading"></button>
 		<button pButton type="button" label="Cancelar" class="p-button-secondary" (click)="onCancel()" [disabled]="saveLoading"></button>
-		<button pButton type="button" label="Salvar" class="p-button-success" (click)="onSave()" [loading]="saveLoading" [disabled]="!editForm.valid || saveLoading"></button>
 	</div>
 	<div *ngIf="saveError" class="text-red-400 mt-2">{{ saveError }}</div>
 </form>
