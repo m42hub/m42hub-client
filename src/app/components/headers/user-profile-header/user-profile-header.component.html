@@ -1,27 +1,101 @@
-<div *ngIf="userInfo && !loading" class="bg-gradient-to-br from-indigo-600 to-gray-950 rounded-t-lg p-6 flex flex-col lg:flex-row items-center lg:items-start  gap-4 lg:gap-8 w-full">
+<div
+  *ngIf="userInfo && !loading"
+  class="bg-gradient-to-br from-indigo-600 to-gray-950 rounded-t-lg p-6 flex flex-col lg:flex-row items-center lg:items-start gap-4 lg:gap-8 w-full"
+>
   <div class="flex-shrink-0 flex justify-center lg:justify-start w-full lg:w-auto">
-        <p-avatar
-          [image]="userInfo.profilePicUrl || this.defaultAvatar"
-          shape="circle"
-          size="xlarge"
-          styleClass="border-2 border-primary-200 w-40 h-40"
-        ></p-avatar>
+    <div
+      class="relative w-40 h-40"
+      (mouseenter)="hoverAvatar = true"
+      (mouseleave)="hoverAvatar = false"
+    >
+      <p-avatar
+        [image]="userInfo.profilePicUrl || this.defaultAvatar"
+        shape="circle"
+        size="xlarge"
+        styleClass="border-2 border-primary-200 w-40 h-40"
+      ></p-avatar>
+      <button
+        *ngIf="isOwnProfile && hoverAvatar"
+        class="absolute inset-0 w-full h-full flex items-center justify-center bg-black bg-opacity-30 text-white rounded-full shadow transition avatar-change-btn avatar-change-btn-zindex"
+        (click)="openChangePicModal()"
+        aria-label="Alterar foto"
+      >
+        <span class="flex flex-col items-center">
+          <i class="pi pi-camera text-3xl mb-1"></i>
+          <span class="text-sm font-semibold">Alterar foto</span>
+        </span>
+      </button>
+    </div>
+
+    <p-dialog
+      [(visible)]="showChangePicModal"
+      modal="true"
+      [closable]="true"
+      [dismissableMask]="true"
+      [style]="{ width: '24rem' }"
+      [showHeader]="true"
+      [header]="'Alterar foto de perfil'"
+      (onHide)="closeChangePicModal()"
+      class="rounded-lg shadow-lg"
+    >
+      <div class="flex flex-col items-center w-full">
+        <label class="flex flex-col items-center gap-3 w-full cursor-pointer">
+          <span class="flex flex-col items-center gap-2 w-full">
+            <span class="text-base text-primary-700 font-semibold">
+              Clique para escolher uma foto de perfil
+            </span>
+            <span
+              class="flex items-center justify-center w-20 h-20 rounded-xl bg-primary-100 hover:bg-primary-200 transition duration-150 cursor-pointer border-2 border-primary-300 shadow-md"
+              (click)="profilePicInput.click()"
+            >
+              <i class="pi pi-image text-5xl text-primary-600"></i>
+            </span>
+          </span>
+        </label>
+        <input
+          #profilePicInput
+          id="profilePicInput"
+          type="file"
+          accept="image/*"
+          (change)="onFileSelected($event)"
+          [disabled]="uploading"
+          title="Selecione uma imagem para o perfil"
+          placeholder="Selecione uma imagem"
+          class="hidden"
+        />
+        <div *ngIf="uploadError" class="text-red-600 mt-2">{{ uploadError }}</div>
+        <div class="flex gap-2 mt-4">
+          <button
+            pButton
+            type="button"
+            label="Cancelar"
+            class="p-button-outlined p-button-sm"
+            (click)="closeChangePicModal()"
+          ></button>
+        </div>
+      </div>
+    </p-dialog>
+    <div *ngIf="uploading" class="mt-2 text-primary-700">Enviando...</div>
   </div>
+
   <div class="flex flex-col flex-1 items-center lg:items-start w-full">
-    <h2 class="text-3xl font-bold text-surface-950">{{ userInfo.firstName }} {{ userInfo.lastName }}</h2>
+    <h2 class="text-3xl font-bold text-surface-950">
+      {{ userInfo.firstName }} {{ userInfo.lastName }}
+    </h2>
     <div class="flex items-center gap-2 mt-1">
-    <span class="text-lg">{{ `@${userInfo.username}` }}</span>
+      <span class="text-lg">{{ `@${userInfo.username}` }}</span>
     </div>
-        <div *ngIf="userInfo.biography" class="w-full flex-col items-center lg:items-start mt-4 flex">
-          <p class="text-gray-200 max-w-3xl">{{ userInfo.biography }}</p>
+    <div *ngIf="userInfo?.biography" class="w-full flex-col items-center lg:items-start mt-4 flex">
+      <p class="text-gray-200 max-w-3xl">{{ userInfo.biography }}</p>
     </div>
   </div>
+
   <p-card styleClass="w-full flex text-white rounded-lg shadow-none bg-transparent">
-        <app-social-media-card
-          [discord]="userInfo.discord"
-          [linkedin]="userInfo.linkedin"
-          [github]="userInfo.github"
-          [personalWebsite]="userInfo.personalWebsite"
-        ></app-social-media-card>
+    <app-social-media-card
+      [discord]="userInfo.discord"
+      [linkedin]="userInfo.linkedin"
+      [github]="userInfo.github"
+      [personalWebsite]="userInfo.personalWebsite"
+    ></app-social-media-card>
   </p-card>
 </div>

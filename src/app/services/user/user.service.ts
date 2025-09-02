@@ -27,10 +27,13 @@ export class UserService extends BaseApiService<User> {
     return this.patch<UserInfo>(`${this.endpoint}/info/${username}`, userInfo);
   }
 
-  changeProfilePic(username: string, profilePicUrl: string): Observable<UserInfo> {
-    return this.patch<UserInfo>(`${this.endpoint}/profile-pic/${username}`, {
-      profilePicUrl,
-    });
+  changeProfilePic(username: string, file: File): Observable<UserInfo> {
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.patch<UserInfo>(
+      `${this.apiUrl}${this.endpoint}/profile-pic/${username}`,
+      formData,
+    );
   }
 
   changePassword(

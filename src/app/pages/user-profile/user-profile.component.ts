@@ -45,20 +45,18 @@ export class UserProfileComponent implements OnInit {
   userInfo: UserInfo | null = null;
   loading = true;
   error: string | null = null;
-  isOwnProfile = false;
   editMode = false;
   saveLoading = false;
   saveError: string | null = null;
+  currentUser = this.authService.currentUser;
 
   ngOnInit(): void {
     const username = this.route.snapshot.paramMap.get('username');
-    const currentUser = this.authService.currentUser;
     if (username) {
       this.userService.getUserByUsername(username).subscribe({
         next: (user) => {
           this.userInfo = user;
           this.loading = false;
-          this.isOwnProfile = !!currentUser && currentUser.username === user.username;
         },
         error: () => {
           this.error = 'Usuário não encontrado ou erro ao carregar.';
@@ -96,5 +94,13 @@ export class UserProfileComponent implements OnInit {
         this.saveLoading = false;
       },
     });
+  }
+
+  get isOwnProfile(): boolean {
+    return !!(
+      this.currentUser &&
+      this.userInfo &&
+      this.currentUser.username === this.userInfo.username
+    );
   }
 }
