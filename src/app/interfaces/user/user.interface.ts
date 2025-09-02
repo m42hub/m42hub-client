@@ -13,6 +13,7 @@ export interface User {
   email: string;
   firstName: string;
   lastName: string;
+  profilePicUrl: string;
   isActive: boolean;
   systemRole: SystemRole;
   lastLogin: string | null;

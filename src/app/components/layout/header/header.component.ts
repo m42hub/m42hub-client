@@ -8,10 +8,12 @@ import { AuthService } from '../../../services/auth/auth.service';
 import type { Observable } from 'rxjs';
 import type { User } from '../../../interfaces/user/user.interface';
 import { TagModule } from 'primeng/tag';
+import { AvatarModule } from 'primeng/avatar';
+import { MenuModule } from 'primeng/menu';
 
 @Component({
   selector: 'app-header',
-  imports: [ButtonModule, CommonModule, TagModule],
+  imports: [ButtonModule, CommonModule, TagModule, AvatarModule, MenuModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css',
 })
@@ -19,6 +21,19 @@ export class HeaderComponent implements OnInit {
   darkMode = false;
   user$: Observable<User | null>;
   showLogoutError = false;
+  showProfileMenu = false;
+  profileMenuItems = [
+    {
+      label: 'Alterar Perfil',
+      icon: 'pi pi-user-edit',
+      command: () => this.onEditProfile(),
+    },
+    {
+      label: 'Logout',
+      icon: 'pi pi-sign-out',
+      command: () => this.onLogout(),
+    },
+  ];
 
   constructor(
     private router: Router,
@@ -26,6 +41,20 @@ export class HeaderComponent implements OnInit {
     @Inject(PLATFORM_ID) private platformId: Object,
   ) {
     this.user$ = this.authService.user$;
+  }
+  toggleProfileMenu() {
+    this.showProfileMenu = !this.showProfileMenu;
+  }
+
+  onEditProfile() {
+    this.showProfileMenu = false;
+    this.user$
+      .subscribe((user) => {
+        if (user && user.username) {
+          void this.router.navigate([`/user/${user.username}`]);
+        }
+      })
+      .unsubscribe();
   }
 
   handleClick(path: string) {
@@ -76,6 +105,7 @@ export class HeaderComponent implements OnInit {
   }
 
   onLogout() {
+    this.showProfileMenu = false;
     this.authService.logout().subscribe({
       next: () => {
         void this.router.navigate(['/']);

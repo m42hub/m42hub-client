@@ -28,14 +28,22 @@
 
   <div class="flex items-center gap-2 mr-2">
     <ng-container *ngIf="user$ | async as user; else loginButton">
-      <p-button
-        label="Sair"
-        icon="pi pi-sign-out"
-        (onClick)="onLogout()"
-        styleClass="p-button-outlined p-button-sm"
-        >
-      </p-button>
+      <div class="relative flex items-center">
+        <p-avatar
+          [image]="user.profilePicUrl || '/default_avatar.png'"
+          shape="circle"
+          size="large"
+          styleClass="cursor-pointer border-2 border-gray-300 hover:border-primary transition"
+          (click)="profileMenu.toggle($event)"
+        ></p-avatar>
+      </div>
     </ng-container>
+
+    <p-menu #profileMenu
+      [popup]="true"
+      [model]="profileMenuItems"
+      styleClass="min-w-25 bg-gradient-to-br text-white rounded-xl shadow-xl border border-indigo-500 animate-fade-in"
+    ></p-menu>
 
     <ng-template #loginButton>
       <p-button
