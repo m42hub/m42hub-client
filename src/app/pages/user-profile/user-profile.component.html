@@ -34,6 +34,14 @@
           class="p-button-sm p-button p-button-help ml-2"
           (click)="openChangePasswordForm()"
         ></button>
+          <button
+            pButton
+            type="button"
+            icon="pi pi-trash"
+            label="Excluir Conta"
+            class="p-button-sm p-button p-button-danger ml-2"
+            (click)="openDeleteAccountModal()"
+          ></button>
       </div>
 
       <app-user-profile-form
@@ -50,6 +58,24 @@
         [userInfo]="userInfo"
         (closeForm)="closeChangePasswordForm()"
       ></app-user-change-password-form>
+
+      <p-dialog
+        header="Confirmar Exclusão"
+        [(visible)]="showDeleteAccountModal"
+        [modal]="true"
+        [closable]="false"
+        [dismissableMask]="true"
+        [style]="{width: '450px'}"
+      >
+        <div class="flex flex-col items-center justify-center gap-4 p-4">
+          <span class="text-lg font-semibold text-center">Tem certeza que deseja excluir sua conta? Esta ação não pode ser desfeita.</span>
+          <div class="flex gap-2 justify-center mt-4">
+            <button pButton type="button" label="Cancelar" class="p-button-sm" (click)="closeDeleteAccountModal()"></button>
+            <button pButton type="button" label="Excluir" class="p-button-sm p-button-danger" (click)="deleteAccount()" [disabled]="deleteLoading"></button>
+          </div>
+          <p *ngIf="deleteError" class="text-red-500 text-center">{{ deleteError }}</p>
+        </div>
+      </p-dialog>
 
       <p-card
         *ngIf="userInfo.interestRoles?.length && (!editMode && !showChangePasswordForm)"

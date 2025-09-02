@@ -17,6 +17,7 @@ import { UserProfileHeaderComponent } from '../../components/headers/user-profil
 import { UserProfileFormComponent } from '../../components/forms/user-profile-form/user-profile-form.component';
 import { TextareaModule } from 'primeng/textarea';
 import { UserChangePasswordFormComponent } from '../../components/forms/user-change-password-form/user-change-password-form.component';
+import { DialogModule } from 'primeng/dialog';
 @Component({
   selector: 'app-user-profile',
   standalone: true,
@@ -35,6 +36,7 @@ import { UserChangePasswordFormComponent } from '../../components/forms/user-cha
     MultiSelectModule,
     InputTextModule,
     TextareaModule,
+    DialogModule,
   ],
   templateUrl: './user-profile.component.html',
   styleUrl: './user-profile.component.css',
@@ -52,6 +54,9 @@ export class UserProfileComponent implements OnInit {
   saveError: string | null = null;
   currentUser = this.authService.currentUser;
   showChangePasswordForm = false;
+  showDeleteAccountModal = false;
+  deleteLoading = false;
+  deleteError: string | null = null;
 
   ngOnInit(): void {
     const username = this.route.snapshot.paramMap.get('username');
@@ -113,5 +118,32 @@ export class UserProfileComponent implements OnInit {
 
   closeChangePasswordForm() {
     this.showChangePasswordForm = false;
+  }
+
+  openDeleteAccountModal() {
+    this.showDeleteAccountModal = true;
+    this.deleteError = null;
+  }
+
+  closeDeleteAccountModal() {
+    this.showDeleteAccountModal = false;
+    this.deleteError = null;
+  }
+
+  deleteAccount() {
+    if (!this.userInfo) return;
+    this.deleteLoading = true;
+    this.deleteError = null;
+    this.userService.deactivateUser(this.userInfo.username).subscribe({
+      next: () => {
+        this.deleteLoading = false;
+        this.showDeleteAccountModal = false;
+        window.location.href = '/login';
+      },
+      error: () => {
+        this.deleteError = 'Erro ao excluir conta. Tente novamente.';
+        this.deleteLoading = false;
+      },
+    });
   }
 }
