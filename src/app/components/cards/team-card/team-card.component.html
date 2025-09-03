@@ -10,10 +10,10 @@
   <ng-template pTemplate="content">
     <div class="flex flex-col gap-2 overflow-y-auto">
       <div *ngIf="mode === 'display'" class="flex flex-col gap-2">
-  <div *ngFor="let member of teamWithPhotoUrl" class="flex items-center gap-2 sm:gap-3 p-2 sm:p-3 bg-surface-100 dark:bg-surface-50 rounded-lg">
+        <div *ngFor="let member of team" class="flex items-center gap-2 sm:gap-3 p-2 sm:p-3 bg-surface-100 dark:bg-surface-50 rounded-lg">
           <div class="flex-shrink-0">
             <p-avatar
-              [image]="member.photoUrl"
+              [image]="member.photo || this.defaultAvatar"
               size="large"
               shape="circle"
               (onImageError)="onImageError($event)"
@@ -61,10 +61,10 @@
 
       <!-- Edit Mode -->
       <div *ngIf="mode === 'edit'" class="flex flex-col gap-2">
-        <div *ngFor="let member of teamWithPhotoUrl; let i = index" class="flex items-start gap-2 sm:gap-3 p-2 sm:p-3 border border-surface-200 rounded-lg bg-surface-card dark:bg-surface-50">
+        <div *ngFor="let member of team; let i = index" class="flex items-start gap-2 sm:gap-3 p-2 sm:p-3 border border-surface-200 rounded-lg bg-surface-card dark:bg-surface-50">
           <div class="flex-shrink-0">
             <p-avatar
-              [image]="member.photoUrl"
+              [image]="member.photo || this.defaultAvatar"
               size="large"
               shape="circle"
               (onImageError)="onImageError($event)"
@@ -82,6 +82,16 @@
                   severity="primary"
                   class="text-xs flex-shrink-0">
                 </p-tag>
+                <button
+                  pButton
+                  type="button"
+                  class="p-button-sm p-button p-button-info ml-2"
+                  (click)="viewProfile(member.username)"
+                  [pTooltip]="'Ver perfil'"
+                  tooltipPosition="top"
+                  tooltipStyleClass="text-xs">
+                  <i class="pi pi-eye"></i>
+                </button>
               </div>
               <p *ngIf="member.username" class="text-xs text-surface-900 truncate mb-2"> {{ `@${member.username}` }}</p>
               <p class="text-sm text-surface-600 dark:text-surface-800 truncate">{{ member.role }}</p>

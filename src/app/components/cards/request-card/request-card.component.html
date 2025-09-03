@@ -36,6 +36,16 @@
               </div>
               <div class="flex-shrink-0 flex flex-col sm:flex-row gap-1">
                 <button
+                  pButton
+                  type="button"
+                  class="p-button-sm p-button p-button-info"
+                  (click)="viewProfile(request.username)"
+                  [pTooltip]="'Ver perfil'"
+                  tooltipPosition="top"
+                  tooltipStyleClass="text-xs">
+                  <i class="pi pi-eye"></i>
+                </button>
+                <button
                   type="button"
                   class="p-button p-button-success p-button-sm text-xs"
                   (click)="onAcceptRequest(request)"

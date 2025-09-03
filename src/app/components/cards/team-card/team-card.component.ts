@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CardModule } from 'primeng/card';
 import { TagModule } from 'primeng/tag';
@@ -22,23 +22,13 @@ export interface TeamMember {
   templateUrl: './team-card.component.html',
   styleUrl: './team-card.component.css',
 })
-export class TeamCardComponent implements OnChanges {
+export class TeamCardComponent {
   @Input() team: TeamMember[] = [];
   @Input() mode: 'display' | 'edit' = 'display';
   @Input() showHeader = true;
   @Input() maxHeight = 'auto';
 
   defaultAvatar = '/default_avatar.png';
-  teamWithPhotoUrl: Array<TeamMember & { photoUrl: string }> = [];
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['team']) {
-      this.teamWithPhotoUrl = (this.team || []).map((member) => ({
-        ...member,
-        photoUrl: member.photo || this.defaultAvatar,
-      }));
-    }
-  }
 
   onImageError(event: any): void {
     event.target.src = this.defaultAvatar;

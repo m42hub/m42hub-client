@@ -92,4 +92,8 @@ export class RequestCardComponent implements OnChanges {
   formatDate(date: Date): string {
     return new Date(date).toLocaleDateString('pt-BR');
   }
+
+  viewProfile(username: string): void {
+    window.open(`/user/${username}`, '_blank');
+  }
 }
