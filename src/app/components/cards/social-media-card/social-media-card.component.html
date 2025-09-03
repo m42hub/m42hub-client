@@ -6,15 +6,15 @@
 		</li>
 		<li *ngIf="linkedin">
 			<i class="pi pi-linkedin mr-1"></i>
-			<a [href]="linkedin" target="_blank" class="text-blue-200 underline pl-1">{{ linkedin }}</a>
+			<a [href]="linkedinUrl" target="_blank" class="text-blue-200 underline pl-1">{{ linkedin }}</a>
 		</li>
 		<li *ngIf="github">
 			<i class="pi pi-github mr-1"></i>
-			<a [href]="github" target="_blank" class="text-blue-200 underline pl-1">{{ github }}</a>
+			<a [href]="githubUrl" target="_blank" class="text-blue-200 underline pl-1">{{ github }}</a>
 		</li>
 		<li *ngIf="personalWebsite">
 			<i class="pi pi-globe mr-1"></i>
-			<a [href]="personalWebsite" target="_blank" class="text-blue-200 underline pl-1">{{ personalWebsite }}</a>
+			<a [href]="personalWebsiteUrl" target="_blank" class="text-blue-200 underline pl-1">{{ personalWebsite }}</a>
 		</li>
 	</ul>
 </div>

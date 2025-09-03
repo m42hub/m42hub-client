@@ -177,3 +177,8 @@ html.dark .prose th {
   display: flex !important;
   flex-wrap: wrap !important;
 }
+
+input::placeholder,
+textarea::placeholder {
+  opacity: 0.6;
+}

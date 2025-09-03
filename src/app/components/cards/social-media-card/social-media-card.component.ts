@@ -13,4 +13,18 @@ export class SocialMediaCardComponent {
   @Input() linkedin?: string;
   @Input() github?: string;
   @Input() personalWebsite?: string;
+
+  get linkedinUrl(): string | null {
+    return this.linkedin ? `https://www.linkedin.com/in/${this.linkedin}` : null;
+  }
+  get githubUrl(): string | null {
+    return this.github ? `https://github.com/${this.github}` : null;
+  }
+  get personalWebsiteUrl(): string | null {
+    return this.personalWebsite
+      ? this.personalWebsite.startsWith('http')
+        ? this.personalWebsite
+        : `https://${this.personalWebsite}`
+      : null;
+  }
 }
