@@ -24,6 +24,15 @@
       title="Projetos"
       styleClass="p-button-text px-2 text-base md:text-lg"
     ></p-button>
+
+    <p-button
+      *ngIf="user$ | async as user"
+      label="Meus Projetos"
+      (onClick)="handleClick(`/projects/user/${user.username}`)"
+      aria-label="Meus Projetos"
+      title="Meus Projetos"
+      styleClass="p-button-text px-2 text-base md:text-lg"
+    ></p-button>
   </div>
 
   <div class="flex items-center gap-2 mr-2">

@@ -2,7 +2,7 @@ import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import type { Observable } from 'rxjs';
 import { BaseApiService } from '../base/base-api.service';
 import { HttpClient } from '@angular/common/http';
-import type { ApplyProjectMember, ProjectMember } from '../../interfaces/project/member.interface';
+import type { ApplyProjectMember, ProjectMember, ProjectMemberProject } from '../../interfaces/project/member.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -20,6 +20,10 @@ export class ProjectMemberService extends BaseApiService<ProjectMember> {
 
   getById(id: number): Observable<ProjectMember> {
     return this.get<ProjectMember>(`${this.endpoint}/${id}`);
+  }
+
+  getByUsername(username: string): Observable<ProjectMemberProject[]> {
+    return this.get<ProjectMemberProject[]>(`${this.endpoint}/user/${username}`);
   }
 
   apply(member: ApplyProjectMember): Observable<ProjectMember> {

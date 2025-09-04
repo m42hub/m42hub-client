@@ -1,0 +1,79 @@
+<div class="container mx-auto py-2 sm:py-4 min-h-screen p-2 bg-">
+  <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-4 sm:mb-0">
+    <div>
+      <h1 class="text-2xl sm:text-3xl font-bold text-surface-900">Meus Projetos</h1>
+      <p class="text-sm sm:text-base text-surface-600 mb-6">Projetos em que você participa</p>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="text-center py-16">
+    <i class="pi pi-spin pi-spinner text-4xl text-surface-400"></i>
+    <p class="mt-4 text-surface-500">Carregando projetos...</p>
+  </div>
+
+  <div *ngIf="error && !loading" class="text-center py-16">
+    <i class="pi pi-exclamation-triangle text-4xl text-red-400"></i>
+    <p class="mt-4 text-red-500">{{ error }}</p>
+  </div>
+
+  <div *ngIf="!loading && !error">
+    <!-- Projetos em Andamento -->
+    <div *ngIf="ongoingProjects.length > 0" class="mb-6">
+      <div class="bg-indigo-200 rounded-2xl shadow p-2">
+        <h2 class="text-black text-2xl font-semibold text-center my-2">Projetos em Andamento</h2>
+        <p-carousel
+          [value]="ongoingProjects"
+          [numVisible]="numVisible"
+          [numScroll]="1"
+          [showIndicators]="true"
+          [showNavigators]="true"
+          styleClass="w-full"
+        >
+          <ng-template pTemplate="item" let-member let-i="index">
+            <app-project-summary-card
+              [project]="member.projectListItem"
+              [ngClass]="{ 'ml-2 sm:ml-4': i !== 0 }"
+            ></app-project-summary-card>
+          </ng-template>
+        </p-carousel>
+      </div>
+    </div>
+
+    <!-- Projetos Concluídos -->
+    <div *ngIf="finishedProjects.length > 0" class="mb-6">
+      <div class="bg-indigo-50 rounded-2xl shadow p-2">
+        <h2 class="text-black text-lg font-semibold my-2">Projetos Concluídos</h2>
+        <p-carousel
+          [value]="finishedProjects"
+          [numVisible]="numVisible"
+          [numScroll]="1"
+          [showIndicators]="true"
+          [showNavigators]="true"
+          styleClass="w-full"
+        >
+          <ng-template pTemplate="item" let-member let-i="index">
+            <app-project-summary-card
+              [project]="member.projectListItem"
+              [ngClass]="{ 'ml-2 sm:ml-4': i !== 0 }"
+            ></app-project-summary-card>
+          </ng-template>
+        </p-carousel>
+      </div>
+    </div>
+
+    <div
+      *ngIf="ongoingProjects.length === 0 && finishedProjects.length === 0"
+      class="text-center py-16"
+    >
+      <div class="max-w-md mx-auto">
+        <i class="pi pi-folder-open text-6xl text-surface-300 mb-6"></i>
+        <h3 class="text-xl font-semibold text-surface-600 mb-3">
+          Você ainda não participa de nenhum projeto
+        </h3>
+        <p class="text-surface-500 mb-6">
+          Procure projetos na página principal e candidate-se para participar!
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
