@@ -2,7 +2,11 @@ import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import type { Observable } from 'rxjs';
 import { BaseApiService } from '../base/base-api.service';
 import { HttpClient } from '@angular/common/http';
-import type { ApplyProjectMember, ProjectMember, ProjectMemberProject } from '../../interfaces/project/member.interface';
+import type {
+  ApplyProjectMember,
+  ProjectMember,
+  ProjectMemberProject,
+} from '../../interfaces/project/member.interface';
 
 @Injectable({
   providedIn: 'root',

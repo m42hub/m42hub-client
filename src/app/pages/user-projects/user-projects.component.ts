@@ -15,6 +15,7 @@ import type { ProjectMemberProject } from '../../interfaces/project/member.inter
 })
 export class UserProjectsComponent implements OnInit {
   userProjects: ProjectMemberProject[] = [];
+  requestedProjects: ProjectMemberProject[] = [];
   ongoingProjects: ProjectMemberProject[] = [];
   finishedProjects: ProjectMemberProject[] = [];
   loading = true;
@@ -22,11 +23,8 @@ export class UserProjectsComponent implements OnInit {
 
   numVisible = 3;
   private readonly breakpoints = {
-    sm: 640,
-    md: 768,
-    lg: 1024,
-    xl: 1280,
-    xl2: 1536,
+    lg: 1110,
+    xl3: 1590,
   };
 
   constructor(
@@ -41,19 +39,24 @@ export class UserProjectsComponent implements OnInit {
       const username = this.authService.currentUser.username;
       this.memberService.getByUsername(username).subscribe({
         next: (projects) => {
-          // Filtra membros aprovados (status id 2)
           this.userProjects = projects.filter(
             (member) => member.memberStatus && member.memberStatus.id === 2,
           );
-          // Agrupa projetos em andamento (status 2 ou 3) e concluídos (status 4)
+
+          this.requestedProjects = projects.filter(
+            (member) => member.memberStatus && member.memberStatus.id === 1,
+          );
+
           this.ongoingProjects = this.userProjects.filter((member) => {
             const status = member.projectListItem?.statusName?.toLowerCase();
             return status === 'em andamento' || status === 'fase de testes';
           });
+
           this.finishedProjects = this.userProjects.filter((member) => {
             const status = member.projectListItem?.statusName?.toLowerCase();
             return status === 'concluído' || status === 'concluido';
           });
+
           this.loading = false;
         },
         error: () => {
@@ -85,7 +88,7 @@ export class UserProjectsComponent implements OnInit {
 
   private getNumVisibleForWidth(width: number): number {
     if (width < this.breakpoints.lg) return 1;
-    if (width < this.breakpoints.xl2) return 2;
+    if (width < this.breakpoints.xl3) return 2;
     return 3;
   }
 
