@@ -1,15 +1,16 @@
+// ...existing code...
 import { Component, OnInit, Inject, PLATFORM_ID, HostListener } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { ProjectMemberService } from '../../services/project/member.service';
 import { AuthService } from '../../services/auth/auth.service';
-import { ProjectSummaryCardComponent } from '../../components/cards/project-summary-card/project-summary-card.component';
+import { UserProjectsCarouselComponent } from '../../components/carousels/user-projects-carousel/user-projects-carousel.component';
 import { CarouselModule } from 'primeng/carousel';
 import type { ProjectMemberProject } from '../../interfaces/project/member.interface';
 
 @Component({
   selector: 'app-user-projects',
   standalone: true,
-  imports: [CommonModule, ProjectSummaryCardComponent, CarouselModule],
+  imports: [CommonModule, CarouselModule, UserProjectsCarouselComponent],
   templateUrl: './user-projects.component.html',
   styleUrl: './user-projects.component.css',
 })
@@ -26,6 +27,7 @@ export class UserProjectsComponent implements OnInit {
     lg: 1110,
     xl3: 1590,
   };
+  isDarkMode = false;
 
   constructor(
     private memberService: ProjectMemberService,
@@ -34,7 +36,30 @@ export class UserProjectsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    if (this.isBrowser()) {
+      const savedTheme = localStorage.getItem('theme');
+      const html = document.documentElement;
+      if (savedTheme) {
+        if (savedTheme === 'dark') {
+          html.classList.add('dark');
+          this.isDarkMode = true;
+        } else {
+          html.classList.remove('dark');
+          this.isDarkMode = false;
+        }
+      } else {
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (prefersDark) {
+          html.classList.add('dark');
+          localStorage.setItem('theme', 'dark');
+          this.isDarkMode = true;
+        } else {
+          this.isDarkMode = false;
+        }
+      }
+    }
     this.handleResponsiveNumVisible();
+
     if (this.isBrowser() && this.authService.currentUser) {
       const username = this.authService.currentUser.username;
       this.memberService.getByUsername(username).subscribe({

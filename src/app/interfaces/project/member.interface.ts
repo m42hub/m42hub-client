@@ -1,5 +1,6 @@
 import type { AuthenticatedUser } from '../user/user.interface';
 import { ProjectListItem } from './project.interface';
+import { ProjectRole } from './role.interface';
 
 export interface ProjectMember {
   id: number;
@@ -16,7 +17,7 @@ export interface ProjectMemberProject {
   id: number;
   isManager: boolean;
   projectListItem: ProjectListItem;
-  roleId: number;
+  role: ProjectRole;
   user: AuthenticatedUser;
   memberStatus: ProjectMemberStatus;
   applicationMessage: string | null;

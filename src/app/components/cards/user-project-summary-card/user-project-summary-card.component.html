@@ -1,0 +1,106 @@
+<p-card styleClass="w-full max-w-[440px] rounded-xl overflow-hidden mx-auto shadow-xl bg-primary-200">
+  <ng-template pTemplate="header">
+    <div
+      class="w-full h-32 rounded-t-xl overflow-hidden relative bg-gradient-to-r from-primary-400 to-primary-600"
+    >
+      <img
+        *ngIf="showImage"
+        [src]="imageUrl"
+        alt="Banner do Projeto"
+        class="absolute inset-0 w-full h-full object-cover"
+        (error)="onImageError()"
+      />
+    </div>
+  </ng-template>
+  <ng-template pTemplate="content">
+    <div class="max-w-md mx-auto">
+      <!-- Nome do projeto -->
+      <h3
+        class="text-lg font-bold text-800 mb-4 overflow-hidden text-ellipsis whitespace-nowrap min-h-[2.5rem]"
+      >
+        {{ project.name }}
+      </h3>
+
+      <!-- Resumo do projeto -->
+      <p class="text-surface-600 text-sm leading-relaxed mb-4 break-words min-h-18">
+        {{ project.summary }}
+      </p>
+
+      <!-- Função do usuário -->
+      <div class="mb-4">
+        <span class="text-sm font-bold text-surface-500 uppercase tracking-wide">Função:</span>
+        <span class="text-sm text-surface-600 ml-2">{{ roleName || 'Não informada' }}</span>
+      </div>
+
+      <!-- Data de solicitação (se houver) -->
+      <div class="mb-4" *ngIf="requestDate">
+        <span class="text-sm font-bold text-surface-500 uppercase tracking-wide">
+          Data de solicitação:
+        </span>
+        <span class="text-sm text-surface-600 ml-2">{{ requestDateFormatado }}</span>
+      </div>
+
+      <!-- Datas -->
+      <div class="mb-4 flex flex-row gap-x-2 items-center text-xs text-surface-500 min-h-6">
+        <div class="flex flex-row">
+          <span class="font-bold flex items-center">
+            <i class="pi pi-calendar mr-1"></i>
+            Criação:
+          </span>
+          <span class="ml-1 text-surface-600">{{ creationDateFormatado }}</span>
+        </div>
+        <div class="flex flex-row">
+          <span class="font-bold flex items-center">
+            <i class="pi pi-calendar mr-1"></i>
+            Início:
+          </span>
+          <span class="ml-1 text-surface-600">{{ startDateFormatado }}</span>
+        </div>
+        <div class="flex flex-row">
+          <span class="font-bold flex items-center">
+            <i class="pi pi-calendar mr-1"></i>
+            Prevista:
+          </span>
+          <span class="ml-1 text-surface-600">{{ endDateFormatado }}</span>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between mt-2 gap-4 min-h-12">
+        <div class="flex flex-wrap gap-1">
+          <p-tag
+            *ngFor="let tag of generalTags"
+            [value]="tag.label"
+            class="text-xs bg-surface-200 cursor-help"
+            size="small"
+            [pTooltip]="tag.tooltip"
+            tooltipPosition="top"
+            tooltipStyleClass="text-xs"
+          ></p-tag>
+        </div>
+        <div class="flex gap-2">
+          <button
+            *ngIf="isUserManager"
+            pButton
+            type="button"
+            label="Editar"
+            icon="pi pi-pencil"
+            iconPos="left"
+            size="small"
+            class="p-button-outlined p-button-primary p-2 h-12 min-w-24"
+            (click)="onEditProject()"
+          ></button>
+          <button
+            pButton
+            type="button"
+            label="Ver detalhes"
+            icon="pi pi-eye"
+            iconPos="left"
+            size="small"
+            class="p-button-md p-2 h-12 min-w-32 ml-2"
+            (click)="onViewDetails()"
+          ></button>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</p-card>

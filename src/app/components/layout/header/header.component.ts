@@ -97,6 +97,7 @@ export class HeaderComponent implements OnInit {
         html.classList.remove('dark');
         localStorage.setItem('theme', 'light');
       }
+      window.location.reload();
     }
   }
 

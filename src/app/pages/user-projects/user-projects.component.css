@@ -1,0 +1,56 @@
+/* Light mode variantes para post-its */
+.postit-yellow-light {
+	background: #fffbe6;
+	border-color: #ffe066;
+}
+.postit-yellow-light::after {
+	background: linear-gradient(135deg, #ffe066 60%, #fffbe6 100%);
+}
+.postit-blue-light {
+	background: #e6f0ff;
+	border-color: #66aaff;
+}
+.postit-blue-light::after {
+	background: linear-gradient(135deg, #66aaff 60%, #e6f0ff 100%);
+}
+.postit-green-light {
+	background: #e6fff3;
+	border-color: #66ffb2;
+}
+.postit-green-light::after {
+	background: linear-gradient(135deg, #66ffb2 60%, #e6fff3 100%);
+}
+/* Variantes de cor para post-its (apenas dark mode) */
+.postit-yellow {
+	background: #2b2b1e;
+	border-color: #bfae4a;
+}
+.postit-yellow::after {
+	background: linear-gradient(135deg, #bfae4a 60%, #f3f39f 100%);
+}
+.postit-blue {
+	background: #1e2633;
+	border-color: #4a8abf;
+}
+.postit-blue::after {
+	background: linear-gradient(135deg, #4a8abf 60%, #1e2633 100%);
+}
+.postit-green {
+	background: #1e3327;
+	border-color: #4abf7e;
+}
+.postit-green::after {
+	background: linear-gradient(135deg, #4abf7e 60%, #1e3327 100%);
+}
+
+
+.postit-card {
+	position: relative;
+	border-width: 1.5px;
+	border-style: solid;
+	border-radius: 18px;
+	box-shadow: 4px 8px 18px 0 rgba(0,0,0,0.25);
+	padding: 1rem;
+	margin-bottom: 1.5rem;
+	transition: box-shadow 0.2s, background 0.2s, border-color 0.2s;
+}

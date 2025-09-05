@@ -1,0 +1,16 @@
+<p-carousel
+  [value]="projects"
+  [numVisible]="numVisible"
+  [numScroll]="1"
+  [showIndicators]="true"
+  [showNavigators]="true"
+  styleClass="w-full"
+>
+  <ng-template pTemplate="item" let-member let-i="index">
+    <app-user-project-summary-card
+      [project]="member.projectListItem"
+      [roleName]="member.role?.name || ''"
+      [requestDate]="showRequestDate ? member.createdAt : null"
+    ></app-user-project-summary-card>
+  </ng-template>
+</p-carousel>

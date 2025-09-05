@@ -1,4 +1,4 @@
-<div class="mx-4 py-2 sm:py-4 min-h-screen p-2 bg-">
+<div class="container mx-auto py-2 sm:py-4 min-h-screen p-2">
   <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-4 sm:mb-0">
     <div>
       <h1 class="text-2xl sm:text-3xl font-bold text-surface-900">Meus Projetos</h1>
@@ -11,73 +11,36 @@
     <p class="mt-4 text-surface-500">Carregando projetos...</p>
   </div>
 
-  <div *ngIf="error && !loading" class="text-center py-16">
-    <i class="pi pi-exclamation-triangle text-4xl text-red-400"></i>
-    <p class="mt-4 text-red-500">{{ error }}</p>
-  </div>
-
   <div *ngIf="!loading && !error">
-    <div *ngIf="requestedProjects.length > 0" class="mb-6">
-      <div class="bg-indigo-200 rounded-2xl shadow p-2 w-full">
-        <h2 class="text-black text-2xl font-semibold text-center my-2">Projetos Solicitados</h2>
-        <p-carousel
-          [value]="requestedProjects"
-          [numVisible]="numVisible"
-          [numScroll]="1"
-          [showIndicators]="true"
-          [showNavigators]="true"
-          styleClass="w-full"
-        >
-          <ng-template pTemplate="item" let-member let-i="index">
-            <app-project-summary-card
-              [project]="member.projectListItem"
-              [ngClass]="{ 'ml-2 sm:ml-4': i !== 0 }"
-            ></app-project-summary-card>
-          </ng-template>
-        </p-carousel>
-      </div>
+  <div *ngIf="requestedProjects.length > 0"
+    [ngClass]="isDarkMode ? 'postit-card postit-yellow w-full' : 'postit-card postit-yellow-light w-full'">
+  <h2 [ngClass]="isDarkMode ? 'text-white' : 'text-black'" class="text-2xl font-semibold text-center my-2"> Projetos Solicitados </h2>
+      <app-user-projects-carousel
+        [projects]="requestedProjects"
+        [numVisible]="numVisible"
+        [showRequestDate]="true"
+      ></app-user-projects-carousel>
     </div>
 
-    <div *ngIf="ongoingProjects.length > 0" class="mb-6">
-      <div class="bg-indigo-200 rounded-2xl shadow p-2 w-full">
-        <h2 class="text-black text-2xl font-semibold text-center my-2">Projetos em Andamento</h2>
-        <p-carousel
-          [value]="ongoingProjects"
-          [numVisible]="numVisible"
-          [numScroll]="1"
-          [showIndicators]="true"
-          [showNavigators]="true"
-          styleClass="w-full"
-        >
-          <ng-template pTemplate="item" let-member let-i="index">
-            <app-project-summary-card
-              [project]="member.projectListItem"
-              [ngClass]="{ 'ml-2 sm:ml-4': i !== 0 }"
-            ></app-project-summary-card>
-          </ng-template>
-        </p-carousel>
-      </div>
+
+  <div *ngIf="ongoingProjects.length > 0"
+    [ngClass]="isDarkMode ? 'postit-card postit-blue w-full' : 'postit-card postit-blue-light w-full'">
+  <h2 [ngClass]="isDarkMode ? 'text-white' : 'text-black'" class="text-2xl font-semibold text-center my-2"> Projetos em Andamento </h2>
+      <app-user-projects-carousel
+        [projects]="ongoingProjects"
+        [numVisible]="numVisible"
+        [showRequestDate]="false"
+      ></app-user-projects-carousel>
     </div>
 
-    <div *ngIf="finishedProjects.length > 0" class="mb-6">
-      <div class="bg-indigo-200 rounded-2xl shadow p-2 w-full">
-        <h2 class="text-black text-2xl font-semibold text-center my-2">Projetos em Andamento</h2>
-        <p-carousel
-          [value]="finishedProjects"
-          [numVisible]="numVisible"
-          [numScroll]="1"
-          [showIndicators]="true"
-          [showNavigators]="true"
-          styleClass="w-full"
-        >
-          <ng-template pTemplate="item" let-member let-i="index">
-            <app-project-summary-card
-              [project]="member.projectListItem"
-              [ngClass]="{ 'ml-2 sm:ml-4': i !== 0 }"
-            ></app-project-summary-card>
-          </ng-template>
-        </p-carousel>
-      </div>
+  <div *ngIf="finishedProjects.length > 0"
+    [ngClass]="isDarkMode ? 'postit-card postit-green w-full' : 'postit-card postit-green-light w-full'">
+  <h2 [ngClass]="isDarkMode ? 'text-white' : 'text-black'" class="text-2xl font-semibold text-center my-2"> Projetos Concluídos </h2>
+      <app-user-projects-carousel
+        [projects]="finishedProjects"
+        [numVisible]="numVisible"
+        [showRequestDate]="false"
+      ></app-user-projects-carousel>
     </div>
 
     <div
