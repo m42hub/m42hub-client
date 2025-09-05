@@ -10,6 +10,7 @@ import type { User } from '../../../interfaces/user/user.interface';
 import { TagModule } from 'primeng/tag';
 import { AvatarModule } from 'primeng/avatar';
 import { MenuModule } from 'primeng/menu';
+import { MenuItem } from 'primeng/api';
 
 @Component({
   selector: 'app-header',
@@ -22,18 +23,67 @@ export class HeaderComponent implements OnInit {
   user$: Observable<User | null>;
   showLogoutError = false;
   showProfileMenu = false;
-  profileMenuItems = [
-    {
-      label: 'Alterar Perfil',
-      icon: 'pi pi-user-edit',
-      command: () => this.onEditProfile(),
-    },
-    {
-      label: 'Logout',
-      icon: 'pi pi-sign-out',
-      command: () => this.onLogout(),
-    },
-  ];
+  profileMenuItems: MenuItem[] = [];
+
+  ngOnInit() {
+    if (isPlatformBrowser(this.platformId)) {
+      const savedTheme = localStorage.getItem('theme');
+      const html = document.documentElement;
+      if (savedTheme) {
+        if (savedTheme === 'dark') {
+          html.classList.add('dark');
+          this.darkMode = true;
+        } else {
+          html.classList.remove('dark');
+          this.darkMode = false;
+        }
+      } else {
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (prefersDark) {
+          html.classList.add('dark');
+          localStorage.setItem('theme', 'dark');
+          this.darkMode = true;
+        } else {
+          this.darkMode = false;
+        }
+      }
+    }
+
+    this.user$.subscribe((user) => {
+      if (user) {
+        this.profileMenuItems = [
+          {
+            label: 'Perfil',
+            icon: 'pi pi-user',
+            command: () => this.handleClick(`/user/${user.username}`),
+          },
+          {
+            label: 'Meus Projetos',
+            icon: 'pi pi-folder',
+            command: () => this.handleClick(`/projects/user/${user.username}`),
+          },
+          {
+            label: 'Logout',
+            icon: 'pi pi-sign-out',
+            command: () => this.onLogout(),
+          },
+        ];
+      } else {
+        this.profileMenuItems = [
+          {
+            label: 'Perfil',
+            icon: 'pi pi-user',
+            command: () => this.handleClick(`/user-profile`),
+          },
+          {
+            label: 'Logout',
+            icon: 'pi pi-sign-out',
+            command: () => this.onLogout(),
+          },
+        ];
+      }
+    });
+  }
 
   constructor(
     private router: Router,
@@ -59,31 +109,6 @@ export class HeaderComponent implements OnInit {
 
   handleClick(path: string) {
     void this.router.navigate([path]);
-  }
-
-  ngOnInit() {
-    if (isPlatformBrowser(this.platformId)) {
-      const savedTheme = localStorage.getItem('theme');
-      const html = document.documentElement;
-      if (savedTheme) {
-        if (savedTheme === 'dark') {
-          html.classList.add('dark');
-          this.darkMode = true;
-        } else {
-          html.classList.remove('dark');
-          this.darkMode = false;
-        }
-      } else {
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        if (prefersDark) {
-          html.classList.add('dark');
-          localStorage.setItem('theme', 'dark');
-          this.darkMode = true;
-        } else {
-          this.darkMode = false;
-        }
-      }
-    }
   }
 
   toggleDarkMode() {

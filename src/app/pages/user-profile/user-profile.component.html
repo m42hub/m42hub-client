@@ -1,4 +1,4 @@
-<div class="flex flex-col min-h-screen w-screen h-screen bg-gradient-to-br from-primary-500 to-primary-900 p-0 m-0 overflow-auto">
+<div class="flex flex-col mx-auto bg-gradient-to-br from-primary-500 to-primary-900">
   <div *ngIf="loading" class="flex justify-center items-center flex-1 min-h-[200px]">
     <p-progressSpinner styleClass="w-8 h-8" strokeWidth="4"></p-progressSpinner>
   </div>
@@ -6,34 +6,34 @@
     <p class="text-red-600 text-center">{{ error }}</p>
   </div>
 
-  <div
-    *ngIf="userInfo && !loading"
-    class="flex flex-1 flex-col w-full h-full text-white m-0 p-0"
-  >
+  <div *ngIf="userInfo && !loading" class="flex flex-1 flex-col w-full h-full text-white m-0 p-0">
     <app-user-profile-header
       [userInfo]="userInfo"
       [loading]="loading"
       [isOwnProfile]="isOwnProfile"
     ></app-user-profile-header>
 
-    <div class="flex flex-col gap-4 w-full h-full p-6">
-      <div *ngIf="isOwnProfile && !editMode && !showChangePasswordForm" class="flex justify-end mb-2">
-        <button
-          pButton
-          type="button"
-          icon="pi pi-pencil"
-          label="Editar perfil"
-          class="p-button-sm p-button p-button-info"
-          (click)="enableEdit()"
-        ></button>
-        <button
-          pButton
-          type="button"
-          icon="pi pi-key"
-          label="Alterar senha"
-          class="p-button-sm p-button p-button-help ml-2"
-          (click)="openChangePasswordForm()"
-        ></button>
+  <div class="container mx-auto py-2 sm:py-4 min-h-screen p-2">
+        <div
+          *ngIf="isOwnProfile && !editMode && !showChangePasswordForm"
+          class="flex justify-end my-4"
+        >
+          <button
+            pButton
+            type="button"
+            icon="pi pi-pencil"
+            label="Editar perfil"
+            class="p-button-sm p-button p-button-info"
+            (click)="enableEdit()"
+          ></button>
+          <button
+            pButton
+            type="button"
+            icon="pi pi-key"
+            label="Alterar senha"
+            class="p-button-sm p-button p-button-help ml-2"
+            (click)="openChangePasswordForm()"
+          ></button>
           <button
             pButton
             type="button"
@@ -42,88 +42,106 @@
             class="p-button-sm p-button p-button-danger ml-2"
             (click)="openDeleteAccountModal()"
           ></button>
-      </div>
+        </div>
 
-      <app-user-profile-form
-        *ngIf="isOwnProfile && editMode && !showChangePasswordForm"
-        [userInfo]="userInfo"
-        [saveLoading]="saveLoading"
-        [saveError]="saveError"
-        (save)="saveEdit($event)"
-        (cancelEdit)="cancelEdit()"
-      ></app-user-profile-form>
+        <app-user-profile-form
+          *ngIf="isOwnProfile && editMode && !showChangePasswordForm"
+          [userInfo]="userInfo"
+          [saveLoading]="saveLoading"
+          [saveError]="saveError"
+          (save)="saveEdit($event)"
+          (cancelEdit)="cancelEdit()"
+        ></app-user-profile-form>
 
-      <app-user-change-password-form
-        *ngIf="isOwnProfile && showChangePasswordForm && !editMode"
-        [userInfo]="userInfo"
-        (closeForm)="closeChangePasswordForm()"
-      ></app-user-change-password-form>
+        <app-user-change-password-form
+          *ngIf="isOwnProfile && showChangePasswordForm && !editMode"
+          [userInfo]="userInfo"
+          (closeForm)="closeChangePasswordForm()"
+        ></app-user-change-password-form>
 
-      <p-dialog
-        header="Confirmar Exclusão"
-        [(visible)]="showDeleteAccountModal"
-        [modal]="true"
-        [closable]="false"
-        [dismissableMask]="true"
-        [style]="{width: '450px'}"
-      >
-        <div class="flex flex-col items-center justify-center gap-4 p-4">
-          <span class="text-lg font-semibold text-center">Tem certeza que deseja excluir sua conta? Esta ação não pode ser desfeita.</span>
-          <div class="flex gap-2 justify-center mt-4">
-            <button pButton type="button" label="Cancelar" class="p-button-sm" (click)="closeDeleteAccountModal()"></button>
-            <button pButton type="button" label="Excluir" class="p-button-sm p-button-danger" (click)="deleteAccount()" [disabled]="deleteLoading"></button>
+        <p-dialog
+          header="Confirmar Exclusão"
+          [(visible)]="showDeleteAccountModal"
+          [modal]="true"
+          [closable]="false"
+          [dismissableMask]="true"
+          [style]="{ width: '450px' }"
+        >
+          <div class="flex flex-col items-center justify-center gap-4 p-4">
+            <span class="text-lg font-semibold text-center">
+              Tem certeza que deseja excluir sua conta? Esta ação não pode ser desfeita.
+            </span>
+            <div class="flex gap-2 justify-center mt-4">
+              <button
+                pButton
+                type="button"
+                label="Cancelar"
+                class="p-button-sm"
+                (click)="closeDeleteAccountModal()"
+              ></button>
+              <button
+                pButton
+                type="button"
+                label="Excluir"
+                class="p-button-sm p-button-danger"
+                (click)="deleteAccount()"
+                [disabled]="deleteLoading"
+              ></button>
+            </div>
+            <p *ngIf="deleteError" class="text-red-500 text-center">{{ deleteError }}</p>
           </div>
-          <p *ngIf="deleteError" class="text-red-500 text-center">{{ deleteError }}</p>
+        </p-dialog>
+
+        <p-card
+          *ngIf="userInfo.interestRoles?.length && !editMode && !showChangePasswordForm"
+          styleClass="w-full max-w-6xl mx-auto text-white rounded-lg shadow-lg bg-gray-900 mb-4"
+        >
+          <h3 class="font-bold mb-2">Áreas de Interesse:</h3>
+          <div class="flex flex-row flex-wrap gap-2">
+            <p-tag
+              *ngFor="let role of userInfo.interestRoles"
+              [value]="role.name"
+              severity="success"
+            ></p-tag>
+          </div>
+        </p-card>
+        <div
+          *ngIf="ongoingProjects.length > 0"
+          [ngClass]="
+            isDarkMode ? 'postit-card postit-blue w-full' : 'postit-card postit-blue-light w-full'
+          "
+        >
+          <h2
+            [ngClass]="isDarkMode ? 'text-white' : 'text-black'"
+            class="text-2xl font-semibold text-center my-2"
+          >
+            Projetos em Andamento
+          </h2>
+          <app-user-projects-carousel
+            [projects]="ongoingProjects"
+            [numVisible]="numVisible"
+            [showRequestDate]="false"
+          ></app-user-projects-carousel>
         </div>
-      </p-dialog>
 
-      <p-card
-        *ngIf="userInfo.interestRoles?.length && (!editMode && !showChangePasswordForm)"
-        styleClass="w-full max-w-6xl mx-auto text-white rounded-lg shadow-lg bg-gray-900 mb-4"
-      >
-        <h3 class="font-bold mb-2">Áreas de Interesse:</h3>
-        <div class="flex flex-row flex-wrap gap-2">
-          <p-tag
-            *ngFor="let role of userInfo.interestRoles"
-            [value]="role.name"
-            severity="success"
-          ></p-tag>
+        <div
+          *ngIf="finishedProjects.length > 0"
+          [ngClass]="
+            isDarkMode ? 'postit-card postit-green w-full' : 'postit-card postit-green-light w-full'
+          "
+        >
+          <h2
+            [ngClass]="isDarkMode ? 'text-white' : 'text-black'"
+            class="text-2xl font-semibold text-center my-2"
+          >
+            Projetos Concluídos
+          </h2>
+          <app-user-projects-carousel
+            [projects]="finishedProjects"
+            [numVisible]="numVisible"
+            [showRequestDate]="false"
+          ></app-user-projects-carousel>
         </div>
-      </p-card>
-
-    <div
-      *ngIf="ongoingProjects.length > 0"
-      [ngClass]="isDarkMode ? 'postit-card postit-blue w-full' : 'postit-card postit-blue-light w-full'"
-    >
-      <h2
-        [ngClass]="isDarkMode ? 'text-white' : 'text-black'"
-        class="text-2xl font-semibold text-center my-2"
-      >
-        Projetos em Andamento
-      </h2>
-      <app-user-projects-carousel
-        [projects]="ongoingProjects"
-        [numVisible]="numVisible"
-        [showRequestDate]="false"
-      ></app-user-projects-carousel>
-    </div>
-
-    <div
-      *ngIf="finishedProjects.length > 0"
-      [ngClass]="isDarkMode ? 'postit-card postit-green w-full' : 'postit-card postit-green-light w-full'"
-    >
-      <h2
-        [ngClass]="isDarkMode ? 'text-white' : 'text-black'"
-        class="text-2xl font-semibold text-center my-2"
-      >
-        Projetos Concluídos
-      </h2>
-      <app-user-projects-carousel
-        [projects]="finishedProjects"
-        [numVisible]="numVisible"
-        [showRequestDate]="false"
-      ></app-user-projects-carousel>
-    </div>
-    </div>
+  </div>
   </div>
 </div>

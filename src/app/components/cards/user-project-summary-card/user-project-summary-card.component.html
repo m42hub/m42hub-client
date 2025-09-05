@@ -1,4 +1,4 @@
-<p-card styleClass="w-full max-w-[440px] rounded-xl overflow-hidden mx-auto shadow-xl bg-primary-200">
+<p-card styleClass="w-full max-w-[440px] rounded-xl overflow-hidden mx-auto shadow-xl">
   <ng-template pTemplate="header">
     <div
       class="w-full h-32 rounded-t-xl overflow-hidden relative bg-gradient-to-r from-primary-400 to-primary-600"
@@ -14,25 +14,21 @@
   </ng-template>
   <ng-template pTemplate="content">
     <div class="max-w-md mx-auto">
-      <!-- Nome do projeto -->
       <h3
         class="text-lg font-bold text-800 mb-4 overflow-hidden text-ellipsis whitespace-nowrap min-h-[2.5rem]"
       >
         {{ project.name }}
       </h3>
 
-      <!-- Resumo do projeto -->
       <p class="text-surface-600 text-sm leading-relaxed mb-4 break-words min-h-18">
         {{ project.summary }}
       </p>
 
-      <!-- Função do usuário -->
       <div class="mb-4">
         <span class="text-sm font-bold text-surface-500 uppercase tracking-wide">Função:</span>
         <span class="text-sm text-surface-600 ml-2">{{ roleName || 'Não informada' }}</span>
       </div>
 
-      <!-- Data de solicitação (se houver) -->
       <div class="mb-4" *ngIf="requestDate">
         <span class="text-sm font-bold text-surface-500 uppercase tracking-wide">
           Data de solicitação:
@@ -40,7 +36,6 @@
         <span class="text-sm text-surface-600 ml-2">{{ requestDateFormatado }}</span>
       </div>
 
-      <!-- Datas -->
       <div class="mb-4 flex flex-row gap-x-2 items-center text-xs text-surface-500 min-h-6">
         <div class="flex flex-row">
           <span class="font-bold flex items-center">

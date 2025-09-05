@@ -1,11 +1,15 @@
 <div class="header-container flex items-center justify-between px-2 sm:px-4 md:px-6 lg:px-8 py-2">
   <div class="flex flex-col items-start md:flex-row md:items-center">
-    <img src="/logo.png" alt="Logo" class="h-13 w-15 pl-2 md:h-20 md:w-20 mx-1 min-w-16 md:min-w-20"/>
+    <img
+      src="/logo.png"
+      alt="Logo"
+      class="h-13 w-15 pl-2 md:h-20 md:w-20 mx-1 min-w-16 md:min-w-20"
+    />
     <p-tag
       value="Open Beta"
       severity="warning"
-      class="text-xs font-semibold shadow-lg text-white rounded-2xl min-w-18 ml-1 mt-1 md:ml-2 md:mt-0">
-    </p-tag>
+      class="text-xs font-semibold shadow-lg text-white rounded-2xl min-w-18 ml-1 mt-1 md:ml-2 md:mt-0"
+    ></p-tag>
   </div>
 
   <div class="flex items-center md:mr-6">
@@ -24,15 +28,6 @@
       title="Projetos"
       styleClass="p-button-text px-2 text-base md:text-lg"
     ></p-button>
-
-    <p-button
-      *ngIf="user$ | async as user"
-      label="Meus Projetos"
-      (onClick)="handleClick(`/projects/user/${user.username}`)"
-      aria-label="Meus Projetos"
-      title="Meus Projetos"
-      styleClass="p-button-text px-2 text-base md:text-lg"
-    ></p-button>
   </div>
 
   <div class="flex items-center gap-2 mr-2">
@@ -48,7 +43,8 @@
       </div>
     </ng-container>
 
-    <p-menu #profileMenu
+    <p-menu
+      #profileMenu
       [popup]="true"
       [model]="profileMenuItems"
       styleClass="min-w-25 bg-gradient-to-br text-white rounded-xl shadow-xl border border-indigo-500 animate-fade-in"
@@ -60,18 +56,20 @@
         icon="pi pi-sign-in"
         (onClick)="onLogin()"
         styleClass="p-button-sm"
-        >
-      </p-button>
+      ></p-button>
     </ng-template>
 
     <p-button
       [icon]="darkMode ? 'pi pi-moon' : 'pi pi-sun'"
       (onClick)="toggleDarkMode()"
-      styleClass="p-button-rounded p-button-text">
-    </p-button>
+      styleClass="p-button-rounded p-button-text"
+    ></p-button>
   </div>
 </div>
 
-<div *ngIf="showLogoutError" class="w-full bg-red-500 text-white text-center py-2 font-semibold shadow-md">
+<div
+  *ngIf="showLogoutError"
+  class="w-full bg-red-500 text-white text-center py-2 font-semibold shadow-md"
+>
   Erro ao fazer logout. Tente novamente.
 </div>
