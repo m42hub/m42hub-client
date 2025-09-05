@@ -1,5 +1,5 @@
 // ...existing code...
-import { Component, OnInit, Inject, PLATFORM_ID, HostListener } from '@angular/core';
+import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { ProjectMemberService } from '../../services/project/member.service';
 import { AuthService } from '../../services/auth/auth.service';
@@ -15,18 +15,12 @@ import type { ProjectMemberProject } from '../../interfaces/project/member.inter
   styleUrl: './user-projects.component.css',
 })
 export class UserProjectsComponent implements OnInit {
-  userProjects: ProjectMemberProject[] = [];
   requestedProjects: ProjectMemberProject[] = [];
   ongoingProjects: ProjectMemberProject[] = [];
   finishedProjects: ProjectMemberProject[] = [];
   loading = true;
   error: string | null = null;
-
   numVisible = 3;
-  private readonly breakpoints = {
-    lg: 1110,
-    xl3: 1590,
-  };
   isDarkMode = false;
 
   constructor(
@@ -36,7 +30,7 @@ export class UserProjectsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    if (this.isBrowser()) {
+    if (isPlatformBrowser(this.platformId)) {
       const savedTheme = localStorage.getItem('theme');
       const html = document.documentElement;
       if (savedTheme) {
@@ -57,31 +51,32 @@ export class UserProjectsComponent implements OnInit {
           this.isDarkMode = false;
         }
       }
-    }
-    this.handleResponsiveNumVisible();
 
-    if (this.isBrowser() && this.authService.currentUser) {
+      // Responsividade
+      this.numVisible = this.getNumVisibleForWidth(window.innerWidth);
+      window.addEventListener('resize', () => {
+        this.numVisible = this.getNumVisibleForWidth(window.innerWidth);
+      });
+    }
+
+    if (isPlatformBrowser(this.platformId) && this.authService.currentUser) {
       const username = this.authService.currentUser.username;
       this.memberService.getByUsername(username).subscribe({
         next: (projects) => {
-          this.userProjects = projects.filter(
-            (member) => member.memberStatus && member.memberStatus.id === 2,
-          );
-
           this.requestedProjects = projects.filter(
             (member) => member.memberStatus && member.memberStatus.id === 1,
           );
-
-          this.ongoingProjects = this.userProjects.filter((member) => {
+          const userProjects = projects.filter(
+            (member) => member.memberStatus && member.memberStatus.id === 2,
+          );
+          this.ongoingProjects = userProjects.filter((member) => {
             const status = member.projectListItem?.statusName?.toLowerCase();
             return status === 'em andamento' || status === 'fase de testes';
           });
-
-          this.finishedProjects = this.userProjects.filter((member) => {
+          this.finishedProjects = userProjects.filter((member) => {
             const status = member.projectListItem?.statusName?.toLowerCase();
             return status === 'concluído' || status === 'concluido';
           });
-
           this.loading = false;
         },
         error: () => {
@@ -95,29 +90,9 @@ export class UserProjectsComponent implements OnInit {
     }
   }
 
-  @HostListener('window:resize')
-  onResize(): void {
-    if (this.isBrowser()) {
-      this.handleResponsiveNumVisible();
-    }
-  }
-
-  private handleResponsiveNumVisible(): void {
-    if (!this.isBrowser()) return;
-    const width = window.innerWidth;
-    const newNumVisible = this.getNumVisibleForWidth(width);
-    if (newNumVisible !== this.numVisible) {
-      this.numVisible = newNumVisible;
-    }
-  }
-
   private getNumVisibleForWidth(width: number): number {
-    if (width < this.breakpoints.lg) return 1;
-    if (width < this.breakpoints.xl3) return 2;
+    if (width < 1110) return 1;
+    if (width < 1590) return 2;
     return 3;
-  }
-
-  isBrowser(): boolean {
-    return isPlatformBrowser(this.platformId);
   }
 }

@@ -12,9 +12,16 @@
   </div>
 
   <div *ngIf="!loading && !error">
-  <div *ngIf="requestedProjects.length > 0"
-    [ngClass]="isDarkMode ? 'postit-card postit-yellow w-full' : 'postit-card postit-yellow-light w-full'">
-  <h2 [ngClass]="isDarkMode ? 'text-white' : 'text-black'" class="text-2xl font-semibold text-center my-2"> Projetos Solicitados </h2>
+    <div
+      *ngIf="requestedProjects.length > 0"
+      [ngClass]="isDarkMode ? 'postit-card postit-yellow w-full' : 'postit-card postit-yellow-light w-full'"
+    >
+      <h2
+        [ngClass]="isDarkMode ? 'text-white' : 'text-black'"
+        class="text-2xl font-semibold text-center my-2"
+      >
+        Projetos Solicitados
+      </h2>
       <app-user-projects-carousel
         [projects]="requestedProjects"
         [numVisible]="numVisible"
@@ -22,10 +29,16 @@
       ></app-user-projects-carousel>
     </div>
 
-
-  <div *ngIf="ongoingProjects.length > 0"
-    [ngClass]="isDarkMode ? 'postit-card postit-blue w-full' : 'postit-card postit-blue-light w-full'">
-  <h2 [ngClass]="isDarkMode ? 'text-white' : 'text-black'" class="text-2xl font-semibold text-center my-2"> Projetos em Andamento </h2>
+    <div
+      *ngIf="ongoingProjects.length > 0"
+      [ngClass]="isDarkMode ? 'postit-card postit-blue w-full' : 'postit-card postit-blue-light w-full'"
+    >
+      <h2
+        [ngClass]="isDarkMode ? 'text-white' : 'text-black'"
+        class="text-2xl font-semibold text-center my-2"
+      >
+        Projetos em Andamento
+      </h2>
       <app-user-projects-carousel
         [projects]="ongoingProjects"
         [numVisible]="numVisible"
@@ -33,9 +46,16 @@
       ></app-user-projects-carousel>
     </div>
 
-  <div *ngIf="finishedProjects.length > 0"
-    [ngClass]="isDarkMode ? 'postit-card postit-green w-full' : 'postit-card postit-green-light w-full'">
-  <h2 [ngClass]="isDarkMode ? 'text-white' : 'text-black'" class="text-2xl font-semibold text-center my-2"> Projetos Concluídos </h2>
+    <div
+      *ngIf="finishedProjects.length > 0"
+      [ngClass]="isDarkMode ? 'postit-card postit-green w-full' : 'postit-card postit-green-light w-full'"
+    >
+      <h2
+        [ngClass]="isDarkMode ? 'text-white' : 'text-black'"
+        class="text-2xl font-semibold text-center my-2"
+      >
+        Projetos Concluídos
+      </h2>
       <app-user-projects-carousel
         [projects]="finishedProjects"
         [numVisible]="numVisible"

@@ -79,7 +79,7 @@
 
       <p-card
         *ngIf="userInfo.interestRoles?.length && (!editMode && !showChangePasswordForm)"
-        styleClass="w-full max-w-6xl mx-auto text-white rounded-lg shadow-lg bg-gray-900 "
+        styleClass="w-full max-w-6xl mx-auto text-white rounded-lg shadow-lg bg-gray-900 mb-4"
       >
         <h3 class="font-bold mb-2">Áreas de Interesse:</h3>
         <div class="flex flex-row flex-wrap gap-2">
@@ -90,6 +90,40 @@
           ></p-tag>
         </div>
       </p-card>
+
+    <div
+      *ngIf="ongoingProjects.length > 0"
+      [ngClass]="isDarkMode ? 'postit-card postit-blue w-full' : 'postit-card postit-blue-light w-full'"
+    >
+      <h2
+        [ngClass]="isDarkMode ? 'text-white' : 'text-black'"
+        class="text-2xl font-semibold text-center my-2"
+      >
+        Projetos em Andamento
+      </h2>
+      <app-user-projects-carousel
+        [projects]="ongoingProjects"
+        [numVisible]="numVisible"
+        [showRequestDate]="false"
+      ></app-user-projects-carousel>
+    </div>
+
+    <div
+      *ngIf="finishedProjects.length > 0"
+      [ngClass]="isDarkMode ? 'postit-card postit-green w-full' : 'postit-card postit-green-light w-full'"
+    >
+      <h2
+        [ngClass]="isDarkMode ? 'text-white' : 'text-black'"
+        class="text-2xl font-semibold text-center my-2"
+      >
+        Projetos Concluídos
+      </h2>
+      <app-user-projects-carousel
+        [projects]="finishedProjects"
+        [numVisible]="numVisible"
+        [showRequestDate]="false"
+      ></app-user-projects-carousel>
+    </div>
     </div>
   </div>
 </div>
