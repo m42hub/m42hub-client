@@ -84,8 +84,8 @@ export class ProjectDescriptionCardComponent implements OnInit, AfterViewChecked
         block.parentNode?.replaceChild(container, block);
 
         try {
-          mermaid.init(undefined, container);
-        } catch (err) {
+          void mermaid.init(undefined, container);
+        } catch {
           container.textContent = 'Erro ao renderizar diagrama Mermaid';
         }
       });
