@@ -1,4 +1,6 @@
-<p-card styleClass="w-full min-w-[320px] max-w-full sm:min-w-[360px] sm:max-w-[440px] rounded-xl overflow-hidden mx-auto shadow-xl">
+<p-card
+  styleClass="w-full min-w-[320px] max-w-full sm:min-w-[360px] sm:max-w-[440px] rounded-xl overflow-hidden mx-auto shadow-xl"
+>
   <ng-template pTemplate="header">
     <div
       class="w-full h-32 rounded-t-xl overflow-hidden relative bg-gradient-to-r from-primary-400 to-primary-600"
@@ -13,7 +15,7 @@
     </div>
   </ng-template>
   <ng-template pTemplate="content">
-  <div class="w-full min-w-[280px] max-w-full sm:min-w-[360px] sm:max-w-md mx-auto">
+    <div class="w-full min-w-[280px] max-w-full sm:min-w-[360px] sm:max-w-md mx-auto">
       <h3
         class="text-lg font-bold text-800 mb-4 overflow-hidden text-ellipsis whitespace-nowrap min-h-[2.5rem]"
       >
@@ -36,22 +38,22 @@
         <span class="text-sm text-surface-600 ml-2">{{ requestDateFormatado }}</span>
       </div>
 
-  <div class="mb-4 flex flex-col sm:flex-row gap-y-2 sm:gap-x-2 items-start sm:items-center text-xs text-surface-500 min-h-6">
-        <div class="flex flex-row">
+      <div class="mb-4 flex flex-row gap-y-2 gap-x-6 items-center text-xs text-surface-500 min-h-6">
+        <div class="flex flex-col md:flex-row">
           <span class="font-bold flex items-center">
             <i class="pi pi-calendar mr-1"></i>
             Criação:
           </span>
           <span class="ml-1 text-surface-600">{{ creationDateFormatado }}</span>
         </div>
-        <div class="flex flex-row">
+        <div class="flex flex-col md:flex-row">
           <span class="font-bold flex items-center">
             <i class="pi pi-calendar mr-1"></i>
             Início:
           </span>
-          <span class="ml-1 text-surface-600">{{ startDateFormatado }}</span>
+          <span class="md:ml-1 text-surface-600">{{ startDateFormatado }}</span>
         </div>
-        <div class="flex flex-row">
+        <div class="flex flex-col md:flex-row">
           <span class="font-bold flex items-center">
             <i class="pi pi-calendar mr-1"></i>
             Prevista:
@@ -60,7 +62,9 @@
         </div>
       </div>
 
-      <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between mt-2 gap-4 min-h-12">
+      <div
+        class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between mt-2 gap-4 min-h-12"
+      >
         <div class="flex flex-wrap gap-1 mb-2 sm:mb-0">
           <p-tag
             *ngFor="let tag of generalTags"
@@ -72,7 +76,7 @@
             tooltipStyleClass="text-xs"
           ></p-tag>
         </div>
-  <div class="flex flex-col sm:flex-row gap-2">
+        <div class="flex flex-col sm:flex-row gap-2">
           <button
             *ngIf="isUserManager"
             pButton
