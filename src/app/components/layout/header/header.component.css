@@ -1,7 +1,7 @@
 .header-container {
-  background-color: rgb(247, 247, 247);
+  background-color: #B8CAFF;
 }
 
 :host-context(.dark) .header-container {
-  background-color: rgb(3, 3, 3);
+  background-color: #030303;
 }

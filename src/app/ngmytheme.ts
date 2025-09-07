@@ -3,9 +3,9 @@ import Lara from '@primeng/themes/lara';
 
 const lightSurface = {
   0: '#E0E9FF', // Branco azulado muito claro
-  50: '#DBE5FF', // Azul muito claro
+  50: '#BFCBEE', // Azul muito claro
   100: '#D3D9EC', // Azul claro acinzentado
-  200: '#BFCBEE', // Azul claro
+  200: '#39497A', // Azul claro
   300: '#7891EC', // Azul médio
   400: '#4455EE', // Azul intenso (primário)
   500: '#4455EE', // Azul intenso (primário)
