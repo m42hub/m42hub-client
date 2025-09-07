@@ -106,7 +106,7 @@
           </div>
         </p-card>
         <div
-          *ngIf="ongoingProjects.length > 0"
+          *ngIf="ongoingProjects.length > 0  && !editMode && !showChangePasswordForm"
           [ngClass]="
             isDarkMode ? 'postit-card postit-blue w-full' : 'postit-card postit-blue-light w-full'
           "
@@ -125,7 +125,7 @@
         </div>
 
         <div
-          *ngIf="finishedProjects.length > 0"
+          *ngIf="finishedProjects.length > 0  && !editMode && !showChangePasswordForm"
           [ngClass]="
             isDarkMode ? 'postit-card postit-green w-full' : 'postit-card postit-green-light w-full'
           "
