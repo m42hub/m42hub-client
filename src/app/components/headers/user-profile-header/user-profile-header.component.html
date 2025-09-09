@@ -1,12 +1,14 @@
 <div *ngIf="userInfo && !loading" class="relative w-full shadow-2xl">
-  <div
-    class="banner-bg absolute inset-0 w-full h-full rounded-t-lg z-0"
-    [class.banner-has-img]="bannerLoaded && bannerUrl"
-    [class.banner-has-gradient]="!bannerLoaded || !bannerUrl"
-    [ngStyle]="bannerLoaded && bannerUrl ? {'background-image': 'url(' + bannerUrl + ')'} : {}"
-  >
-    <div *ngIf="bannerLoaded && bannerUrl" class="banner-overlay absolute inset-0 w-full h-full"></div>
-    <div class="banner-fade-bottom"></div>
+    <div
+      class="absolute inset-0 w-full h-full rounded-t-lg z-0"
+      [ngStyle]="{
+        'background-image': userInfo.profileBannerUrl ? 'url(' + userInfo.profileBannerUrl + ')' : '',
+        'background-size': 'cover',
+        'background-position': 'center'
+      }"
+    >
+    <div *ngIf="userInfo.profileBannerUrl" class="absolute inset-0 w-full h-full bg-black/30"></div>
+    <div *ngIf="!userInfo.profileBannerUrl" class="absolute inset-0 w-full h-full bg-gradient-to-br from-indigo-600 to-gray-950"></div>
   </div>
   <div
     class="relative z-10 p-6 flex flex-col lg:flex-row items-center lg:items-start gap-4 lg:gap-8 w-full banner-content"
