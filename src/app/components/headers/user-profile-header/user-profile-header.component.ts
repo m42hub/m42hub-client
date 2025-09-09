@@ -1,4 +1,13 @@
-import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  inject,
+  OnInit,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
 import type { UserInfo } from '../../../interfaces/user/user.interface';
 import { CommonModule } from '@angular/common';
 import { AvatarModule } from 'primeng/avatar';
@@ -14,12 +23,14 @@ import { UserService } from '../../../services/user/user.service';
   templateUrl: './user-profile-header.component.html',
   styleUrls: ['./user-profile-header.component.css'],
 })
-export class UserProfileHeaderComponent {
+export class UserProfileHeaderComponent implements OnInit, OnChanges {
   @Input() userInfo: UserInfo | null = null;
   @Input() loading = false;
   @Input() isOwnProfile = false;
   @Output() profilePicChanged = new EventEmitter<string>();
 
+  bannerUrl: string | null = null;
+  bannerLoaded = false;
   defaultAvatar = '/default_avatar.png';
   showChangePicModal = false;
   hoverAvatar = false;
@@ -27,6 +38,36 @@ export class UserProfileHeaderComponent {
   uploadError: string | null = null;
 
   userService = inject(UserService);
+
+  ngOnInit(): void {
+    this.setBanner();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['userInfo']) {
+      this.setBanner();
+    }
+  }
+
+  setBanner(): void {
+    this.bannerLoaded = false;
+    if (this.userInfo && this.userInfo.profileBannerUrl) {
+      const img = new window.Image();
+      const bannerUrl = this.userInfo.profileBannerUrl;
+      img.onload = () => {
+        this.bannerUrl = bannerUrl;
+        this.bannerLoaded = true;
+      };
+      img.onerror = () => {
+        this.bannerUrl = null;
+        this.bannerLoaded = false;
+      };
+      img.src = bannerUrl;
+    } else {
+      this.bannerUrl = null;
+      this.bannerLoaded = false;
+    }
+  }
 
   openChangePicModal() {
     this.showChangePicModal = true;

@@ -13,7 +13,6 @@ export interface User {
   email: string;
   firstName: string;
   lastName: string;
-  profilePicUrl: string;
   isActive: boolean;
   systemRole: SystemRole;
   lastLogin: string | null;
@@ -27,6 +26,7 @@ export interface AuthenticatedUser {
   firstName: string;
   lastName: string;
   profilePicUrl: string;
+  profileBannerUrl: string;
   roleId: number;
   roleName: string;
 }
@@ -36,6 +36,7 @@ export interface UserInfo {
   firstName: string;
   lastName: string;
   profilePicUrl: string;
+  profileBannerUrl: string;
   roleId: number;
   roleName: string;
   biography: string;
