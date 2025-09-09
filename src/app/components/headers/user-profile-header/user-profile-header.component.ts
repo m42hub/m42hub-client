@@ -4,13 +4,21 @@ import { CommonModule } from '@angular/common';
 import { AvatarModule } from 'primeng/avatar';
 import { CardModule } from 'primeng/card';
 import { DialogModule } from 'primeng/dialog';
+import { ButtonModule } from 'primeng/button';
 import { SocialMediaCardComponent } from '../../cards/social-media-card/social-media-card.component';
 import { UserService } from '../../../services/user/user.service';
 
 @Component({
   selector: 'app-user-profile-header',
   standalone: true,
-  imports: [CommonModule, AvatarModule, CardModule, DialogModule, SocialMediaCardComponent],
+  imports: [
+    CommonModule,
+    AvatarModule,
+    CardModule,
+    DialogModule,
+    ButtonModule,
+    SocialMediaCardComponent,
+  ],
   templateUrl: './user-profile-header.component.html',
   styleUrls: ['./user-profile-header.component.css'],
 })
@@ -22,13 +30,15 @@ export class UserProfileHeaderComponent {
 
   defaultAvatar = '/default_avatar.png';
   showChangePicModal = false;
+  changePicType: 'profile' | 'banner' = 'profile';
   hoverAvatar = false;
   uploading = false;
   uploadError: string | null = null;
 
   userService = inject(UserService);
 
-  openChangePicModal() {
+  openChangePicModal(type: 'profile' | 'banner') {
+    this.changePicType = type;
     this.showChangePicModal = true;
     this.uploadError = null;
   }
@@ -48,15 +58,26 @@ export class UserProfileHeaderComponent {
     const file = input.files[0];
     this.uploading = true;
     this.uploadError = null;
-    this.userService.changeProfilePic((this.userInfo as UserInfo).username, file).subscribe({
+    const username = this.userInfo.username;
+    let upload$;
+    if (this.changePicType === 'profile') {
+      upload$ = this.userService.changeProfilePic(username, file);
+    } else {
+      upload$ = this.userService.changeBannerPic(username, file);
+    }
+    upload$.subscribe({
       next: (updated: unknown) => {
         const user = updated as UserInfo;
         this.uploading = false;
         this.showChangePicModal = false;
         if (this.userInfo) {
-          this.userInfo = { ...this.userInfo, profilePicUrl: user.profilePicUrl };
+          if (this.changePicType === 'profile') {
+            this.userInfo = { ...this.userInfo, profilePicUrl: user.profilePicUrl };
+            this.profilePicChanged.emit(user.profilePicUrl);
+          } else {
+            this.userInfo = { ...this.userInfo, profileBannerUrl: user.profileBannerUrl };
+          }
         }
-        this.profilePicChanged.emit(user.profilePicUrl);
       },
       error: (_err: unknown) => {
         this.uploading = false;

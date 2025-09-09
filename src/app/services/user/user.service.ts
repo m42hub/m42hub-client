@@ -36,6 +36,15 @@ export class UserService extends BaseApiService<User> {
     );
   }
 
+  changeBannerPic(username: string, file: File): Observable<UserInfo> {
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.patch<UserInfo>(
+      `${this.apiUrl}${this.endpoint}/profile-banner/${username}`,
+      formData,
+    );
+  }
+
   changePassword(
     username: string,
     passwordChangeRequest: UserPasswordChangeRequest,

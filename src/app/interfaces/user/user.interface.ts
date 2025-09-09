@@ -14,6 +14,8 @@ export interface User {
   firstName: string;
   lastName: string;
   isActive: boolean;
+  profilePicUrl: string;
+  profileBannerUrl: string;
   systemRole: SystemRole;
   lastLogin: string | null;
   createdAt: string;
