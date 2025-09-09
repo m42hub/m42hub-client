@@ -13,6 +13,7 @@ export interface TeamMember {
   photo?: string;
   username: string;
   isManager?: boolean;
+  profileBannerUrl?: string;
 }
 
 @Component({

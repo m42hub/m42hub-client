@@ -10,17 +10,29 @@
   <ng-template pTemplate="content">
     <div class="flex flex-col gap-2 overflow-y-auto">
       <div *ngIf="mode === 'display'" class="flex flex-col gap-2">
-        <div *ngFor="let member of team" class="flex items-center gap-2 sm:gap-3 p-2 sm:p-3 bg-surface-100 dark:bg-surface-50 rounded-lg">
-          <div class="flex-shrink-0">
+        <div *ngFor="let member of team" class="relative flex items-center gap-2 sm:gap-3 p-2 sm:p-3 bg-surface-100 dark:bg-surface-50 rounded-lg overflow-hidden">
+          <div
+            class="absolute inset-0 w-full h-full z-0"
+            [ngStyle]="{
+              'background-image': member.profileBannerUrl ? 'url(' + member.profileBannerUrl + ')' : '',
+              'background-size': 'cover',
+              'background-position': 'center'
+            }"
+          >
+            <div *ngIf="member.profileBannerUrl" class="absolute inset-0 w-full h-full bg-black/70"></div>
+            <div *ngIf="!member.profileBannerUrl" class="absolute inset-0 w-full h-full"></div>
+          </div>
+
+          <div class="relative z-10 flex-shrink-0">
             <p-avatar
               [image]="member.photo || this.defaultAvatar"
               size="large"
               shape="circle"
               (onImageError)="onImageError($event)"
-              class="w-12 h-12">
+              class="w-12 h-12 border-2 border-primary-200">
             </p-avatar>
           </div>
-          <div class="flex-1 min-w-0">
+          <div class="relative z-10 flex-1 min-w-0">
             <p class="text-sm sm:text-sm font-bold text-surface-950 truncate"
                [pTooltip]="member.name"
                tooltipPosition="top"
