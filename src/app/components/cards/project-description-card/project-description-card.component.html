@@ -10,8 +10,8 @@
             *ngIf="project.status"
             [value]="project.status.name"
             severity="info"
-            class="w-fit">
-          </p-tag>
+            class="w-fit"
+          ></p-tag>
           <button
             *ngIf="isUserManager"
             pButton
@@ -20,12 +20,14 @@
             icon="pi pi-pencil"
             size="small"
             class="p-button-outlined p-button-primary"
-            (click)="onEditProject()">
-          </button>
+            (click)="onEditProject()"
+          ></button>
         </div>
       </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-4 text-sm text-600 dark:text-surface-200">
+      <div
+        class="pl-2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-4 text-sm text-600 dark:text-surface-200"
+      >
         <div class="flex items-center gap-2">
           <i class="pi pi-calendar text-primary flex-shrink-0"></i>
           <span class="truncate">Criado em: {{ creationDateFormatado }}</span>
@@ -42,7 +44,7 @@
     </div>
 
     <div class="px-4 space-y-4">
-  <div *ngIf="tools.length > 0" class="space-y-2">
+      <div *ngIf="tools.length > 0" class="space-y-2">
         <h4 class="text-xs font-bold text-800 dark:text-surface-0 uppercase tracking-wide">
           Tecnologias/Ferramentas
         </h4>
@@ -50,14 +52,14 @@
           <p-tag
             *ngFor="let tag of tools"
             [value]="tag.name"
-            [style]="{'background-color': tag.hexColor, 'color': 'white'}"
+            [style]="{ 'background-color': tag.hexColor, color: 'white' }"
             tooltipPosition="top"
-            class="text-xs">
-          </p-tag>
+            class="text-xs"
+          ></p-tag>
         </div>
       </div>
 
-  <div *ngIf="topics.length > 0" class="space-y-2">
+      <div *ngIf="topics.length > 0" class="space-y-2">
         <h4 class="text-xs font-bold text-800 dark:text-surface-0 uppercase tracking-wide">
           Assuntos/Temas
         </h4>
@@ -65,14 +67,14 @@
           <p-tag
             *ngFor="let tag of topics"
             [value]="tag.name"
-            [style]="{'background-color': tag.hexColor, 'color': 'white'}"
+            [style]="{ 'background-color': tag.hexColor, color: 'white' }"
             tooltipPosition="top"
-            class="text-xs">
-          </p-tag>
+            class="text-xs"
+          ></p-tag>
         </div>
       </div>
 
-  <div *ngIf="generalTags.length > 0" class="space-y-2">
+      <div *ngIf="generalTags.length > 0" class="space-y-2">
         <h4 class="text-xs font-bold text-800 dark:text-surface-0 uppercase tracking-wide">
           Informações
         </h4>
@@ -84,19 +86,29 @@
             [pTooltip]="tag.tooltipLabel"
             tooltipPosition="top"
             tooltipStyleClass="text-xs"
-            class="text-xs cursor-help">
-          </p-tag>
+            class="text-xs cursor-help"
+          ></p-tag>
         </div>
       </div>
     </div>
   </ng-template>
 
+  <div class="mb-4">
+    <app-social-media-card
+      [discord]="project.discord"
+      [github]="project.github"
+      [personalWebsite]="project.projectWebsite"
+      [useOfficialColors]="true"
+      class="w-full"
+    ></app-social-media-card>
+  </div>
+
   <ng-template pTemplate="content">
     <div class="px-4">
       <div
         class="prose prose-sm sm:prose-base lg:prose-lg max-w-none overflow-x-auto"
-        [innerHTML]="descriptionHtml">
-      </div>
+        [innerHTML]="descriptionHtml"
+      ></div>
     </div>
   </ng-template>
 </p-card>

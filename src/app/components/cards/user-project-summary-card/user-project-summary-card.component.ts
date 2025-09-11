@@ -7,10 +7,18 @@ import { TooltipModule } from 'primeng/tooltip';
 import type { ProjectListItem } from '../../../interfaces/project/project.interface';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../services/auth/auth.service';
+import { SocialMediaCardComponent } from '../social-media-card/social-media-card.component';
 
 @Component({
   selector: 'app-user-project-summary-card',
-  imports: [CommonModule, CardModule, TagModule, ButtonModule, TooltipModule],
+  imports: [
+    CommonModule,
+    CardModule,
+    TagModule,
+    ButtonModule,
+    TooltipModule,
+    SocialMediaCardComponent,
+  ],
   templateUrl: './user-project-summary-card.component.html',
   styleUrl: './user-project-summary-card.component.css',
 })

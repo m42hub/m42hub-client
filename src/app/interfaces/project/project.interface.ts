@@ -13,6 +13,9 @@ export interface Project {
   status?: ProjectStatus;
   complexity?: ProjectComplexity;
   imageUrl?: string;
+  discord?: string;
+  github?: string;
+  projectWebsite?: string;
   creationDate: string;
   startDate: string;
   endDate?: string;
@@ -29,6 +32,9 @@ export interface ProjectListItem {
   statusName?: string;
   complexityName?: string;
   imageUrl?: string;
+  discord?: string;
+  github?: string;
+  projectWebsite?: string;
   creationDate: string;
   startDate: string;
   endDate?: string;
@@ -45,6 +51,9 @@ export interface CreateProjectRequest {
   statusId: number;
   complexityId: number;
   imageUrl?: string;
+  discord?: string;
+  github?: string;
+  projectWebsite?: string;
   startDate: string;
   endDate?: string;
   toolIds?: number[];
@@ -60,6 +69,9 @@ export interface UpdateProjectRequest {
   statusId?: number;
   complexityId?: number;
   imageUrl?: string;
+  discord?: string;
+  github?: string;
+  projectWebsite?: string;
   startDate?: string;
   endDate?: string;
   toolIds?: number[];
