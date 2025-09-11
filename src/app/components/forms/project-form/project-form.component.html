@@ -3,7 +3,7 @@
     <p-card header="Informações Básicas" styleClass="rounded-b-none">
       <div class="flex flex-col md:flex-row gap-4">
         <div class="flex flex-col gap-2 flex-3">
-          <label for="name" class="flex items-start font-semibold">
+          <label for="name" class="flex items-center font-semibold">
             <i class="pi pi-briefcase mr-2 text-primary"></i>
             Nome do Projeto *
           </label>
@@ -24,7 +24,7 @@
         </div>
 
         <div class="flex flex-col gap-2 flex-1">
-          <label for="status" class="flex items-start font-semibold">
+          <label for="status" class="flex items-center font-semibold">
             <i class="pi pi-info-circle mr-2 text-primary"></i>
             Status
           </label>
@@ -38,7 +38,7 @@
         </div>
 
         <div class="flex flex-col gap-2 flex-1">
-          <label class="flex items-start font-semibold">
+          <label class="flex items-center font-semibold">
             <i class="pi pi-cog mr-2 text-primary"></i>
             Complexidade
           </label>
@@ -55,7 +55,7 @@
       </div>
 
       <div class="flex flex-col gap-2 mt-4">
-        <label for="summary" class="flex items-start font-semibold">
+        <label for="summary" class="flex items-center font-semibold">
           <i class="pi pi-file-edit mr-2 text-primary"></i>
           Resumo *
         </label>
@@ -77,7 +77,7 @@
       </div>
 
       <div class="flex flex-col gap-2 mt-4">
-        <label for="image" class="flex items-start font-semibold">
+        <label for="image" class="flex items-center font-semibold">
           <i class="pi pi-image mr-2 text-primary"></i>
           URL da Imagem
         </label>
@@ -88,6 +88,49 @@
           formControlName="image"
           placeholder="https://exemplo.com/imagem.jpg"
         />
+      </div>
+
+      <!-- Novos campos: Discord, GitHub, Website -->
+      <div class="flex flex-col md:flex-row gap-4 mt-4">
+        <div class="flex flex-col gap-2 flex-1">
+          <label for="discord" class="flex items-center font-semibold">
+            <i class="pi pi-discord mr-2 text-primary"></i>
+            Discord
+          </label>
+          <input
+            pInputText
+            id="discord"
+            type="text"
+            formControlName="discord"
+            placeholder="Link ou tag do Discord"
+          />
+        </div>
+        <div class="flex flex-col gap-2 flex-1">
+          <label for="github" class="flex items-center font-semibold">
+            <i class="pi pi-github mr-2 text-primary"></i>
+            GitHub
+          </label>
+          <input
+            pInputText
+            id="github"
+            type="url"
+            formControlName="github"
+            placeholder="seu-repositorio"
+          />
+        </div>
+        <div class="flex flex-col gap-2 flex-1">
+          <label for="projectWebsite" class="flex items-center font-semibold">
+            <i class="pi pi-globe mr-2 text-primary"></i>
+            Website do Projeto
+          </label>
+          <input
+            pInputText
+            id="projectWebsite"
+            type="url"
+            formControlName="projectWebsite"
+            placeholder="https://seuprojeto.com"
+          />
+        </div>
       </div>
     </p-card>
 

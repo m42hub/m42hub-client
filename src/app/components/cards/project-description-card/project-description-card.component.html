@@ -91,6 +91,16 @@
     </div>
   </ng-template>
 
+  <div class="mb-4">
+    <app-social-media-card
+      [discord]="project.discord"
+      [github]="project.github"
+      [personalWebsite]="project.projectWebsite"
+      [useOfficialColors]="true"
+      class="w-full"
+    ></app-social-media-card>
+  </div>
+
   <ng-template pTemplate="content">
     <div class="px-4">
       <div

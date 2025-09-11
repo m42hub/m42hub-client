@@ -4,6 +4,7 @@ import { CardModule } from 'primeng/card';
 import { TagModule } from 'primeng/tag';
 import { ButtonModule } from 'primeng/button';
 import { TooltipModule } from 'primeng/tooltip';
+import { SocialMediaCardComponent } from '../social-media-card/social-media-card.component';
 import type { ProjectListItem } from '../../../interfaces/project/project.interface';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../services/auth/auth.service';
@@ -11,7 +12,14 @@ import { AuthService } from '../../../services/auth/auth.service';
 @Component({
   selector: 'app-project-summary-card',
   standalone: true,
-  imports: [CommonModule, CardModule, TagModule, ButtonModule, TooltipModule],
+  imports: [
+    CommonModule,
+    CardModule,
+    TagModule,
+    ButtonModule,
+    TooltipModule,
+    SocialMediaCardComponent,
+  ],
   templateUrl: './project-summary-card.component.html',
   styleUrl: './project-summary-card.component.css',
 })

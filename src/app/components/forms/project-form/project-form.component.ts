@@ -237,6 +237,9 @@ export class ProjectFormComponent implements OnInit, OnChanges, AfterViewChecked
       selectedTools: [[]],
       selectedTopics: [[]],
       selectedComplexity: [null],
+      discord: [''],
+      github: [''],
+      projectWebsite: [''],
     });
 
     this.projectForm.markAsPristine();
@@ -275,6 +278,9 @@ export class ProjectFormComponent implements OnInit, OnChanges, AfterViewChecked
       selectedTools: this.project.tools?.map((t) => Number(t.id)) || [],
       selectedTopics: this.project.topics?.map((t) => Number(t.id)) || [],
       selectedComplexity: this.project.complexity?.id ? Number(this.project.complexity.id) : null,
+      discord: this.project.discord || '',
+      github: this.project.github || '',
+      projectWebsite: this.project.projectWebsite || '',
     });
 
     const teamArray = this.projectForm.get('team') as FormArray;
@@ -389,6 +395,9 @@ export class ProjectFormComponent implements OnInit, OnChanges, AfterViewChecked
       toolIds: formValue.selectedTools,
       topicIds: formValue.selectedTopics,
       unfilledRoleIds: formValue.unfilledRoles,
+      discord: formValue.discord,
+      github: formValue.github,
+      projectWebsite: formValue.projectWebsite,
     };
     if (this.isEditMode) this.save.emit(req as UpdateProjectRequest);
     else this.save.emit({ ...req, managerRoleId: formValue.managerRoleId } as CreateProjectRequest);

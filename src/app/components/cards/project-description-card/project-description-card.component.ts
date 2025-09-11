@@ -11,11 +11,19 @@ import type { Project } from '../../../interfaces/project/project.interface';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../services/auth/auth.service';
 import mermaid from 'mermaid';
+import { SocialMediaCardComponent } from '../social-media-card/social-media-card.component';
 
 @Component({
   selector: 'app-project-description-card',
   standalone: true,
-  imports: [CommonModule, CardModule, TagModule, TooltipModule, ButtonModule],
+  imports: [
+    CommonModule,
+    CardModule,
+    TagModule,
+    TooltipModule,
+    ButtonModule,
+    SocialMediaCardComponent,
+  ],
   templateUrl: './project-description-card.component.html',
   styleUrl: './project-description-card.component.css',
 })
