@@ -1,4 +1,4 @@
-<div class="flex flex-col mx-auto bg-gradient-to-br from-primary-500 to-primary-900">
+<div class="flex flex-col mx-auto">
   <div *ngIf="loading" class="flex justify-center items-center flex-1 min-h-[200px]">
     <p-progressSpinner styleClass="w-8 h-8" strokeWidth="4"></p-progressSpinner>
   </div>
@@ -94,7 +94,7 @@
 
         <p-card
           *ngIf="userInfo.interestRoles?.length && !editMode && !showChangePasswordForm"
-          styleClass="w-full max-w-6xl mx-auto text-white rounded-lg shadow-lg bg-gray-900 mb-4"
+          styleClass="w-full max-w-6xl mx-auto text-white rounded-lg shadow-lg bg-surface-600 mb-4"
         >
           <h3 class="font-bold mb-2">Áreas de Interesse:</h3>
           <div class="flex flex-row flex-wrap gap-2">
@@ -102,6 +102,7 @@
               *ngFor="let role of userInfo.interestRoles"
               [value]="role.name"
               severity="success"
+              [ngClass]="'text-black'"
             ></p-tag>
           </div>
         </p-card>
