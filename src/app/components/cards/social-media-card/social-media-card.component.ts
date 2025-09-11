@@ -15,6 +15,7 @@ export class SocialMediaCardComponent {
   @Input() github?: string;
   @Input() personalWebsite?: string;
   @Input() useOfficialColors = false;
+  @Input() iconsOnly = false;
 
   private stripProtocol(url: string | null | undefined): string {
     if (!url) return '';

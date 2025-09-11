@@ -17,10 +17,21 @@
   <ng-template pTemplate="content">
     <div class="w-full min-w-[280px] max-w-[280px] sm:min-w-[360px] sm:max-w-[360px] mx-auto">
       <h3
-        class="text-lg font-bold text-800 mb-4 overflow-hidden text-ellipsis whitespace-nowrap min-h-[2.5rem]"
+        class="text-lg font-bold text-800 mb-1 overflow-hidden text-ellipsis whitespace-nowrap min-h-[2.5rem]"
       >
         {{ project.name }}
       </h3>
+
+      <div class="mb-1">
+        <app-social-media-card
+          [discord]="project.discord"
+          [github]="project.github"
+          [personalWebsite]="project.projectWebsite"
+          [useOfficialColors]="true"
+          [iconsOnly]="true"
+          class="w-full"
+        ></app-social-media-card>
+      </div>
 
       <p class="text-surface-600 text-sm leading-relaxed mb-4 break-words min-h-18">
         {{ project.summary }}
@@ -51,16 +62,6 @@
           <span class="font-bold flex items-center"><i class="pi pi-calendar mr-1"></i>Prevista:</span>
           <span>{{ endDateFormatado }}</span>
         </div>
-      </div>
-
-      <div class="mb-4">
-        <app-social-media-card
-          [discord]="project.discord"
-          [github]="project.github"
-          [personalWebsite]="project.projectWebsite"
-          [useOfficialColors]="true"
-          class="w-full"
-        ></app-social-media-card>
       </div>
 
       <div

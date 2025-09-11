@@ -7,7 +7,18 @@
   </ng-template>
   <ng-template pTemplate="content">
     <div class=" max-w-xs  md:max-w-md mx-auto">
-      <h3 class="text-lg font-bold text-800 mb-4 overflow-hidden text-ellipsis whitespace-nowrap min-h-[2.5rem]">{{ project.name }}</h3>
+      <h3 class="text-lg font-bold text-800 mb-1 overflow-hidden text-ellipsis whitespace-nowrap min-h-[2.5rem]">{{ project.name }}</h3>
+
+      <div class="mb-1">
+        <app-social-media-card
+          [discord]="project.discord"
+          [github]="project.github"
+          [personalWebsite]="project.projectWebsite"
+          [useOfficialColors]="true"
+          [iconsOnly]="true"
+          class="w-full"
+        ></app-social-media-card>
+      </div>
 
       <p class="text-surface-600 text-sm leading-relaxed mb-4 break-words min-h-12">
         {{ project.summary }}
@@ -43,16 +54,6 @@
           <p-tag *ngFor="let role of unfilledRoles" [value]="role" class="text-sm font-medium bg-surface-300"></p-tag>
           <span *ngIf="unfilledRoles.length === 0" class="text-sm text-surface-700">Nenhuma</span>
         </div>
-      </div>
-
-      <div class="mb-4">
-          <app-social-media-card
-            [discord]="project.discord"
-            [github]="project.github"
-            [personalWebsite]="project.projectWebsite"
-            [useOfficialColors]="true"
-            class="w-full"
-          ></app-social-media-card>
       </div>
 
       <div class="mb-4 flex flex-row gap-x-6 items-center text-xs text-surface-500 min-h-6 pl-1">
