@@ -25,7 +25,9 @@
         </div>
       </div>
 
-      <div class="px-2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-4 text-sm text-600 dark:text-surface-200">
+      <div
+        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-4 text-sm text-600 dark:text-surface-200"
+      >
         <div class="flex items-center gap-2">
           <i class="pi pi-calendar text-primary flex-shrink-0"></i>
           <span class="truncate">Criado em: {{ creationDateFormatado }}</span>
@@ -42,17 +44,6 @@
     </div>
 
     <div class="px-4 space-y-4">
-      <div class="mb-1">
-        <app-social-media-card
-          [discord]="project.discord"
-          [github]="project.github"
-          [personalWebsite]="project.projectWebsite"
-          [useOfficialColors]="true"
-          [iconsOnly]="true"
-          class="w-full"
-        ></app-social-media-card>
-      </div>
-
       <div *ngIf="tools.length > 0" class="space-y-2">
         <h4 class="text-xs font-bold text-800 dark:text-surface-0 uppercase tracking-wide">
           Tecnologias/Ferramentas
@@ -101,6 +92,16 @@
       </div>
     </div>
   </ng-template>
+
+  <div class="mb-4">
+    <app-social-media-card
+      [discord]="project.discord"
+      [github]="project.github"
+      [personalWebsite]="project.projectWebsite"
+      [useOfficialColors]="true"
+      class="w-full"
+    ></app-social-media-card>
+  </div>
 
   <ng-template pTemplate="content">
     <div class="px-4">
