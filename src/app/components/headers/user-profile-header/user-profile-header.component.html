@@ -1,7 +1,18 @@
-<div
-  *ngIf="userInfo && !loading"
-  class="bg-gradient-to-br from-indigo-600 to-gray-950 rounded-t-lg p-6 flex flex-col lg:flex-row items-center lg:items-start gap-4 lg:gap-8 w-full"
->
+<div *ngIf="userInfo && !loading" class="relative w-full shadow-2xl">
+    <div
+      class="absolute inset-0 w-full h-full rounded-t-lg z-10"
+      [ngStyle]="{
+        'background-image': userInfo.profileBannerUrl ? 'url(' + userInfo.profileBannerUrl + ')' : '',
+        'background-size': 'cover',
+        'background-position': 'center'
+      }"
+    >
+    <div *ngIf="userInfo.profileBannerUrl" class="absolute inset-0 w-full h-full bg-black/70"></div>
+    <div *ngIf="!userInfo.profileBannerUrl" class="absolute inset-0 w-full h-full bg-gradient-to-br from-indigo-600 to-gray-950"></div>
+  </div>
+  <div
+    class="relative z-10 p-6 flex flex-col lg:flex-row items-center lg:items-start gap-4 lg:gap-8 w-full banner-content"
+  >
   <div class="flex-shrink-0 flex justify-center lg:justify-start w-full lg:w-auto">
     <div
       class="relative w-40 h-40"
@@ -17,7 +28,7 @@
       <button
         *ngIf="isOwnProfile && hoverAvatar"
         class="absolute inset-0 w-full h-full flex items-center justify-center bg-black bg-opacity-30 text-white rounded-full shadow transition avatar-change-btn avatar-change-btn-zindex"
-        (click)="openChangePicModal()"
+        (click)="openChangePicModal('profile')"
         aria-label="Alterar foto"
       >
         <span class="flex flex-col items-center">
@@ -34,7 +45,7 @@
       [dismissableMask]="true"
       [style]="{ width: '24rem' }"
       [showHeader]="true"
-      [header]="'Alterar foto de perfil'"
+      [header]="changePicType === 'profile' ? 'Alterar foto de perfil' : 'Alterar banner do perfil'"
       (onHide)="closeChangePicModal()"
       class="rounded-lg shadow-lg"
     >
@@ -42,7 +53,7 @@
         <label class="flex flex-col items-center gap-3 w-full cursor-pointer">
           <span class="flex flex-col items-center gap-2 w-full">
             <span class="text-base text-primary-700 font-semibold">
-              Clique para escolher uma foto de perfil
+              {{ changePicType === 'profile' ? 'Clique para escolher uma foto de perfil' : 'Clique para escolher um banner' }}
             </span>
             <span
               class="flex items-center justify-center w-20 h-20 rounded-xl bg-primary-100 hover:bg-primary-200 transition duration-150 cursor-pointer border-2 border-primary-300 shadow-md"
@@ -59,7 +70,7 @@
           accept="image/*"
           (change)="onFileSelected($event)"
           [disabled]="uploading"
-          title="Selecione uma imagem para o perfil"
+          title="Selecione uma imagem"
           placeholder="Selecione uma imagem"
           class="hidden"
         />
@@ -98,4 +109,15 @@
       [personalWebsite]="userInfo.personalWebsite"
     ></app-social-media-card>
   </p-card>
+  </div>
+  <button
+    *ngIf="isOwnProfile"
+    pButton
+    type="button"
+    label="Alterar banner"
+    icon="pi pi-pencil"
+    class="absolute top-4 right-4 z-50 bg-black/65 hover:bg-black/90 text-white px-4 py-2 rounded shadow transition flex items-center gap-2"
+    (click)="openChangePicModal('banner')"
+    aria-label="Alterar banner"
+  ></button>
 </div>

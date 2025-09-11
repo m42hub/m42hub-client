@@ -91,6 +91,7 @@ export class ProjectInfoSidebarComponent implements OnInit {
             username: `${member.user.username}`,
             role: roleName || '',
             photo: this.getUserAvatar(member.user),
+            profileBannerUrl: member.user.profileBannerUrl,
             isManager: member.isManager,
           };
         }) || []
