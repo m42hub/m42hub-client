@@ -81,24 +81,13 @@
           <i class="pi pi-image mr-2 text-primary"></i>
           Imagem do Projeto
         </label>
-        <ng-container *ngIf="!isEditMode; else urlInput">
-          <div class="flex items-center gap-3">
-            <button type="button" pButton label="Enviar Imagem" icon="pi pi-upload" (click)="openImageUploadModal()"></button>
-            <span *ngIf="projectForm.get('image')?.value" class="text-xs text-green-700">Imagem enviada!</span>
-          </div>
-          <div *ngIf="projectForm.get('image')?.value" class="mt-2">
-            <img [src]="projectForm.get('image')?.value" alt="Imagem do Projeto" class="max-h-24 rounded shadow" />
-          </div>
-        </ng-container>
-        <ng-template #urlInput>
-          <input
-            pInputText
-            id="image"
-            type="url"
-            formControlName="image"
-            placeholder="https://exemplo.com/imagem.jpg"
-          />
-        </ng-template>
+        <div class="flex items-center gap-3">
+          <button type="button" pButton label="Enviar Imagem" icon="pi pi-upload" (click)="openImageUploadModal()"></button>
+          <span *ngIf="selectedImageFile" class="text-xs text-green-700">Imagem enviada!</span>
+        </div>
+        <div *ngIf="projectForm.get('image')?.value" class="mt-2">
+          <img [src]="projectForm.get('image')?.value" alt="Imagem do Projeto" class="max-h-24 rounded shadow" />
+        </div>
       </div>
 
       <!-- Modal de upload de imagem -->

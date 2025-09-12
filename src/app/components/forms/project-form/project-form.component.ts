@@ -94,8 +94,6 @@ export class ProjectFormComponent implements OnInit, OnChanges, AfterViewChecked
     topics: OptionWithColor[];
     complexity: OptionWithColor[];
   } = { tools: [], topics: [], complexity: [] };
-
-  // Modal e upload
   showImageUploadModal = false;
   uploadingImage = false;
   uploadImageError: string | null = null;
