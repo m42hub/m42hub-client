@@ -39,4 +39,10 @@ export class ProjectService extends BaseApiService<Project> {
   update(id: number, project: UpdateProjectRequest): Observable<Project> {
     return this.put<Project>(`${this.endpoint}/${id}`, project);
   }
+
+  changeBanner(id: number, file: File): Observable<Project> {
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.patch<Project>(`${this.apiUrl}${this.endpoint}/banner/${id}`, formData);
+  }
 }
