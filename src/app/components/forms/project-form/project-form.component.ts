@@ -1,6 +1,8 @@
 import type { ValidationErrors } from '@angular/forms';
 import type { OnInit, OnChanges, SimpleChanges, AfterViewChecked } from '@angular/core';
 import { Component, Input, Output, EventEmitter, PLATFORM_ID, Inject } from '@angular/core';
+import { DialogModule } from 'primeng/dialog';
+import { ImageService } from '../../../services/file/image.service';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormBuilder, FormGroup, FormArray, AbstractControl } from '@angular/forms';
 import { ReactiveFormsModule, Validators, FormsModule } from '@angular/forms';
@@ -63,6 +65,7 @@ interface Option {
     TooltipModule,
     TeamCardComponent,
     RequestCardComponent,
+    DialogModule,
   ],
 
   templateUrl: './project-form.component.html',
@@ -92,6 +95,12 @@ export class ProjectFormComponent implements OnInit, OnChanges, AfterViewChecked
     complexity: OptionWithColor[];
   } = { tools: [], topics: [], complexity: [] };
 
+  // Modal e upload
+  showImageUploadModal = false;
+  uploadingImage = false;
+  uploadImageError: string | null = null;
+  selectedImageFile: File | null = null;
+
   constructor(
     private formBuilder: FormBuilder,
     @Inject(PLATFORM_ID) private platformId: Object,
@@ -101,8 +110,49 @@ export class ProjectFormComponent implements OnInit, OnChanges, AfterViewChecked
     private topicService: ProjectTopicService,
     private roleService: ProjectRoleService,
     private memberService: ProjectMemberService,
+    private imageService: ImageService,
   ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
+  }
+
+  openImageUploadModal() {
+    this.showImageUploadModal = true;
+    this.uploadImageError = null;
+    this.selectedImageFile = null;
+  }
+
+  closeImageUploadModal() {
+    this.showImageUploadModal = false;
+    this.uploadImageError = null;
+    this.selectedImageFile = null;
+  }
+
+  triggerImageFileInput(input: HTMLInputElement) {
+    input.click();
+  }
+
+  onImageFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (!input.files || !input.files[0]) return;
+    this.selectedImageFile = input.files[0];
+    this.uploadImageError = null;
+  }
+
+  uploadProjectImage() {
+    if (!this.selectedImageFile || this.uploadingImage) return;
+    this.uploadingImage = true;
+    this.uploadImageError = null;
+    this.imageService.uploadImage(this.selectedImageFile).subscribe({
+      next: (imageUrl: String) => {
+        this.projectForm.get('image')?.setValue(imageUrl.toString());
+        this.uploadingImage = false;
+        this.showImageUploadModal = false;
+      },
+      error: () => {
+        this.uploadingImage = false;
+        this.uploadImageError = 'Falha ao enviar imagem.';
+      },
+    });
   }
 
   ngOnInit(): void {

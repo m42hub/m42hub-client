@@ -77,18 +77,63 @@
       </div>
 
       <div class="flex flex-col gap-2 mt-4">
-        <label for="image" class="flex items-center font-semibold">
+        <label class="flex items-center font-semibold">
           <i class="pi pi-image mr-2 text-primary"></i>
-          URL da Imagem
+          Imagem do Projeto
         </label>
-        <input
-          pInputText
-          id="image"
-          type="url"
-          formControlName="image"
-          placeholder="https://exemplo.com/imagem.jpg"
-        />
+        <ng-container *ngIf="!isEditMode; else urlInput">
+          <div class="flex items-center gap-3">
+            <button type="button" pButton label="Enviar Imagem" icon="pi pi-upload" (click)="openImageUploadModal()"></button>
+            <span *ngIf="projectForm.get('image')?.value" class="text-xs text-green-700">Imagem enviada!</span>
+          </div>
+          <div *ngIf="projectForm.get('image')?.value" class="mt-2">
+            <img [src]="projectForm.get('image')?.value" alt="Imagem do Projeto" class="max-h-24 rounded shadow" />
+          </div>
+        </ng-container>
+        <ng-template #urlInput>
+          <input
+            pInputText
+            id="image"
+            type="url"
+            formControlName="image"
+            placeholder="https://exemplo.com/imagem.jpg"
+          />
+        </ng-template>
       </div>
+
+      <!-- Modal de upload de imagem -->
+      <p-dialog
+        [(visible)]="showImageUploadModal"
+        modal="true"
+        [closable]="true"
+        [dismissableMask]="true"
+        [style]="{ width: '24rem' }"
+        [showHeader]="true"
+        header="Enviar Imagem do Projeto"
+        (onHide)="closeImageUploadModal()"
+        class="rounded-lg shadow-lg"
+      >
+        <div class="flex flex-col items-center w-full">
+          <div class="flex flex-col items-center gap-3 w-full">
+            <span class="text-base text-primary-700 font-semibold">
+              Clique para escolher uma imagem do projeto
+            </span>
+            <span
+              class="flex items-center justify-center w-20 h-20 rounded-xl bg-primary-100 hover:bg-primary-200 transition duration-150 cursor-pointer border-2 border-primary-300 shadow-md"
+              (click)="triggerImageFileInput(imageFileInput); $event.stopPropagation();"
+            >
+              <i class="pi pi-image text-3xl"></i>
+            </span>
+            <input #imageFileInput type="file" accept="image/*" class="hidden" (change)="onImageFileSelected($event)" title="Escolha uma imagem do projeto" placeholder="Escolha uma imagem do projeto" />
+            <span *ngIf="selectedImageFile" class="text-xs text-surface-700 mt-2">{{ selectedImageFile.name }}</span>
+          </div>
+          <div class="flex flex-col items-center w-full mt-4">
+            <button type="button" pButton label="Enviar" icon="pi pi-upload" [disabled]="!selectedImageFile || uploadingImage" (click)="uploadProjectImage()"></button>
+            <span *ngIf="uploadingImage" class="text-xs text-primary-700 mt-2">Enviando imagem...</span>
+            <span *ngIf="uploadImageError" class="text-xs text-red-600 mt-2">{{ uploadImageError }}</span>
+          </div>
+        </div>
+      </p-dialog>
 
       <!-- Novos campos: Discord, GitHub, Website -->
       <div class="flex flex-col md:flex-row gap-4 mt-4">

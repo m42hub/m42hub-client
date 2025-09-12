@@ -13,9 +13,11 @@ export class ImageService extends BaseApiService<String> {
     super(http, platformId);
   }
 
-  changeBannerPic(file: File): Observable<String> {
+  uploadImage(file: File): Observable<string> {
     const formData = new FormData();
     formData.append('file', file);
-    return this.http.patch<String>(`${this.apiUrl}${this.endpoint}/upload`, formData);
+    return this.http.post<string>(`${this.apiUrl}${this.endpoint}/upload`, formData, {
+      responseType: 'text' as 'json',
+    });
   }
 }
