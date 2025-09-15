@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, Inject, PLATFORM_ID, OnInit } from '@angular/core';
+import { Component, EventEmitter, Output, Inject, PLATFORM_ID, OnInit, SimpleChanges } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { SelectModule } from 'primeng/select';
 import { MultiSelectModule } from 'primeng/multiselect';
@@ -42,12 +42,15 @@ export class ProjectFilterComponent implements OnInit {
 
   @Output() filtersChange = new EventEmitter<any>();
   @Output() closeFilters = new EventEmitter<void>();
+  @Output() preEventLoadingSearch = new EventEmitter<void>();
 
   complexities: any[] = [];
   statuses: any[] = [];
   tools: any[] = [];
   topics: any[] = [];
   roles: any[] = [];
+
+  private timeSearch: any = null;
 
   constructor(
     private complexityService: ProjectComplexityService,
@@ -93,8 +96,17 @@ export class ProjectFilterComponent implements OnInit {
     this.emitFilters();
   }
 
-  onFilterChange() {
-    this.emitFilters();
+  onFilterChange(): void {
+    this.preEventLoadingSearch.emit();
+
+    if (this.timeSearch != null) {
+      clearTimeout(this.timeSearch);
+    }
+
+    this.timeSearch = setTimeout(() => {
+      this.emitFilters()
+      this.timeSearch = null
+    }, 3000);
   }
 
   onClearFilters() {

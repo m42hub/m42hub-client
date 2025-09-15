@@ -169,7 +169,6 @@ html.dark .prose th {
 /* Espaçamento horizontal entre chips/tags nos multiselects */
 .p-multiselect-chip {
   margin-right: 8px !important;
-  background: #b2bff7 ;
 }
 
 .p-multiselect .p-multiselect-chips {
