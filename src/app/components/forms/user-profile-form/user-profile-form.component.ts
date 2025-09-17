@@ -63,10 +63,10 @@ export class UserProfileFormComponent implements OnChanges {
     this.editForm = this.fb.group({
       firstName: [this.userInfo.firstName || '', [Validators.required]],
       lastName: [this.userInfo.lastName || '', [Validators.required]],
-      biography: [this.userInfo.biography || ''],
-      discord: [this.userInfo.discord || ''],
-      linkedin: [this.userInfo.linkedin || ''],
-      github: [this.userInfo.github || ''],
+      biography: [this.userInfo.biography || '', [Validators.maxLength(255)]],
+      discord: [this.userInfo.discord || '', [Validators.maxLength(255)]],
+      linkedin: [this.userInfo.linkedin || '', [Validators.maxLength(255)]],
+      github: [this.userInfo.github || '', [Validators.maxLength(255)]],
       personalWebsite: [this.userInfo.personalWebsite || ''],
       interestRoles: [
         Array.isArray(this.userInfo.interestRoles)
