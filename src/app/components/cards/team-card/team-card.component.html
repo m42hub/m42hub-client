@@ -10,7 +10,7 @@
   <ng-template pTemplate="content">
     <div class="flex flex-col gap-2 overflow-y-auto">
       <div *ngIf="mode === 'display'" class="flex flex-col gap-2">
-        <div *ngFor="let member of team" class="relative flex items-center gap-2 sm:gap-3 p-2 sm:p-3 bg-surface-100 dark:bg-surface-50 rounded-lg overflow-hidden">
+        <div *ngFor="let member of team" class="relative flex items-center gap-2 sm:gap-3 p-2 sm:p-3 bg-[#2A2A2A] rounded-lg overflow-hidden">
           <div
             class="absolute inset-0 w-full h-full z-0"
             [ngStyle]="{
@@ -33,14 +33,14 @@
             </p-avatar>
           </div>
           <div class="relative z-10 flex-1 min-w-0">
-            <p class="text-sm sm:text-sm font-bold text-surface-950 truncate"
+            <p class="text-sm sm:text-sm font-bold text-white truncate"
                [pTooltip]="member.name"
                tooltipPosition="top"
                tooltipStyleClass="text-xs">
                {{ member.name }}
             </p>
-            <p class="text-xs text-surface-900 truncate mb-2"> {{ `@${member.username}` }}</p>
-            <p class="text-xs text-surface-600 truncate"
+            <p class="text-xs text-gray-50 truncate mb-2"> {{ `@${member.username}` }}</p>
+            <p class="text-xs font-bold text-surface-500 truncate"
                [pTooltip]="member.role"
                tooltipPosition="top"
                tooltipStyleClass="text-xs">{{ member.role }}</p>
@@ -106,7 +106,7 @@
                 </button>
               </div>
               <p *ngIf="member.username" class="text-xs text-surface-900 truncate mb-2"> {{ `@${member.username}` }}</p>
-              <p class="text-sm text-surface-600 dark:text-surface-800 truncate">{{ member.role }}</p>
+              <p class="text-sm font-bold text-surface-600 truncate">{{ member.role }}</p>
             </div>
         </div>
 

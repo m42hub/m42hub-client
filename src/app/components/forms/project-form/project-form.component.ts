@@ -296,6 +296,7 @@ export class ProjectFormComponent implements OnInit, OnChanges, AfterViewChecked
           user: [member.user],
           username: [member.user?.username || ''],
           role: [roleName],
+          photo: [member.user?.profilePicUrl],
           memberStatus: [member.memberStatus],
           isManager: [member.isManager || false],
           applicationMessage: [member.applicationMessage],
