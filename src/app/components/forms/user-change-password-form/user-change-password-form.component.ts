@@ -30,7 +30,7 @@ export class UserChangePasswordFormComponent {
 
   constructor(private fb: FormBuilder) {
     this.form = this.fb.group({
-      oldPassword: ['', Validators.required],
+      oldPassword: ['', [Validators.required, Validators.minLength(6)]],
       newPassword: ['', [Validators.required, Validators.minLength(6)]],
       confirmNewPassword: ['', Validators.required],
     });

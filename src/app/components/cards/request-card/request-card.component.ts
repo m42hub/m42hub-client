@@ -1,4 +1,4 @@
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import { Component, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DialogModule } from 'primeng/dialog';
@@ -40,7 +40,7 @@ export interface TeamRequest {
 })
 export class RequestCardComponent implements OnChanges {
   feedbackDialogVisible = false;
-  feedbackTextControl = new FormControl('', [Validators.required, Validators.minLength(1)]);
+  feedbackTextControl = new FormControl('');
   feedbackRequest: TeamRequest | null = null;
   requestsWithFormattedDate: Array<TeamRequest> = [];
   @Input() requests: TeamRequest[] = [];
