@@ -69,43 +69,44 @@ export class UserProfileComponent implements OnInit {
   isDarkMode = false;
 
   ngOnInit(): void {
-    const username = this.route.snapshot.paramMap.get('username');
-    if (username) {
-      this.userService.getUserByUsername(username).subscribe({
-        next: (user) => {
-          this.userInfo = user;
-          // Buscar projetos do usuário
-          this.memberService.getByUsername(username).subscribe({
-            next: (projects) => {
-              const userProjects = projects.filter(
-                (member) => member.memberStatus && member.memberStatus.id === 2,
-              );
-              this.ongoingProjects = userProjects.filter((member) => {
-                const status = member.projectListItem?.statusName?.toLowerCase();
-                return status === 'em andamento' || status === 'fase de testes';
-              });
-              this.finishedProjects = userProjects.filter((member) => {
-                const status = member.projectListItem?.statusName?.toLowerCase();
-                return status === 'concluído' || status === 'concluido';
-              });
-              this.loading = false;
-            },
-            error: () => {
-              this.error = 'Erro ao carregar projetos do usuário.';
-              this.loading = false;
-            },
-          });
-        },
-        error: () => {
-          this.error = 'Usuário não encontrado ou erro ao carregar.';
-          this.loading = false;
-        },
-      });
-    } else {
-      this.error = 'Nome de usuário não fornecido.';
-      this.loading = false;
-    }
-    // Detectar tema
+    this.route.paramMap.subscribe((params) => {
+      const username = params.get('username');
+      if (username) {
+        this.userService.getUserByUsername(username).subscribe({
+          next: (user) => {
+            this.userInfo = user;
+            this.memberService.getByUsername(username).subscribe({
+              next: (projects) => {
+                const userProjects = projects.filter(
+                  (member) => member.memberStatus && member.memberStatus.id === 2,
+                );
+                this.ongoingProjects = userProjects.filter((member) => {
+                  const status = member.projectListItem?.statusName?.toLowerCase();
+                  return status === 'em andamento' || status === 'fase de testes';
+                });
+                this.finishedProjects = userProjects.filter((member) => {
+                  const status = member.projectListItem?.statusName?.toLowerCase();
+                  return status === 'concluído' || status === 'concluido';
+                });
+                this.loading = false;
+              },
+              error: () => {
+                this.error = 'Erro ao carregar projetos do usuário.';
+                this.loading = false;
+              },
+            });
+          },
+          error: () => {
+            this.error = 'Usuário não encontrado ou erro ao carregar.';
+            this.loading = false;
+          },
+        });
+      } else {
+        this.error = 'Nome de usuário não fornecido.';
+        this.loading = false;
+      }
+    });
+
     if (typeof window !== 'undefined') {
       const savedTheme = localStorage.getItem('theme');
       const html = document.documentElement;
