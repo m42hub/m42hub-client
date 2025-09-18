@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
 import type { UserInfo } from '../../../interfaces/user/user.interface';
 import { CommonModule } from '@angular/common';
+import { LinebreaksPipe } from '../../../pipes/linebreaks.pipe';
 import { AvatarModule } from 'primeng/avatar';
 import { CardModule } from 'primeng/card';
 import { DialogModule } from 'primeng/dialog';
@@ -18,6 +19,7 @@ import { UserService } from '../../../services/user/user.service';
     DialogModule,
     ButtonModule,
     SocialMediaCardComponent,
+    LinebreaksPipe,
   ],
   templateUrl: './user-profile-header.component.html',
   styleUrls: ['./user-profile-header.component.css'],
