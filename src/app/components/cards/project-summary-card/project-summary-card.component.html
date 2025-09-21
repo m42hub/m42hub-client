@@ -1,12 +1,12 @@
 <p-card
-  styleClass=" w-full max-w-[480px] rounded-xl overflow-hidden mx-auto shadow-xl">
-  <ng-template pTemplate="header">
+  styleClass="h-full rounded-xl overflow-hidden shadow-xl">
+  <ng-template class="h-full" pTemplate="header">
     <div class="w-full h-32 rounded-t-xl overflow-hidden relative bg-gradient-to-r from-primary-400 to-primary-600">
   <img *ngIf="showImage" [src]="imageUrl" alt="Banner do Projeto" class="absolute inset-0 w-full h-full object-cover" (error)="onImageError()" />
     </div>
   </ng-template>
   <ng-template pTemplate="content">
-    <div class=" max-w-xs  md:max-w-md mx-auto">
+    <div class="flex flex-col h-full justify-between max-w-xs  md:max-w-md">
       <h3 class="text-lg font-bold text-800 mb-1 overflow-hidden text-ellipsis whitespace-nowrap min-h-[2.5rem]">{{ project.name }}</h3>
 
       <div class="mb-1">
