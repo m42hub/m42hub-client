@@ -1,5 +1,5 @@
 import type { OnInit, OnDestroy } from '@angular/core';
-import { Component, HostListener, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, HostListener, Inject, PLATFORM_ID, ViewChild } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -14,6 +14,7 @@ import { ProjectFilterComponent } from '../../components/filters/project-filter/
 import type { Project, ProjectSearchParams } from '../../interfaces/project/project.interface';
 import { ProjectService } from '../../services/project/project.service';
 import { AuthService } from '../../services/auth/auth.service';
+import { ProgressSpinner } from 'primeng/progressspinner';
 
 @Component({
   selector: 'app-projects-page',
@@ -29,20 +30,25 @@ import { AuthService } from '../../services/auth/auth.service';
     TooltipModule,
     ProjectSummaryCardComponent,
     ProjectFilterComponent,
+    ProgressSpinner
   ],
   templateUrl: './projects.component.html',
   styleUrl: './projects.component.css',
 })
 export class ProjectsComponent implements OnInit, OnDestroy {
-  projects: Project[] = [];
-  pageSize = 3;
-  currentPage = 1;
-  totalPages = 1;
-  totalElements = 0;
-  showFilters = false;
-  Math = Math;
+  public projects: Project[] = [];
+  public pageSize = 3;
+  public currentPage = 1;
+  public totalPages = 1;
+  public totalElements = 0;
+  public showFilters = false;
+  public Math = Math;
 
-  filters: ProjectSearchParams = { page: 0, limit: this.pageSize };
+  public filters: ProjectSearchParams = { page: 0, limit: this.pageSize };
+
+  public loadingSearch: boolean = true;
+
+  @ViewChild(ProjectFilterComponent) filterComponent!: ProjectFilterComponent;
 
   private readonly breakpoints = {
     sm: 640,
@@ -132,10 +138,15 @@ export class ProjectsComponent implements OnInit, OnDestroy {
 
   loadProjects(): void {
     if (!this.isBrowser()) return;
+
+    this.loadingSearch = true;
+
     const searchParams = this.buildSearchParams();
+
     this.projectService.search(searchParams).subscribe({
       next: (res) => this.handleProjectsResponse(res),
       error: (error) => this.handleProjectsError(error),
+      complete: () => this.loadingSearch = false
     });
   }
 
@@ -158,8 +169,18 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     this.loadProjects();
   }
 
+  onPreEventLoadingSearch(): void {
+    this.loadingSearch = true
+  }
+
   toggleFilters(): void {
     this.showFilters = !this.showFilters;
+  }
+
+  clearFilter(): void {
+    this.showFilters = true
+ 
+    this.filterComponent.onClearFilters()
   }
 
   nextPage(): void {
