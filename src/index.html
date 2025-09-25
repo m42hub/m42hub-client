@@ -39,13 +39,15 @@
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
     <script>
       (function () {
-        try {
-          var theme = localStorage.getItem('theme');
-          var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-          if (theme === 'dark' || (!theme && prefersDark)) {
-            document.documentElement.classList.add('my-app-dark');
-          }
-        } catch (e) {}
+        if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+          try {
+            var theme = localStorage.getItem('theme');
+            var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            if (theme === 'dark' || (!theme && prefersDark)) {
+              document.documentElement.classList.add('dark');
+            }
+          } catch (e) {}
+        }
       })();
     </script>
   </head>
