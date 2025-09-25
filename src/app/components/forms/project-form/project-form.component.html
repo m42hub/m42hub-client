@@ -1,5 +1,11 @@
 <div class="flex flex-col w-full mx-auto p-2 md:p-6">
-  <form *ngIf="isFormReady" [formGroup]="projectForm" (ngSubmit)="onSubmit()" class="flex flex-col" styleClass="rounded-none">
+  <form
+    *ngIf="isFormReady"
+    [formGroup]="projectForm"
+    (ngSubmit)="onSubmit()"
+    class="flex flex-col"
+    styleClass="rounded-none"
+  >
     <p-card header="Informações Básicas" styleClass="rounded-b-none">
       <div class="flex flex-col md:flex-row gap-4">
         <div class="flex flex-col gap-2 flex-3">
@@ -13,7 +19,9 @@
             type="text"
             formControlName="name"
             placeholder="Digite o nome do projeto"
-            [class.ng-invalid]="projectForm.get('name')?.invalid && projectForm.get('name')?.touched"
+            [class.ng-invalid]="
+              projectForm.get('name')?.invalid && projectForm.get('name')?.touched
+            "
           />
           <small
             class="p-error block"
@@ -71,8 +79,12 @@
           *ngIf="projectForm.get('summary')?.invalid && projectForm.get('summary')?.touched"
         >
           <span *ngIf="projectForm.get('summary')?.errors?.['required']">Resumo é obrigatório</span>
-          <span *ngIf="projectForm.get('summary')?.errors?.['minlength']">Resumo deve ter pelo menos 10 caracteres</span>
-          <span *ngIf="projectForm.get('summary')?.errors?.['maxlength']">Resumo deve ter no máximo 255 caracteres</span>
+          <span *ngIf="projectForm.get('summary')?.errors?.['minlength']">
+            Resumo deve ter pelo menos 10 caracteres
+          </span>
+          <span *ngIf="projectForm.get('summary')?.errors?.['maxlength']">
+            Resumo deve ter no máximo 255 caracteres
+          </span>
         </small>
       </div>
 
@@ -160,11 +172,13 @@
                 ![Imagem](https://exemplo.com/imagem.jpg)
               "
               rows="12"
-              class="w-full font-mono text-sm p-3  border border-surface-border rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+              class="w-full font-mono text-sm p-3 border border-surface-border rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
             ></textarea>
             <small
               class="p-error block mt-2"
-              *ngIf="projectForm.get('description')?.invalid && projectForm.get('description')?.touched"
+              *ngIf="
+                projectForm.get('description')?.invalid && projectForm.get('description')?.touched
+              "
             >
               Descrição é obrigatória e deve ter pelo menos 10 caracteres
             </small>
@@ -176,10 +190,7 @@
                 [innerHTML]="markdownPreview"
                 *ngIf="markdownPreview"
               ></div>
-              <div
-                class="text-surface-500 italic text-center py-8"
-                *ngIf="!markdownPreview"
-              >
+              <div class="text-surface-500 italic text-center py-8" *ngIf="!markdownPreview">
                 Digite algo no editor para ver o preview...
               </div>
             </div>
@@ -191,7 +202,7 @@
     <!-- Dates -->
     <p-card header="Datas do Projeto" styleClass="rounded-none">
       <div class="flex flex-col md:flex-row">
-        <div class="flex flex-col gap-2 ">
+        <div class="flex flex-col gap-2">
           <label for="startDate" class="flex items-start font-semibold">
             <i class="pi pi-calendar-plus mr-2 mt-1 text-primary"></i>
             Data de Início
@@ -220,12 +231,12 @@
           ></p-datepicker>
         </div>
       </div>
-  </p-card>
+    </p-card>
 
-  <!-- Team (Edit mode only) -->
-  <p-card header="Equipe do Projeto" *ngIf="showTeamCard" styleClass="rounded-none">
-      <p-tabs value="0" size="small" >
-        <div class="flex justify-center ">
+    <!-- Team (Edit mode only) -->
+    <p-card header="Equipe do Projeto" *ngIf="showTeamCard" styleClass="rounded-none">
+      <p-tabs value="0" size="small">
+        <div class="flex justify-center">
           <p-tablist class="flex">
             <p-tab value="0" class="p-2 text-sm">Membros Atuais</p-tab>
             <p-tab value="1" class="p-2 text-sm">Solicitações Pendentes</p-tab>
@@ -237,11 +248,7 @@
               <div class="flex justify-center items-center">
                 <h4 class="text-lg font-semibold">Membros da Equipe</h4>
               </div>
-              <app-team-card
-                [team]="teamApproved"
-                mode="edit"
-                [showHeader]="false">
-              </app-team-card>
+              <app-team-card [team]="teamApproved" mode="edit" [showHeader]="false"></app-team-card>
             </div>
           </p-tabpanel>
 
@@ -254,16 +261,16 @@
                 [requests]="teamPending"
                 [showHeader]="false"
                 (acceptRequest)="onRequestCardAcceptRequest($event)"
-                (rejectRequest)="onRequestCardRejectRequest($event)">
-              </app-request-card>
+                (rejectRequest)="onRequestCardRejectRequest($event)"
+              ></app-request-card>
             </div>
           </p-tabpanel>
         </p-tabpanels>
       </p-tabs>
-  </p-card>
+    </p-card>
 
-  <!-- Tags -->
-  <p-card header="Tags do Projeto" *ngIf="showTagsCard" styleClass="rounded-none">
+    <!-- Tags -->
+    <p-card header="Tags do Projeto" *ngIf="showTagsCard" styleClass="rounded-none">
       <div class="flex flex-col gap-6">
         <div class="flex flex-col gap-4">
           <div class="flex flex-col gap-2">
@@ -310,15 +317,15 @@
               class="text-white text-shadow-blue-950 text-shadow-2xs"
               *ngFor="let tag of tagsArray; let i = index"
               [value]="tag.name"
-              [style]="{'background-color': tag.color}"
+              [style]="{ 'background-color': tag.color }"
             ></p-tag>
           </div>
         </div>
       </div>
-  </p-card>
+    </p-card>
 
-  <!-- Manager Role (New project only) -->
-  <p-card header="Função do Manager" *ngIf="showManagerCard" styleClass="rounded-none">
+    <!-- Manager Role (New project only) -->
+    <p-card header="Função do Manager" *ngIf="showManagerCard" styleClass="rounded-none">
       <div class="flex flex-col gap-4">
         <div class="flex flex-col gap-2">
           <label class="flex items-center font-semibold">
@@ -332,20 +339,28 @@
             class="w-full"
             optionLabel="label"
             optionValue="value"
-            [class.ng-invalid]="projectForm.get('managerRoleId')?.invalid && projectForm.get('managerRoleId')?.touched"
+            [class.ng-invalid]="
+              projectForm.get('managerRoleId')?.invalid && projectForm.get('managerRoleId')?.touched
+            "
           ></p-select>
         </div>
         <small
           class="p-error block"
-          *ngIf="projectForm.get('managerRoleId')?.invalid && projectForm.get('managerRoleId')?.touched"
+          *ngIf="
+            projectForm.get('managerRoleId')?.invalid && projectForm.get('managerRoleId')?.touched
+          "
         >
           É obrigatório selecionar sua função no projeto.
         </small>
       </div>
-  </p-card>
+    </p-card>
 
-  <!-- Unfilled Roles -->
-  <p-card header="Vagas Não Preenchidas" *ngIf="showUnfilledRolesCard" styleClass="rounded-t-none">
+    <!-- Unfilled Roles -->
+    <p-card
+      header="Vagas Não Preenchidas"
+      *ngIf="showUnfilledRolesCard"
+      styleClass="rounded-t-none"
+    >
       <div class="flex flex-col gap-4">
         <div class="flex flex-col gap-2">
           <label class="flex items-center font-semibold">
@@ -365,21 +380,26 @@
         </div>
 
         <div class="text-sm text-surface-600">
-          <p>Selecione as vagas que ainda precisam ser preenchidas para o projeto (máximo 8 vagas).</p>
+          <p>
+            Selecione as vagas que ainda precisam ser preenchidas para o projeto (máximo 8 vagas).
+          </p>
         </div>
 
-        <small
-          class="p-error block"
-          *ngIf="projectForm.get('unfilledRoles')?.errors?.['maxItems']"
-        >
-          Máximo de 8 vagas permitidas. Você selecionou {{ projectForm.get('unfilledRoles')?.errors?.['maxItems']?.actual }} vagas.
+        <small class="p-error block" *ngIf="projectForm.get('unfilledRoles')?.errors?.['maxItems']">
+          Máximo de 8 vagas permitidas. Você selecionou
+          {{ projectForm.get('unfilledRoles')?.errors?.['maxItems']?.actual }} vagas.
         </small>
       </div>
 
       <div class="flex justify-center pt-4">
         <p class="text-surface-500 dark:text-surface-400 text-xs">
           Em caso de bug ou dúvida,
-          <a href="https://discord.gg/E5xy62Eus2" target="_blank" rel="noopener" class="text-primary-500 hover:text-primary-400 dark:text-primary-400 dark:hover:text-primary-300 font-medium hover:underline transition-colors">
+          <a
+            href="https://discord.gg/E5xy62Eus2"
+            target="_blank"
+            rel="noopener"
+            class="text-primary-500 hover:text-primary-400 dark:text-primary-400 dark:hover:text-primary-300 font-medium hover:underline transition-colors"
+          >
             contate o suporte
           </a>
         </p>
@@ -388,11 +408,7 @@
 
     <!-- Actions -->
     <div class="flex justify-end gap-3 pt-6">
-      <p-button
-        label="Cancelar"
-        severity="secondary"
-        (onClick)="onCancel()"
-      ></p-button>
+      <p-button label="Cancelar" severity="secondary" (onClick)="onCancel()"></p-button>
       <p-button
         type="submit"
         [label]="isEditMode ? 'Atualizar Projeto' : 'Criar Projeto'"

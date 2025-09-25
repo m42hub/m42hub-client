@@ -6,7 +6,6 @@ const angularEslint = require('@angular-eslint/eslint-plugin');
 const angularTemplate = require('@angular-eslint/eslint-plugin-template');
 const angularTemplateParser = require('@angular-eslint/template-parser');
 
-
 module.exports = [
   // TypeScript & Angular
   {
@@ -60,7 +59,7 @@ module.exports = [
       '@angular-eslint/no-output-rename': 'error',
       '@angular-eslint/use-lifecycle-interface': 'error',
       '@angular-eslint/use-pipe-transform-interface': 'error',
-          // TypeScript recommended
+      // TypeScript recommended
       '@typescript-eslint/adjacent-overload-signatures': 'error',
       '@typescript-eslint/ban-ts-comment': 'error',
       '@typescript-eslint/no-array-constructor': 'error',

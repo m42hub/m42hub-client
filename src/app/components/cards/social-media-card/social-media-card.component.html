@@ -1,54 +1,78 @@
 <ng-container *ngIf="iconsOnly; else fullCard">
-		<div class="flex flex-row gap-3 items-center">
-		<ng-container *ngIf="discord && isDiscordLink">
-			<a [href]="discordUrl" target="_blank" [ngClass]="discordIconClass" title="Discord">
-				<i class="pi pi-discord text-lg"></i>
-			</a>
-		</ng-container>
-		<ng-container *ngIf="linkedin">
-			<a [href]="linkedinUrl" target="_blank" [ngClass]="linkedinIconClass" title="LinkedIn">
-				<i class="pi pi-linkedin text-lg"></i>
-			</a>
-		</ng-container>
-		<ng-container *ngIf="github">
-			<a [href]="githubUrl" target="_blank" [ngClass]="githubIconClass" title="GitHub">
-				<i class="pi pi-github text-lg"></i>
-			</a>
-		</ng-container>
-		<ng-container *ngIf="personalWebsite">
-			<a [href]="personalWebsiteUrl" target="_blank" [ngClass]="globeIconClass" title="Website">
-				<i class="pi pi-globe text-lg"></i>
-			</a>
-		</ng-container>
-		<ng-container *ngIf="!(discord && isDiscordLink) && !linkedin && !github && !personalWebsite">
-			<span class="icon-placeholder">&nbsp;</span>
-		</ng-container>
-	</div>
+  <div class="flex flex-row gap-3 items-center">
+    <ng-container *ngIf="discord && isDiscordLink">
+      <a [href]="discordUrl" target="_blank" [ngClass]="discordIconClass" title="Discord">
+        <i class="pi pi-discord text-lg"></i>
+      </a>
+    </ng-container>
+    <ng-container *ngIf="linkedin">
+      <a [href]="linkedinUrl" target="_blank" [ngClass]="linkedinIconClass" title="LinkedIn">
+        <i class="pi pi-linkedin text-lg"></i>
+      </a>
+    </ng-container>
+    <ng-container *ngIf="github">
+      <a [href]="githubUrl" target="_blank" [ngClass]="githubIconClass" title="GitHub">
+        <i class="pi pi-github text-lg"></i>
+      </a>
+    </ng-container>
+    <ng-container *ngIf="personalWebsite">
+      <a [href]="personalWebsiteUrl" target="_blank" [ngClass]="globeIconClass" title="Website">
+        <i class="pi pi-globe text-lg"></i>
+      </a>
+    </ng-container>
+    <ng-container *ngIf="!(discord && isDiscordLink) && !linkedin && !github && !personalWebsite">
+      <span class="icon-placeholder">&nbsp;</span>
+    </ng-container>
+  </div>
 </ng-container>
 <ng-template #fullCard>
-	<div class="flex flex-col lg:flex-row w-full">
-		<ul class="flex flex-col gap-1 w-full">
-			<li *ngIf="discord">
-				<i class="pi pi-discord mr-1 text-lg" [ngClass]="discordIconClass"></i>
-				<ng-container *ngIf="isDiscordLink; else discordUsername">
-					<a [href]="discordUrl" target="_blank" class="text-blue-400 hover:text-blue-600 underline hover:no-underline pl-1">{{ discordDisplay }}</a>
-				</ng-container>
-				<ng-template #discordUsername>
-					<span class="truncate text-left pl-1">{{ discord }}</span>
-				</ng-template>
-			</li>
-			<li *ngIf="linkedin">
-				<i class="pi pi-linkedin mr-1 text-lg" [ngClass]="linkedinIconClass"></i>
-				<a [href]="linkedinUrl" target="_blank" class="text-blue-400 hover:text-blue-600 underline hover:no-underline pl-1">{{ linkedinDisplay }}</a>
-			</li>
-			<li *ngIf="github">
-				<i class="pi pi-github mr-1 text-lg" [ngClass]="githubIconClass"></i>
-				<a [href]="githubUrl" target="_blank" class="text-blue-400 hover:text-blue-600 underline hover:no-underline pl-1">{{ githubDisplay }}</a>
-			</li>
-			<li *ngIf="personalWebsite">
-				<i class="pi pi-globe mr-1 text-lg" [ngClass]="globeIconClass"></i>
-				<a [href]="personalWebsiteUrl" target="_blank" class="text-blue-400 hover:text-blue-600 underline hover:no-underline pl-1">{{ personalWebsiteDisplay }}</a>
-			</li>
-		</ul>
-	</div>
+  <div class="flex flex-col lg:flex-row w-full">
+    <ul class="flex flex-col gap-1 w-full">
+      <li *ngIf="discord">
+        <i class="pi pi-discord mr-1 text-lg" [ngClass]="discordIconClass"></i>
+        <ng-container *ngIf="isDiscordLink; else discordUsername">
+          <a
+            [href]="discordUrl"
+            target="_blank"
+            class="text-blue-400 hover:text-blue-600 underline hover:no-underline pl-1"
+          >
+            {{ discordDisplay }}
+          </a>
+        </ng-container>
+        <ng-template #discordUsername>
+          <span class="truncate text-left pl-1">{{ discord }}</span>
+        </ng-template>
+      </li>
+      <li *ngIf="linkedin">
+        <i class="pi pi-linkedin mr-1 text-lg" [ngClass]="linkedinIconClass"></i>
+        <a
+          [href]="linkedinUrl"
+          target="_blank"
+          class="text-blue-400 hover:text-blue-600 underline hover:no-underline pl-1"
+        >
+          {{ linkedinDisplay }}
+        </a>
+      </li>
+      <li *ngIf="github">
+        <i class="pi pi-github mr-1 text-lg" [ngClass]="githubIconClass"></i>
+        <a
+          [href]="githubUrl"
+          target="_blank"
+          class="text-blue-400 hover:text-blue-600 underline hover:no-underline pl-1"
+        >
+          {{ githubDisplay }}
+        </a>
+      </li>
+      <li *ngIf="personalWebsite">
+        <i class="pi pi-globe mr-1 text-lg" [ngClass]="globeIconClass"></i>
+        <a
+          [href]="personalWebsiteUrl"
+          target="_blank"
+          class="text-blue-400 hover:text-blue-600 underline hover:no-underline pl-1"
+        >
+          {{ personalWebsiteDisplay }}
+        </a>
+      </li>
+    </ul>
+  </div>
 </ng-template>
