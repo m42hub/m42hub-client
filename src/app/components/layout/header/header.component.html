@@ -1,36 +1,18 @@
-<div class="header-container flex items-center justify-between px-2 sm:px-4 md:px-6 lg:px-8 py-2">
-  <div class="flex flex-col items-start md:flex-row md:items-center">
+<div class="header-container text-neutral flex flex-wrap items-center justify-between px-4 lg:px-8 py-2">
+  <div class="flex items-center gap-2">
     <img
       src="/logo.png"
       alt="Logo"
-      class="h-13 w-15 pl-2 md:h-20 md:w-20 mx-1 min-w-16 md:min-w-20"
+      class="h-18 w-18 md:h-20 md:w-20 min-w-18 md:min-w-20"
     />
     <p-tag
       value="Open Beta"
       severity="warning"
-      class="text-xs font-semibold shadow-lg text-white rounded-2xl min-w-18 ml-1 mt-1 md:ml-2 md:mt-0"
+      class="text-xs font-semibold shadow-lg text-white rounded-2xl min-w-18 ml-2"
     ></p-tag>
   </div>
 
-  <div class="flex items-center md:mr-6">
-    <p-button
-      label="Home"
-      (onClick)="handleClick('/')"
-      aria-label="Home"
-      title="Home"
-      styleClass="p-button-text px-2 text-base hover:bg-surface-100 md:text-lg"
-    ></p-button>
-
-    <p-button
-      label="Projetos"
-      (onClick)="handleClick('/projects')"
-      aria-label="Projetos"
-      title="Projetos"
-      styleClass="p-button-text px-2 text-base hover:bg-surface-100 md:text-lg"
-    ></p-button>
-  </div>
-
-  <div class="flex items-center gap-2 mr-2">
+  <div class="flex items-center gap-2 order-2 md:order-3">
     <ng-container *ngIf="user$ | async as user; else loginButton">
       <div class="relative flex items-center">
         <p-avatar
@@ -63,6 +45,56 @@
       [icon]="darkMode ? 'pi pi-moon' : 'pi pi-sun'"
       (onClick)="toggleDarkMode()"
       styleClass="p-button-rounded p-button-text"
+    ></p-button>
+  </div>
+
+  <div class="w-full flex justify-center md:hidden order-3">
+    <div class="flex items-center gap-2">
+      <p-button
+        label="Home"
+        (onClick)="handleClick('/')"
+        aria-label="Home"
+        title="Home"
+        styleClass="p-button-text px-2 text-lg m-2  hover:bg-surface-100"
+      ></p-button>
+      <p-button
+        label="Projetos"
+        (onClick)="handleClick('/projects')"
+        aria-label="Projetos"
+        title="Projetos"
+        styleClass="p-button-text px-2 text-lg m-2  hover:bg-surface-100"
+      ></p-button>
+      <p-button
+        label="Contribuições"
+        (onClick)="handleClick('/contributions')"
+        aria-label="Contribuições"
+        title="Contribuições"
+        styleClass="p-button-text px-2 text-lg m-2  hover:bg-surface-100"
+      ></p-button>
+    </div>
+  </div>
+
+  <div class="hidden md:flex items-center gap-4 order-2">
+    <p-button
+      label="Home"
+      (onClick)="handleClick('/')"
+      aria-label="Home"
+      title="Home"
+      styleClass="p-button-text px-2 text-lg m-2 hover:bg-surface-100"
+    ></p-button>
+    <p-button
+      label="Projetos"
+      (onClick)="handleClick('/projects')"
+      aria-label="Projetos"
+      title="Projetos"
+      styleClass="p-button-text px-2 text-lg m-2 hover:bg-surface-100"
+    ></p-button>
+    <p-button
+      label="Contribuições"
+      (onClick)="handleClick('/contributions')"
+      aria-label="Contribuições"
+      title="Contribuições"
+      styleClass="p-button-text px-2 text-lg m-2 hover:bg-surface-100"
     ></p-button>
   </div>
 </div>

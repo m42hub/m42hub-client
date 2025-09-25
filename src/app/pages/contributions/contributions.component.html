@@ -1,0 +1,168 @@
+<div
+  class="min-h-screen bg-gradient-to-br from-primary-500 to-primary-900 flex flex-col items-center py-6 px-4"
+>
+  <h1 class="text-3xl font-bold text-white mb-4">Contribuições</h1>
+  <div class="w-full justify-between flex flex-col md:flex-row gap-4 items-stretch">
+    <!-- Financeiras -->
+    <div
+      class="flex-1 h-full bg-white/10 backdrop-blur-sm rounded-xl p-3 border border-white/20 shadow-xl flex flex-col justify-center"
+    >
+      <h2 class="text-lg font-semibold text-white mb-2 text-center">Financeiras</h2>
+      <p-table
+        [value]="financialContributions"
+        [resizableColumns]="true"
+        [scrollable]="true"
+        class="w-full h-full table"
+        [style]="{ borderRadius: '12px', overflow: 'hidden' }"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th class="text-white text-center w-1">Ranking</th>
+            <th class="text-white text-left">Contribuidor</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-row>
+          <tr>
+            <td class="font-bold text-primary-300 text-center">#{{ row.ranking }}</td>
+            <td class="flex items-center gap-2">
+              <p-avatar [image]="row.profileImage" shape="circle" size="large"></p-avatar>
+              <div class="flex-col flex">
+                <p class="text-white font-medium">{{ row.name }}</p>
+                <p class="text-indigo-400 font-medium">{{ `@${row.username}` }}</p>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+
+    <!-- PRs -->
+    <div
+      class="flex-1 h-full bg-white/10 backdrop-blur-sm rounded-xl p-3 border border-white/20 shadow-xl flex flex-col justify-center"
+    >
+      <h2 class="text-lg font-semibold text-white mb-2 text-center">Pull Requests</h2>
+      <p-table
+        [value]="groupedPRContributions"
+        dataKey="name"
+        class="w-full"
+        [style]="{ borderRadius: '12px', overflow: 'hidden' }"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th class="text-white text-left">Contribuidor</th>
+            <th class="text-white text-center w-1">PRs Realizados</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData>
+          <tr>
+            <td class="flex items-center gap-2">
+              <button
+                type="button"
+                pButton
+                pRipple
+                (click)="togglePR(rowData.name)"
+                [icon]="expandedPR === rowData.name ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
+                aria-label="Expandir PRs"
+                text
+                rounded
+                plain
+                class="mr-2"
+              ></button>
+              <p-avatar [image]="rowData.profileImage" shape="circle" size="large"></p-avatar>
+              <div class="flex-col flex">
+                <p class="text-white font-medium">{{ rowData.name }}</p>
+                <p class="text-indigo-400 font-medium">{{ `@${rowData.username}` }}</p>
+              </div>
+            </td>
+            <td class="text-center">
+              {{ rowData.prs.length }}
+            </td>
+          </tr>
+          <tr *ngIf="expandedPR === rowData.name">
+            <td colspan="2" class="text-left pl-13">
+              <ul class="list-disc inline-block text-left">
+                <li *ngFor="let item of rowData.prs">
+                  <a
+                    [href]="item.link"
+                    target="_blank"
+                    class="text-primary-200 hover:text-white underline"
+                  >
+                    {{ item.description }}
+                  </a>
+                </li>
+              </ul>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+
+    <!-- Issues/Sugestões -->
+    <div
+      class="flex-1 h-full bg-white/10 backdrop-blur-sm rounded-xl p-3 border border-white/20 shadow-xl flex flex-col justify-center"
+    >
+      <h2 class="text-lg font-semibold text-white mb-2 text-center">Issues/Sugestões</h2>
+      <p-table
+        [value]="groupedIssueContributions"
+        dataKey="name"
+        class="w-full"
+        [style]="{ borderRadius: '12px', overflow: 'hidden' }"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th class="text-white text-left">Contribuidor</th>
+            <th class="text-white text-center m-1">Issues/Sugestões</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData>
+          <tr>
+            <td class="flex items-center gap-2">
+              <button
+                type="button"
+                pButton
+                pRipple
+                (click)="toggleIssue(rowData.name)"
+                [icon]="
+                  expandedIssue === rowData.name ? 'pi pi-chevron-down' : 'pi pi-chevron-right'
+                "
+                aria-label="Expandir Issues/Sugestões"
+                text
+                rounded
+                plain
+                class="mr-2"
+              ></button>
+              <p-avatar [image]="rowData.profileImage" shape="circle" size="large"></p-avatar>
+              <div class="flex-col flex">
+                <p class="text-white font-medium">{{ rowData.name }}</p>
+                <p class="text-indigo-400 font-medium">{{ `@${rowData.username}` }}</p>
+              </div>
+            </td>
+            <td class="text-center">
+              {{ rowData.issues.length }}
+            </td>
+          </tr>
+          <tr *ngIf="expandedIssue === rowData.name">
+            <td colspan="2" class="text-left pl-13">
+              <ul class="list-disc inline-block text-left">
+                <li *ngFor="let issue of rowData.issues">
+                  <ng-container *ngIf="issue.link; else noLink">
+                    <a
+                      [href]="issue.link"
+                      target="_blank"
+                      class="text-primary-200 hover:text-white underline"
+                    >
+                      {{ issue.description }}
+                    </a>
+                  </ng-container>
+                  <ng-template #noLink>
+                    <span class="text-white">{{ issue.description }}</span>
+                  </ng-template>
+                </li>
+              </ul>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</div>
