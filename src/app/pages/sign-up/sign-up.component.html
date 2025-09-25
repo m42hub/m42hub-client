@@ -1,12 +1,16 @@
 <app-disclaimer-modal
   [(visible)]="showDisclaimerModal"
   (accepted)="onDisclaimerAccepted()"
-  (cancelled)="onDisclaimerCancelled()">
-</app-disclaimer-modal>
+  (cancelled)="onDisclaimerCancelled()"
+></app-disclaimer-modal>
 
-<div *ngIf="!showDisclaimerModal" class="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-500 to-primary-700 p-2 sm:p-4">
-  <div class="w-full max-w-3xl">
-    <div class="bg-surface-900 dark:bg-surface-0 rounded-xl shadow-2xl overflow-hidden animate-fade-in-up">
+<div
+  class="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-500 to-primary-700 p-2 sm:p-4"
+>
+  <div *ngIf="!showDisclaimerModal" class="w-full max-w-3xl">
+    <div
+      class="bg-surface-900 dark:bg-surface-0 rounded-xl shadow-2xl overflow-hidden animate-fade-in-up"
+    >
       <div class="text-center p-3 sm:p-4">
         <img src="/logo.png" alt="M42Hub" class="w-25 h-25 mx-auto mb-2 sm:mb-4 rounded-lg" />
         <h1 class="text-xl sm:text-2xl font-bold text-surface-0 dark:text-surface-900 mb-1 sm:mb-2">
@@ -22,19 +26,22 @@
           *ngIf="successMessage"
           severity="success"
           [text]="successMessage"
-          class="mb-6">
-        </p-message>
+          class="mb-6"
+        ></p-message>
 
         <p-message
           *ngIf="errorMessage"
           severity="error"
           [text]="errorMessage"
-          class="mb-6">
-        </p-message>
+          class="mb-6"
+        ></p-message>
 
         <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()" class="space-y-4">
           <div>
-            <label for="username" class="block text-sm font-medium text-surface-200 dark:text-surface-700 mb-2">
+            <label
+              for="username"
+              class="block text-sm font-medium text-surface-200 dark:text-surface-700 mb-2"
+            >
               Nome de Usuário
             </label>
             <input
@@ -44,11 +51,13 @@
               placeholder="Digite seu nome de usuário"
               class="w-full"
               [class.ng-invalid]="isUsernameInvalid"
-              autocomplete="username" />
+              autocomplete="username"
+            />
 
             <small
               *ngIf="isUsernameInvalid"
-              class="text-red-400 dark:text-red-500 text-xs mt-1 block">
+              class="text-red-400 dark:text-red-500 text-xs mt-1 block"
+            >
               <span *ngIf="usernameControl?.errors?.['required']">
                 Nome de usuário é obrigatório
               </span>
@@ -62,7 +71,10 @@
           </div>
 
           <div>
-            <label for="email" class="block text-sm font-medium text-surface-200 dark:text-surface-700 mb-2">
+            <label
+              for="email"
+              class="block text-sm font-medium text-surface-200 dark:text-surface-700 mb-2"
+            >
               Email
             </label>
             <input
@@ -72,23 +84,21 @@
               placeholder="Digite seu email"
               class="w-full"
               [class.ng-invalid]="isEmailInvalid"
-              autocomplete="email" />
+              autocomplete="email"
+            />
 
-            <small
-              *ngIf="isEmailInvalid"
-              class="text-red-400 dark:text-red-500 text-xs mt-1 block">
-              <span *ngIf="emailControl?.errors?.['required']">
-                Email é obrigatório
-              </span>
-              <span *ngIf="emailControl?.errors?.['email']">
-                Email deve ter um formato válido
-              </span>
+            <small *ngIf="isEmailInvalid" class="text-red-400 dark:text-red-500 text-xs mt-1 block">
+              <span *ngIf="emailControl?.errors?.['required']">Email é obrigatório</span>
+              <span *ngIf="emailControl?.errors?.['email']">Email deve ter um formato válido</span>
             </small>
           </div>
 
           <div class="flex flex-row gap-4">
             <div class="flex-1">
-              <label for="firstName" class="block text-sm font-medium text-surface-200 dark:text-surface-700 mb-2">
+              <label
+                for="firstName"
+                class="block text-sm font-medium text-surface-200 dark:text-surface-700 mb-2"
+              >
                 Nome
               </label>
               <input
@@ -98,14 +108,14 @@
                 placeholder="Seu nome"
                 class="w-full"
                 [class.ng-invalid]="isFirstNameInvalid"
-                autocomplete="given-name" />
+                autocomplete="given-name"
+              />
 
               <small
                 *ngIf="isFirstNameInvalid"
-                class="text-red-400 dark:text-red-500 text-xs mt-1 block">
-                <span *ngIf="firstNameControl?.errors?.['required']">
-                  Nome é obrigatório
-                </span>
+                class="text-red-400 dark:text-red-500 text-xs mt-1 block"
+              >
+                <span *ngIf="firstNameControl?.errors?.['required']">Nome é obrigatório</span>
                 <span *ngIf="firstNameControl?.errors?.['minlength']">
                   Nome deve ter pelo menos 2 caracteres
                 </span>
@@ -113,7 +123,10 @@
             </div>
 
             <div class="flex-1">
-              <label for="lastName" class="block text-sm font-medium text-surface-200 dark:text-surface-700 mb-2">
+              <label
+                for="lastName"
+                class="block text-sm font-medium text-surface-200 dark:text-surface-700 mb-2"
+              >
                 Sobrenome
               </label>
               <input
@@ -123,14 +136,14 @@
                 placeholder="Seu sobrenome"
                 class="w-full"
                 [class.ng-invalid]="isLastNameInvalid"
-                autocomplete="family-name" />
+                autocomplete="family-name"
+              />
 
               <small
                 *ngIf="isLastNameInvalid"
-                class="text-red-400 dark:text-red-500 text-xs mt-1 block">
-                <span *ngIf="lastNameControl?.errors?.['required']">
-                  Sobrenome é obrigatório
-                </span>
+                class="text-red-400 dark:text-red-500 text-xs mt-1 block"
+              >
+                <span *ngIf="lastNameControl?.errors?.['required']">Sobrenome é obrigatório</span>
                 <span *ngIf="lastNameControl?.errors?.['minlength']">
                   Sobrenome deve ter pelo menos 2 caracteres
                 </span>
@@ -139,7 +152,10 @@
           </div>
 
           <div>
-            <label for="password" class="block text-sm font-medium text-surface-200 dark:text-surface-700 mb-2">
+            <label
+              for="password"
+              class="block text-sm font-medium text-surface-200 dark:text-surface-700 mb-2"
+            >
               Senha
             </label>
             <p-password
@@ -150,15 +166,14 @@
               styleClass="w-full"
               inputStyleClass="w-full"
               [class.ng-invalid]="isPasswordInvalid"
-              autocomplete="new-password">
-            </p-password>
+              autocomplete="new-password"
+            ></p-password>
 
             <small
               *ngIf="isPasswordInvalid"
-              class="text-red-400 dark:text-red-500 text-xs mt-1 block">
-              <span *ngIf="passwordControl?.errors?.['required']">
-                Senha é obrigatória
-              </span>
+              class="text-red-400 dark:text-red-500 text-xs mt-1 block"
+            >
+              <span *ngIf="passwordControl?.errors?.['required']">Senha é obrigatória</span>
               <span *ngIf="passwordControl?.errors?.['minlength']">
                 Senha deve ter pelo menos 6 caracteres
               </span>
@@ -169,7 +184,10 @@
           </div>
 
           <div>
-            <label for="confirmPassword" class="block text-sm font-medium text-surface-200 dark:text-surface-700 mb-2">
+            <label
+              for="confirmPassword"
+              class="block text-sm font-medium text-surface-200 dark:text-surface-700 mb-2"
+            >
               Confirmar Senha
             </label>
             <p-password
@@ -180,12 +198,13 @@
               styleClass="w-full"
               inputStyleClass="w-full"
               [class.ng-invalid]="isConfirmPasswordInvalid"
-              autocomplete="new-password">
-            </p-password>
+              autocomplete="new-password"
+            ></p-password>
 
             <small
               *ngIf="isConfirmPasswordInvalid"
-              class="text-red-400 dark:text-red-500 text-xs mt-1 block">
+              class="text-red-400 dark:text-red-500 text-xs mt-1 block"
+            >
               <span *ngIf="confirmPasswordControl?.errors?.['required']">
                 Confirmação de senha é obrigatória
               </span>
@@ -202,15 +221,18 @@
               icon="pi pi-user-plus"
               styleClass="min-w-sm"
               [loading]="loading"
-              [disabled]="signUpForm.invalid || loading">
-            </p-button>
+              [disabled]="signUpForm.invalid || loading"
+            ></p-button>
           </div>
         </form>
 
         <div class="mt-4 text-center">
           <p class="text-surface-400 dark:text-surface-600 text-sm">
             Já tem uma conta?
-            <a routerLink="/login" class="text-primary-400 hover:text-primary-300 dark:text-primary-500 dark:hover:text-primary-600 font-medium hover:underline transition-colors">
+            <a
+              routerLink="/login"
+              class="text-primary-400 hover:text-primary-300 dark:text-primary-500 dark:hover:text-primary-600 font-medium hover:underline transition-colors"
+            >
               Entre aqui
             </a>
           </p>
