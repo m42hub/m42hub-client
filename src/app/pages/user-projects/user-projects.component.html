@@ -14,7 +14,9 @@
   <div *ngIf="!loading && !error">
     <div
       *ngIf="requestedProjects.length > 0"
-      [ngClass]="isDarkMode ? 'postit-card postit-yellow w-full' : 'postit-card postit-yellow-light w-full'"
+      [ngClass]="
+        isDarkMode ? 'postit-card postit-yellow w-full' : 'postit-card postit-yellow-light w-full'
+      "
       class="rounded-lg shadow-md p-4 mb-6"
     >
       <h2
@@ -32,7 +34,9 @@
 
     <div
       *ngIf="ongoingProjects.length > 0"
-      [ngClass]="isDarkMode ? 'postit-card postit-blue w-full' : 'postit-card postit-blue-light w-full'"
+      [ngClass]="
+        isDarkMode ? 'postit-card postit-blue w-full' : 'postit-card postit-blue-light w-full'
+      "
       class="rounded-lg shadow-md p-4 mb-6"
     >
       <h2
@@ -50,7 +54,9 @@
 
     <div
       *ngIf="finishedProjects.length > 0"
-      [ngClass]="isDarkMode ? 'postit-card postit-green w-full' : 'postit-card postit-green-light w-full'"
+      [ngClass]="
+        isDarkMode ? 'postit-card postit-green w-full' : 'postit-card postit-green-light w-full'
+      "
     >
       <h2
         [ngClass]="isDarkMode ? 'text-white' : 'text-black'"

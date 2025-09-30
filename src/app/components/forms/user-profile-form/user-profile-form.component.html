@@ -1,102 +1,118 @@
 <form [formGroup]="editForm" class="rounded-lg p-4 flex flex-col gap-4 max-w-5xl mx-auto">
-	<div class="flex flex-col md:flex-row gap-4">
-		<div class="flex-1">
-			<label class="mb-1 text-sm ">Nome</label>
-			<input
-				pInputText
-				id="firstname"
-				formControlName="firstName"
-				class="w-full"
-				placeholder="Nome"
-			/>
-		</div>
-		<div class="flex-1">
-			<label class="mb-1 text-sm ">Sobrenome</label>
-			<input
-				pInputText
-				id="lastName"
-				formControlName="lastName"
-				class="w-full"
-				placeholder="Sobrenome"
-				title="Sobrenome"
-			/>
-		</div>
-	</div>
-	<div>
-		<label class="mb-1 text-sm ">Biografia</label>
-		<textarea
-			pInputTextarea
-			id="biography"
-			formControlName="biography"
-			rows="3" class="w-full"
-			placeholder="Biografia"
-			title="Biografia"
-		></textarea>
-	</div>
-	<div class="flex flex-col md:flex-row gap-4">
-		<div class="flex-1">
-			<label class="mb-1 text-sm ">Discord</label>
-			<input
-				pInputText
-				id="discord"
-				formControlName="discord"
-				class="w-full"
-				placeholder="joaods"
-				title="Discord"
-			/>
-		</div>
-		<div class="flex-1">
-			<label class="mb-1 text-sm ">LinkedIn</label>
-			<input
-				pInputText
-				id="linkedin"
-				formControlName="linkedin"
-				class="w-full"
-				placeholder="Link do servidor ou username do Discord"
-				title="LinkedIn"
-			/>
-		</div>
-	</div>
-	<div class="flex flex-col md:flex-row gap-4">
-		<div class="flex-1">
-			<label class="mb-1 text-sm ">GitHub</label>
-			<input
-				pInputText
-				id="github"
-				formControlName="github"
-				class="w-full"
-				placeholder="seu-username"
-				title="GitHub"
-			/>
-		</div>
-		<div class="flex-1">
-			<label class="mb-1 text-sm ">Site pessoal</label>
-			<input
-				pInputText
-				id="personalWebsite"
-				formControlName="personalWebsite"
-				class="w-full"
-				placeholder="www.m42hub.com"
-				title="Site pessoal"
-			/>
-		</div>
-	</div>
-	<div>
-		<label class=" mb-1">Áreas de Interesse</label>
-		<p-multiSelect
-			formControlName="interestRoles"
-			[options]="allRoles"
+  <div class="flex flex-col md:flex-row gap-4">
+    <div class="flex-1">
+      <label class="mb-1 text-sm">Nome</label>
+      <input
+        pInputText
+        id="firstname"
+        formControlName="firstName"
+        class="w-full"
+        placeholder="Nome"
+      />
+    </div>
+    <div class="flex-1">
+      <label class="mb-1 text-sm">Sobrenome</label>
+      <input
+        pInputText
+        id="lastName"
+        formControlName="lastName"
+        class="w-full"
+        placeholder="Sobrenome"
+        title="Sobrenome"
+      />
+    </div>
+  </div>
+  <div>
+    <label class="mb-1 text-sm">Biografia</label>
+    <textarea
+      pInputTextarea
+      id="biography"
+      formControlName="biography"
+      rows="3"
+      class="w-full"
+      placeholder="Biografia"
+      title="Biografia"
+    ></textarea>
+  </div>
+  <div class="flex flex-col md:flex-row gap-4">
+    <div class="flex-1">
+      <label class="mb-1 text-sm">Discord</label>
+      <input
+        pInputText
+        id="discord"
+        formControlName="discord"
+        class="w-full"
+        placeholder="joaods"
+        title="Discord"
+      />
+    </div>
+    <div class="flex-1">
+      <label class="mb-1 text-sm">LinkedIn</label>
+      <input
+        pInputText
+        id="linkedin"
+        formControlName="linkedin"
+        class="w-full"
+        placeholder="Link do servidor ou username do Discord"
+        title="LinkedIn"
+      />
+    </div>
+  </div>
+  <div class="flex flex-col md:flex-row gap-4">
+    <div class="flex-1">
+      <label class="mb-1 text-sm">GitHub</label>
+      <input
+        pInputText
+        id="github"
+        formControlName="github"
+        class="w-full"
+        placeholder="seu-username"
+        title="GitHub"
+      />
+    </div>
+    <div class="flex-1">
+      <label class="mb-1 text-sm">Site pessoal</label>
+      <input
+        pInputText
+        id="personalWebsite"
+        formControlName="personalWebsite"
+        class="w-full"
+        placeholder="www.m42hub.com"
+        title="Site pessoal"
+      />
+    </div>
+  </div>
+  <div>
+    <label class="mb-1">Áreas de Interesse</label>
+    <p-multiSelect
+      formControlName="interestRoles"
+      [options]="allRoles"
       [showClear]="true"
-			optionLabel="name"
-			optionValue="id"
-			display="chip"
-			class="w-full"
-			placeholder="Selecione as áreas de interesse"
-		></p-multiSelect>
-	</div>
-	<div class="flex gap-2 mt-2">
-    <button pButton type="button" label="Salvar" class="p-button-success" (click)="onSave()" [loading]="saveLoading" [disabled]="!editForm.valid || saveLoading"></button>
-		<button pButton type="button" label="Cancelar" class="p-button-secondary" (click)="onCancel()" [disabled]="saveLoading"></button>
-	</div>
-	<div *ngIf="saveError" class="text-red-400 mt-2">{{ saveError }}</div>
+      optionLabel="name"
+      optionValue="id"
+      display="chip"
+      class="w-full"
+      placeholder="Selecione as áreas de interesse"
+    ></p-multiSelect>
+  </div>
+  <div class="flex gap-2 mt-2">
+    <button
+      pButton
+      type="button"
+      label="Salvar"
+      class="p-button-success"
+      (click)="onSave()"
+      [loading]="saveLoading"
+      [disabled]="!editForm.valid || saveLoading"
+    ></button>
+    <button
+      pButton
+      type="button"
+      label="Cancelar"
+      class="p-button-secondary"
+      (click)="onCancel()"
+      [disabled]="saveLoading"
+    ></button>
+  </div>
+  <div *ngIf="saveError" class="text-red-400 mt-2">{{ saveError }}</div>
 </form>

@@ -4,7 +4,9 @@
   <p-card *ngIf="project.unfilledRoles && project.unfilledRoles.length > 0" class="w-full">
     <ng-template pTemplate="header">
       <div class="pt-3 sm:pt-4">
-        <h4 class="text-sm sm:text-base font-bold text-800 dark:text-surface-0 text-center uppercase tracking-wide">
+        <h4
+          class="text-sm sm:text-base font-bold text-800 dark:text-surface-0 text-center uppercase tracking-wide"
+        >
           Vagas Abertas
         </h4>
       </div>
@@ -16,8 +18,8 @@
           *ngFor="let role of project.unfilledRoles"
           [value]="role.name"
           severity="primary"
-          class="w-full justify-center p-2 text-sm">
-        </p-tag>
+          class="w-full justify-center p-2 text-sm"
+        ></p-tag>
 
         <div class="mt-4" *ngIf="canJoinProject">
           <p-button
@@ -25,8 +27,8 @@
             icon="pi pi-plus"
             styleClass="w-full"
             severity="success"
-            (onClick)="openJoinModal()">
-          </p-button>
+            (onClick)="openJoinModal()"
+          ></p-button>
         </div>
       </div>
     </ng-template>
