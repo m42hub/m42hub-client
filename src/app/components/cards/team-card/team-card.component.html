@@ -1,7 +1,9 @@
 <p-card class="w-full h-full">
   <ng-template pTemplate="header" *ngIf="showHeader">
     <div class="p-4">
-      <h4 class="text-sm sm:text-base font-bold text-800 dark:text-surface-0 text-center uppercase tracking-wide">
+      <h4
+        class="text-sm sm:text-base font-bold text-800 dark:text-surface-0 text-center uppercase tracking-wide"
+      >
         Equipe
       </h4>
     </div>
@@ -10,16 +12,24 @@
   <ng-template pTemplate="content">
     <div class="flex flex-col gap-2 overflow-y-auto">
       <div *ngIf="mode === 'display'" class="flex flex-col gap-2">
-        <div *ngFor="let member of team" class="relative flex items-center gap-2 sm:gap-3 p-2 sm:p-3 bg-[#2A2A2A] rounded-lg overflow-hidden">
+        <div
+          *ngFor="let member of team"
+          class="relative flex items-center gap-2 sm:gap-3 p-2 sm:p-3 bg-[#2A2A2A] rounded-lg overflow-hidden"
+        >
           <div
             class="absolute inset-0 w-full h-full z-0"
             [ngStyle]="{
-              'background-image': member.profileBannerUrl ? 'url(' + member.profileBannerUrl + ')' : '',
+              'background-image': member.profileBannerUrl
+                ? 'url(' + member.profileBannerUrl + ')'
+                : '',
               'background-size': 'cover',
-              'background-position': 'center'
+              'background-position': 'center',
             }"
           >
-            <div *ngIf="member.profileBannerUrl" class="absolute inset-0 w-full h-full bg-black/70"></div>
+            <div
+              *ngIf="member.profileBannerUrl"
+              class="absolute inset-0 w-full h-full bg-black/70"
+            ></div>
             <div *ngIf="!member.profileBannerUrl" class="absolute inset-0 w-full h-full"></div>
           </div>
 
@@ -29,30 +39,37 @@
               size="large"
               shape="circle"
               (onImageError)="onImageError($event)"
-              class="h-12 border-2 border-primary-200">
-            </p-avatar>
+              class="h-12 border-2 border-primary-200"
+            ></p-avatar>
           </div>
           <div class="relative z-10 flex-1 min-w-0">
-            <p class="text-sm sm:text-sm font-bold text-white truncate"
-               [pTooltip]="member.name"
-               tooltipPosition="top"
-               tooltipStyleClass="text-xs">
-               {{ member.name }}
+            <p
+              class="text-sm sm:text-sm font-bold text-white truncate"
+              [pTooltip]="member.name"
+              tooltipPosition="top"
+              tooltipStyleClass="text-xs"
+            >
+              {{ member.name }}
             </p>
-            <p class="text-xs text-gray-50 truncate mb-2"> {{ `@${member.username}` }}</p>
-            <p class="text-xs font-bold text-surface-500 truncate"
-               [pTooltip]="member.role"
-               tooltipPosition="top"
-               tooltipStyleClass="text-xs">{{ member.role }}</p>
+            <p class="text-xs text-gray-50 truncate mb-2">{{ `@${member.username}` }}</p>
+            <p
+              class="text-xs font-bold text-surface-500 truncate"
+              [pTooltip]="member.role"
+              tooltipPosition="top"
+              tooltipStyleClass="text-xs"
+            >
+              {{ member.role }}
+            </p>
           </div>
-          <p-tag *ngIf="member.isManager"
+          <p-tag
+            *ngIf="member.isManager"
             [pTooltip]="'Idealizador'"
             tooltipPosition="top"
             tooltipStyleClass="text-xs"
             value="M"
             severity="primary"
-            class="text-xs flex-shrink-0">
-          </p-tag>
+            class="text-xs flex-shrink-0"
+          ></p-tag>
           <button
             pButton
             type="button"
@@ -60,12 +77,16 @@
             (click)="viewProfile(member.username)"
             [pTooltip]="'Ver perfil'"
             tooltipPosition="top"
-            tooltipStyleClass="text-xs">
+            tooltipStyleClass="text-xs"
+          >
             <i class="pi pi-eye"></i>
           </button>
         </div>
 
-        <div *ngIf="team.length === 0" class="text-center p-6 text-surface-500 dark:text-surface-800">
+        <div
+          *ngIf="team.length === 0"
+          class="text-center p-6 text-surface-500 dark:text-surface-800"
+        >
           <i class="pi pi-users text-2xl mb-2 block"></i>
           <p class="text-sm">Nenhum membro na equipe</p>
         </div>
@@ -73,44 +94,56 @@
 
       <!-- Edit Mode -->
       <div *ngIf="mode === 'edit'" class="flex flex-col gap-2">
-        <div *ngFor="let member of team; let i = index" class="flex items-start gap-2 sm:gap-3 p-2 sm:p-3 border border-surface-200 rounded-lg bg-surface-card dark:bg-surface-50">
+        <div
+          *ngFor="let member of team; let i = index"
+          class="flex items-start gap-2 sm:gap-3 p-2 sm:p-3 border border-surface-200 rounded-lg bg-surface-card dark:bg-surface-50"
+        >
           <div class="flex-shrink-0">
             <p-avatar
               [image]="member.photo || this.defaultAvatar"
               size="large"
               shape="circle"
               (onImageError)="onImageError($event)"
-              class="w-10 h-10 sm:w-12 sm:h-12">
-            </p-avatar>
+              class="w-10 h-10 sm:w-12 sm:h-12"
+            ></p-avatar>
           </div>
-            <div class="flex-1 min-w-0 flex flex-col gap-1">
-              <div class="flex items-center gap-2">
-                <p class="text-md sm:text-sm font-bold text-surface-950 truncate">{{ member.name }}</p>
-                <p-tag *ngIf="member.isManager"
-                  [pTooltip]="'Idealizador'"
-                  tooltipPosition="top"
-                  tooltipStyleClass="text-xs"
-                  value="M"
-                  severity="primary"
-                  class="text-xs flex-shrink-0">
-                </p-tag>
-                <button
-                  pButton
-                  type="button"
-                  class="p-button-sm p-button p-button-info ml-2"
-                  (click)="viewProfile(member.username)"
-                  [pTooltip]="'Ver perfil'"
-                  tooltipPosition="top"
-                  tooltipStyleClass="text-xs">
-                  <i class="pi pi-eye"></i>
-                </button>
-              </div>
-              <p *ngIf="member.username" class="text-xs text-surface-900 truncate mb-2"> {{ `@${member.username}` }}</p>
-              <p class="text-sm font-bold text-surface-600 truncate">{{ member.role }}</p>
+          <div class="flex-1 min-w-0 flex flex-col gap-1">
+            <div class="flex items-center gap-2">
+              <p class="text-md sm:text-sm font-bold text-surface-950 truncate">
+                {{ member.name }}
+              </p>
+              <p-tag
+                *ngIf="member.isManager"
+                [pTooltip]="'Idealizador'"
+                tooltipPosition="top"
+                tooltipStyleClass="text-xs"
+                value="M"
+                severity="primary"
+                class="text-xs flex-shrink-0"
+              ></p-tag>
+              <button
+                pButton
+                type="button"
+                class="p-button-sm p-button p-button-info ml-2"
+                (click)="viewProfile(member.username)"
+                [pTooltip]="'Ver perfil'"
+                tooltipPosition="top"
+                tooltipStyleClass="text-xs"
+              >
+                <i class="pi pi-eye"></i>
+              </button>
             </div>
+            <p *ngIf="member.username" class="text-xs text-surface-900 truncate mb-2">
+              {{ `@${member.username}` }}
+            </p>
+            <p class="text-sm font-bold text-surface-600 truncate">{{ member.role }}</p>
+          </div>
         </div>
 
-        <div *ngIf="team.length === 0" class="text-center p-6 text-surface-500 dark:text-surface-800 border-2 border-dashed border-surface-border rounded-lg">
+        <div
+          *ngIf="team.length === 0"
+          class="text-center p-6 text-surface-500 dark:text-surface-800 border-2 border-dashed border-surface-border rounded-lg"
+        >
           <i class="pi pi-users text-2xl mb-2 block"></i>
           <p class="text-sm">Nenhum membro na equipe</p>
         </div>

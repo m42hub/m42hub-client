@@ -1,7 +1,9 @@
 <p-card class="w-full h-full">
   <ng-template pTemplate="header" *ngIf="showHeader">
     <div class="p-4">
-      <h4 class="text-sm sm:text-base font-bold text-800 dark:text-surface-0 text-center uppercase tracking-wide">
+      <h4
+        class="text-sm sm:text-base font-bold text-800 dark:text-surface-0 text-center uppercase tracking-wide"
+      >
         Solicitações Pendentes
       </h4>
     </div>
@@ -9,7 +11,10 @@
 
   <ng-template pTemplate="content">
     <div class="flex flex-col gap-3 overflow-y-auto">
-  <div *ngFor="let request of requestsWithFormattedDate" class="p-4 border border-surface-border rounded-lg bg-surface-card dark:bg-surface-50">
+      <div
+        *ngFor="let request of requestsWithFormattedDate"
+        class="p-4 border border-surface-border rounded-lg bg-surface-card dark:bg-surface-50"
+      >
         <div class="flex items-start gap-3">
           <div class="flex-shrink-0">
             <p-avatar
@@ -17,22 +22,23 @@
               size="large"
               shape="circle"
               (onImageError)="onImageError($event)"
-              class="h-12">
-            </p-avatar>
+              class="h-12"
+            ></p-avatar>
           </div>
           <div class="flex-1 min-w-0 space-y-2">
             <div class="flex justify-between items-start">
               <div class="flex-1 min-w-0">
                 <p class="text-md font-bold text-surface-950 truncate">{{ request.name }}</p>
 
-                <p *ngIf="request.username" class="text-xs text-surface-900 truncate mb-2"> {{ `@${request.username}` }}</p>
+                <p *ngIf="request.username" class="text-xs text-surface-900 truncate mb-2">
+                  {{ `@${request.username}` }}
+                </p>
 
                 <p class="text-sm text-surface-800 truncate">Solicitou: {{ request.role }}</p>
 
                 <p class="text-xs text-surface-800" *ngIf="request.createdAtFormatted">
                   {{ request.createdAtFormatted }}
                 </p>
-
               </div>
               <div class="flex-shrink-0 flex flex-col sm:flex-row gap-1">
                 <button
@@ -42,35 +48,42 @@
                   (click)="viewProfile(request.username)"
                   [pTooltip]="'Ver perfil'"
                   tooltipPosition="top"
-                  tooltipStyleClass="text-xs">
+                  tooltipStyleClass="text-xs"
+                >
                   <i class="pi pi-eye"></i>
                 </button>
                 <button
                   type="button"
                   class="p-button p-button-success p-button-sm text-xs"
                   (click)="onAcceptRequest(request)"
-                  title="Aceitar solicitação">
+                  title="Aceitar solicitação"
+                >
                   <i class="pi pi-check"></i>
                 </button>
                 <button
                   type="button"
                   class="p-button p-button-danger p-button-sm text-xs"
                   (click)="onRejectRequest(request)"
-                  title="Recusar solicitação">
+                  title="Recusar solicitação"
+                >
                   <i class="pi pi-times"></i>
                 </button>
               </div>
             </div>
 
             <div class="text-surface-900 text-sm" *ngIf="request.applicationMessage">
-              <strong>Mensagem:</strong> {{ request.applicationMessage }}
+              <strong>Mensagem:</strong>
+              {{ request.applicationMessage }}
             </div>
           </div>
         </div>
       </div>
 
       <!-- FALLBACK -->
-      <div *ngIf="requests.length === 0" class="text-center p-6 text-surface-500 dark:text-surface-800 border-2 border-dashed border-surface-border rounded-lg">
+      <div
+        *ngIf="requests.length === 0"
+        class="text-center p-6 text-surface-500 dark:text-surface-800 border-2 border-dashed border-surface-border rounded-lg"
+      >
         <i class="pi pi-inbox text-2xl mb-2 block"></i>
         <p class="text-sm">Nenhuma solicitação pendente</p>
       </div>
@@ -81,7 +94,8 @@
       [(visible)]="feedbackDialogVisible"
       [modal]="true"
       [closable]="false"
-      [dismissableMask]="true">
+      [dismissableMask]="true"
+    >
       <div class="flex flex-col gap-2 min-w-sm">
         <textarea
           id="feedbackText"
@@ -92,12 +106,7 @@
           placeholder="Descreva o motivo da rejeição..."
         ></textarea>
         <div class="flex justify-end gap-2 mt-4">
-          <button
-            pButton
-            type="button"
-            label="Cancelar"
-            (click)="closeFeedbackDialog()"
-          ></button>
+          <button pButton type="button" label="Cancelar" (click)="closeFeedbackDialog()"></button>
           <button
             pButton
             type="button"

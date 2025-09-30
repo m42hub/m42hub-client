@@ -1,43 +1,55 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>M42hub</title>
-  <meta name="description" content="M42hub - Plataforma colaborativa para projetos, equipes e inovação. Descubra, participe e gerencie projetos de forma eficiente.">
-  <meta name="keywords" content="projetos, colaboração, equipes, inovação, gestão, tecnologia, m42hub">
-  <meta name="author" content="M42hub Team">
-  <meta name="robots" content="index, follow">
-  <meta property="og:title" content="M42hub - Plataforma de Projetos e Colaboração">
-  <meta property="og:description" content="Descubra, participe e gerencie projetos colaborativos na M42hub.">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://m42hub.com/">
-  <meta property="og:image" content="/public/logo.png">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="M42hub - Plataforma de Projetos e Colaboração">
-  <meta name="twitter:description" content="Descubra, participe e gerencie projetos colaborativos na M42hub.">
-  <meta name="twitter:image" content="/public/logo.png">
-  <meta property="og:video" content="https://www.youtube.com/@betgrave">
-  <link rel="me" href="https://www.youtube.com/@betgrave">
-  <link rel="me" href="https://github.com/m42hub">
-  <link rel="me" href="https://discord.gg/E5xy62Eus2">
-  <meta property="og:see_also" content="https://github.com/m42hub">
-  <meta property="og:see_also" content="https://discord.gg/E5xy62Eus2">
-  <base href="/">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-  <script>
-    (function() {
-      try {
-        var theme = localStorage.getItem('theme');
-        var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        if (theme === 'dark' || (!theme && prefersDark)) {
-          document.documentElement.classList.add('my-app-dark');
-        }
-      } catch (e) {}
-    })();
-  </script>
-</head>
-<body>
-  <app-root></app-root>
-</body>
+  <head>
+    <meta charset="utf-8" />
+    <title>M42hub</title>
+    <meta
+      name="description"
+      content="M42hub - Plataforma colaborativa para projetos, equipes e inovação. Descubra, participe e gerencie projetos de forma eficiente."
+    />
+    <meta
+      name="keywords"
+      content="projetos, colaboração, equipes, inovação, gestão, tecnologia, m42hub"
+    />
+    <meta name="author" content="M42hub Team" />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:title" content="M42hub - Plataforma de Projetos e Colaboração" />
+    <meta
+      property="og:description"
+      content="Descubra, participe e gerencie projetos colaborativos na M42hub."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://m42hub.com/" />
+    <meta property="og:image" content="/public/logo.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="M42hub - Plataforma de Projetos e Colaboração" />
+    <meta
+      name="twitter:description"
+      content="Descubra, participe e gerencie projetos colaborativos na M42hub."
+    />
+    <meta name="twitter:image" content="/public/logo.png" />
+    <meta property="og:video" content="https://www.youtube.com/@betgrave" />
+    <link rel="me" href="https://www.youtube.com/@betgrave" />
+    <link rel="me" href="https://github.com/m42hub" />
+    <link rel="me" href="https://discord.gg/E5xy62Eus2" />
+    <meta property="og:see_also" content="https://github.com/m42hub" />
+    <meta property="og:see_also" content="https://discord.gg/E5xy62Eus2" />
+    <base href="/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <script>
+      (function () {
+        try {
+          var theme = localStorage.getItem('theme');
+          var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          if (theme === 'dark' || (!theme && prefersDark)) {
+            document.documentElement.classList.add('my-app-dark');
+          }
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <app-root></app-root>
+  </body>
 </html>

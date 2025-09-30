@@ -5,28 +5,46 @@
   [modal]="true"
   [closable]="false"
   [dismissableMask]="false"
-  [style]="{width: '600px', maxWidth: '90vw'}">
-
+  [style]="{ width: '600px', maxWidth: '90vw' }"
+>
   <div class="flex flex-col gap-6">
     <!-- Ícone de aviso -->
     <div class="flex justify-center">
-        <i class="pi pi-exclamation-triangle text-7xl text-surface-500"></i>
+      <i class="pi pi-exclamation-triangle text-7xl text-surface-500"></i>
     </div>
 
     <!-- Conteúdo do aviso -->
     <div class="text-start space-y-4">
       <p class="text-surface-400 leading-relaxed indent-4">
-        O <strong>M42 Hub</strong> é apenas uma plataforma para conectar pessoas e facilitar a construção colaborativa de projetos.
+        O
+        <strong>M42 Hub</strong>
+        é apenas uma plataforma para conectar pessoas e facilitar a construção colaborativa de
+        projetos.
       </p>
 
-      <p class="text-surface-400  leading-relaxed indent-4">
-        Todas as decisões sobre <strong>criação</strong>, <strong>desenvolvimento</strong>, <strong>formato</strong> (open-source ou não) e eventual <strong>monetização</strong> são de inteira responsabilidade dos integrantes do time.
-        O M42 Hub <strong>não interfere</strong>, <strong>opina</strong> ou <strong>intermedia</strong> nessas questões.
+      <p class="text-surface-400 leading-relaxed indent-4">
+        Todas as decisões sobre
+        <strong>criação</strong>
+        ,
+        <strong>desenvolvimento</strong>
+        ,
+        <strong>formato</strong>
+        (open-source ou não) e eventual
+        <strong>monetização</strong>
+        são de inteira responsabilidade dos integrantes do time. O M42 Hub
+        <strong>não interfere</strong>
+        ,
+        <strong>opina</strong>
+        ou
+        <strong>intermedia</strong>
+        nessas questões.
       </p>
 
       <div class="bg-blue-50 dark:bg-blue-900/30 p-4 rounded-lg border-l-4 border-blue-400">
         <p class="text-blue-700 dark:text-blue-300 leading-relaxed">
-          <strong>Recomendação:</strong> Prefira projetos pequenos e open-source. Pois assim aumentam as chances de conclusão e visibilidade, além de ajudar a manter a motivação da equipe.
+          <strong>Recomendação:</strong>
+          Prefira projetos pequenos e open-source. Pois assim aumentam as chances de conclusão e
+          visibilidade, além de ajudar a manter a motivação da equipe.
         </p>
       </div>
     </div>
@@ -39,13 +57,9 @@
         label="Cancelar"
         (onClick)="onCancel()"
         severity="secondary"
-        styleClass="p-button-text">
-      </p-button>
-      <p-button
-        label="Entendi, continuar"
-        (onClick)="onAccept()"
-        severity="primary">
-      </p-button>
+        styleClass="p-button-text"
+      ></p-button>
+      <p-button label="Entendi, continuar" (onClick)="onAccept()" severity="primary"></p-button>
     </div>
   </ng-template>
 </p-dialog>
