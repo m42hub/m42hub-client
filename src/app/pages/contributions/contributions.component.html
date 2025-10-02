@@ -75,20 +75,21 @@
               </div>
             </td>
             <td class="text-center">
-              {{ rowData.prs.length }}
+              {{ rowData.contributions.length }}
             </td>
           </tr>
           <tr *ngIf="expandedPR === rowData.name">
             <td colspan="2" class="text-left pl-13">
               <ul class="list-disc inline-block text-left">
-                <li *ngFor="let item of rowData.prs">
+                <li *ngFor="let pr of rowData.contributions">
                   <a
-                    [href]="item.link"
+                    [href]="pr.link"
                     target="_blank"
                     class="text-primary-200 hover:text-white underline"
                   >
-                    {{ item.description }}
+                    {{ pr.name }}
                   </a>
+                  <p class="text-white">{{pr.description}}</p>
                 </li>
               </ul>
             </td>
@@ -138,24 +139,26 @@
               </div>
             </td>
             <td class="text-center">
-              {{ rowData.issues.length }}
+              {{ rowData.contributions.length }}
             </td>
           </tr>
           <tr *ngIf="expandedIssue === rowData.name">
             <td colspan="2" class="text-left pl-13">
               <ul class="list-disc inline-block text-left">
-                <li *ngFor="let issue of rowData.issues">
+                <li *ngFor="let issue of rowData.contributions">
                   <ng-container *ngIf="issue.link; else noLink">
                     <a
                       [href]="issue.link"
                       target="_blank"
                       class="text-primary-200 hover:text-white underline"
                     >
-                      {{ issue.description }}
+                      {{ issue.name }}
                     </a>
+                    <p class="text-white">{{issue.description}}</p>
                   </ng-container>
                   <ng-template #noLink>
-                    <span class="text-white">{{ issue.description }}</span>
+                    <span class="text-white">{{ issue.name }}</span>
+                    <p class="text-white">{{issue.description}}</p>
                   </ng-template>
                 </li>
               </ul>
