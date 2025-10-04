@@ -9,6 +9,7 @@ import { authGuard } from './guards/auth.guard';
 
 import { UserProfileComponent } from './pages/user-profile/user-profile.component';
 import { UserProjectsComponent } from './pages/user-projects/user-projects.component';
+import { ContributionsComponent } from './pages/contributions/contributions.component';
 
 export const routes: Routes = [
   {
@@ -51,6 +52,10 @@ export const routes: Routes = [
     path: 'projects/:id',
     component: ProjectDetailsComponent,
     canActivate: [authGuard],
+  },
+  {
+    path: 'contributions',
+    component: ContributionsComponent,
   },
   {
     path: '**',

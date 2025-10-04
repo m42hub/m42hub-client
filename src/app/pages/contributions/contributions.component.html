@@ -1,0 +1,264 @@
+<div
+  class="min-h-screen bg-gradient-to-br from-primary-500 to-primary-900 flex flex-col items-center py-4 px-2 sm:py-6 sm:px-4"
+>
+  <h1 class="text-xl sm:text-3xl font-bold text-white mb-2 sm:mb-4">Contribuições</h1>
+  <div class="w-full h-full flex-1 flex flex-col xl:flex-row gap-4 items-stretch">
+    <!-- Financeiras -->
+    <div
+      class="flex-1 flex flex-col bg-white/10 backdrop-blur-sm rounded-xl p-2 sm:p-3 border border-white/20 shadow-xl min-w-0"
+    >
+      <h2 class="text-base sm:text-lg font-semibold text-white mb-1 sm:mb-2 text-center">
+        Financeiras
+      </h2>
+
+      <!-- Filtros de período -->
+      <div class="flex justify-center gap-2 mb-2">
+        <button
+          type="button"
+          pButton
+          pRipple
+          (click)="setDonationPeriod('all')"
+          [class.bg-primary-400]="donationPeriod === 'all'"
+          class="px-2 py-1 rounded text-xs sm:text-base text-white bg-indigo-600 border-indigo-700 hover:bg-primary-700"
+        >
+          Tudo
+        </button>
+        <button
+          type="button"
+          pButton
+          pRipple
+          (click)="setDonationPeriod('30')"
+          [class.bg-primary-400]="donationPeriod === '30'"
+          class="px-2 py-1 rounded text-xs sm:text-base text-white bg-indigo-600 border-indigo-700 hover:bg-primary-700"
+        >
+          30 dias
+        </button>
+        <button
+          type="button"
+          pButton
+          pRipple
+          (click)="setDonationPeriod('90')"
+          [class.bg-primary-400]="donationPeriod === '90'"
+          class="px-2 py-1 rounded text-xs sm:text-base text-white bg-indigo-600 border-indigo-700 hover:bg-primary-700"
+        >
+          90 dias
+        </button>
+        <button
+          type="button"
+          pButton
+          pRipple
+          (click)="setDonationPeriod('custom')"
+          [class.bg-primary-400]="donationPeriod === 'custom'"
+          class="px-2 py-1 rounded text-xs sm:text-base text-white bg-indigo-600 border-indigo-700 hover:bg-primary-700"
+        >
+          Personalizado
+        </button>
+      </div>
+      <div
+        *ngIf="donationPeriod === 'custom'"
+        class="flex items-center text-center gap-2 mx-auto mb-2"
+      >
+        <div
+          class="px-2 py-1 rounded-lg text-xs sm:text-base text-white bg-indigo-600 border-indigo-700 flex items-center gap-2"
+        >
+          <label class="text-white text-xs sm:text-base">De:</label>
+          <input
+            type="date"
+            class="rounded px-2 py-1 text-xs sm:text-base bg-transparent text-white border-none focus:ring-0"
+            [(ngModel)]="donatedAtStart"
+            (change)="loadFinancialContributions()"
+            placeholder="Data inicial"
+            title="Selecione a data inicial"
+          />
+        </div>
+        <div
+          class="px-2 py-1 rounded-lg text-xs sm:text-base text-white bg-indigo-600 border-indigo-700 flex items-center gap-2"
+        >
+          <label class="text-white text-xs sm:text-base">Até:</label>
+          <input
+            type="date"
+            class="rounded px-2 py-1 text-xs sm:text-base bg-transparent text-white border-none focus:ring-0"
+            [(ngModel)]="donatedAtEnd"
+            (change)="loadFinancialContributions()"
+            placeholder="Data final"
+            title="Selecione a data final"
+          />
+        </div>
+      </div>
+      <p-table
+        [value]="financialContributions"
+        [resizableColumns]="true"
+        [scrollable]="true"
+        [scrollHeight]="'flex'"
+        class="w-full min-h-60 h-60 sm:h-full table rounded-lg sm:rounded-xl overflow-hidden flex-1 text-xs sm:text-base"
+        [style]="{ borderRadius: '8px', overflow: 'hidden' }"
+      >
+        <ng-template pTemplate="header">
+          <tr class="bg-primary-500 text-surface-100 font-bold text-xs sm:text-base">
+            <th class="text-center w-1">Ranking</th>
+            <th class="text-left">Contribuidor</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-row>
+          <tr
+            class="even:bg-surface-50 odd:bg-surface-100 hover:bg-surface-200 transition-colors text-xs sm:text-base"
+          >
+            <td class="font-bold text-surface-950 text-center">#{{ row.ranking }}</td>
+            <td class="flex items-center gap-1 sm:gap-2">
+              <p-avatar [image]="row.profileImage" shape="circle" size="large"></p-avatar>
+              <div class="flex-col flex">
+                <p class="text-surface-900 font-medium text-xs sm:text-base">{{ row.name }}</p>
+                <p class="text-primary-400 font-medium text-xs sm:text-base">
+                  {{ `@${row.username}` }}
+                </p>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="2" class="text-center text-white bg-primary-700 py-4 rounded">
+              Nenhuma doação encontrada para o período selecionado.
+              <br />
+              Tente selecionar outra data.
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+
+    <!-- PRs -->
+    <div
+      class="flex-1 flex flex-col bg-white/10 backdrop-blur-sm rounded-xl p-2 sm:p-3 border border-white/20 shadow-xl min-w-0"
+    >
+      <h2 class="text-base sm:text-lg font-semibold text-white mb-1 sm:mb-2 text-center">
+        Pull Requests
+      </h2>
+      <!-- Filtros de período PR -->
+      <div class="flex justify-center gap-2 mb-2">
+        <button type="button" pButton pRipple (click)="setPRPeriod('all')" [class.bg-primary-400]="prPeriod === 'all'" class="px-2 py-1 rounded text-xs sm:text-base text-white bg-indigo-600 border-indigo-700 hover:bg-primary-700">Tudo</button>
+        <button type="button" pButton pRipple (click)="setPRPeriod('30')" [class.bg-primary-400]="prPeriod === '30'" class="px-2 py-1 rounded text-xs sm:text-base text-white bg-indigo-600 border-indigo-700 hover:bg-primary-700">30 dias</button>
+        <button type="button" pButton pRipple (click)="setPRPeriod('90')" [class.bg-primary-400]="prPeriod === '90'" class="px-2 py-1 rounded text-xs sm:text-base text-white bg-indigo-600 border-indigo-700 hover:bg-primary-700">90 dias</button>
+        <button type="button" pButton pRipple (click)="setPRPeriod('custom')" [class.bg-primary-400]="prPeriod === 'custom'" class="px-2 py-1 rounded text-xs sm:text-base text-white bg-indigo-600 border-indigo-700 hover:bg-primary-700">Personalizado</button>
+      </div>
+      <div *ngIf="prPeriod === 'custom'" class="flex items-center text-center gap-2 mx-auto mb-2">
+        <div class="px-2 py-1 rounded-lg text-xs sm:text-base text-white bg-indigo-600 border-indigo-700 flex items-center gap-2">
+          <label class="text-white text-xs sm:text-base">De:</label>
+          <input type="date" class="rounded px-2 py-1 text-xs sm:text-base bg-transparent text-white border-none focus:ring-0" [(ngModel)]="approvedAtStartPR" (change)="loadPRContributions()" placeholder="Data inicial" title="Selecione a data inicial" />
+        </div>
+        <div class="px-2 py-1 rounded-lg text-xs sm:text-base text-white bg-indigo-600 border-indigo-700 flex items-center gap-2">
+          <label class="text-white text-xs sm:text-base">Até:</label>
+          <input type="date" class="rounded px-2 py-1 text-xs sm:text-base bg-transparent text-white border-none focus:ring-0" [(ngModel)]="approvedAtEndPR" (change)="loadPRContributions()" placeholder="Data final" title="Selecione a data final" />
+        </div>
+      </div>
+      <p-table [value]="groupedPRContributions" [scrollable]="true" [scrollHeight]="'flex'" class="w-full min-h-60 h-60 sm:h-full rounded-lg sm:rounded-xl overflow-hidden flex-1 text-xs sm:text-base" [style]="{ borderRadius: '8px', overflow: 'hidden' }">
+        <ng-template pTemplate="header">
+          <tr class="bg-primary-500 text-surface-100 font-bold text-xs sm:text-base">
+            <th class="text-left">Contribuidor</th>
+            <th class="text-center w-1">PRs Realizados</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData>
+          <tr class="even:bg-surface-50 odd:bg-surface-100 hover:bg-surface-200 transition-colors text-xs sm:text-base">
+            <td class="flex items-center gap-1 sm:gap-2">
+              <button type="button" pButton pRipple (click)="togglePR(rowData.name)" [icon]="expandedPR === rowData.name ? 'pi pi-chevron-down' : 'pi pi-chevron-right'" aria-label="Expandir PRs" text rounded plain class="mr-1 sm:mr-2 text-surface-900"></button>
+              <p-avatar [image]="rowData.profileImage" shape="circle" size="large"></p-avatar>
+              <div class="flex-col flex">
+                <p class="text-surface-900 font-medium text-xs sm:text-base">{{ rowData.name }}</p>
+                <p class="text-primary-400 font-medium text-xs sm:text-base">{{ `@${rowData.username}` }}</p>
+              </div>
+            </td>
+            <td class="text-center text-surface-900">{{ rowData.contributions.length }}</td>
+          </tr>
+          <tr *ngIf="expandedPR === rowData.name">
+            <td colspan="2" class="text-left pl-6 sm:pl-13 bg-surface-50">
+              <ul class="list-disc marker:text-surface-900 inline-block text-left">
+                <li *ngFor="let pr of rowData.contributions">
+                  <a [href]="pr.link" target="_blank" class="text-primary-400 hover:text-primary-900 underline text-xs sm:text-base">{{ pr.name }}</a>
+                  <p class="text-surface-900 text-xs sm:text-base">{{ pr.description }}</p>
+                </li>
+              </ul>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="2" class="text-center text-white bg-primary-700 py-4 rounded">
+              Nenhum PR encontrado para o período selecionado.<br />Tente selecionar outra data.
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+
+    <!-- Issues/Sugestões -->
+    <div
+      class="flex-1 flex flex-col bg-white/10 backdrop-blur-sm rounded-xl p-2 sm:p-3 border border-white/20 shadow-xl min-w-0"
+    >
+      <h2 class="text-base sm:text-lg font-semibold text-white mb-1 sm:mb-2 text-center">
+        Issues/Sugestões
+      </h2>
+      <!-- Filtros de período Issues -->
+      <div class="flex justify-center gap-2 mb-2">
+        <button type="button" pButton pRipple (click)="setIssuePeriod('all')" [class.bg-primary-400]="issuePeriod === 'all'" class="px-2 py-1 rounded text-xs sm:text-base text-white bg-indigo-600 border-indigo-700 hover:bg-primary-700">Tudo</button>
+        <button type="button" pButton pRipple (click)="setIssuePeriod('30')" [class.bg-primary-400]="issuePeriod === '30'" class="px-2 py-1 rounded text-xs sm:text-base text-white bg-indigo-600 border-indigo-700 hover:bg-primary-700">30 dias</button>
+        <button type="button" pButton pRipple (click)="setIssuePeriod('90')" [class.bg-primary-400]="issuePeriod === '90'" class="px-2 py-1 rounded text-xs sm:text-base text-white bg-indigo-600 border-indigo-700 hover:bg-primary-700">90 dias</button>
+        <button type="button" pButton pRipple (click)="setIssuePeriod('custom')" [class.bg-primary-400]="issuePeriod === 'custom'" class="px-2 py-1 rounded text-xs sm:text-base text-white bg-indigo-600 border-indigo-700 hover:bg-primary-700">Personalizado</button>
+      </div>
+      <div *ngIf="issuePeriod === 'custom'" class="flex items-center text-center gap-2 mx-auto mb-2">
+        <div class="px-2 py-1 rounded-lg text-xs sm:text-base text-white bg-indigo-600 border-indigo-700 flex items-center gap-2">
+          <label class="text-white text-xs sm:text-base">De:</label>
+          <input type="date" class="rounded px-2 py-1 text-xs sm:text-base bg-transparent text-white border-none focus:ring-0" [(ngModel)]="approvedAtStartIssue" (change)="loadIssueContributions()" placeholder="Data inicial" title="Selecione a data inicial" />
+        </div>
+        <div class="px-2 py-1 rounded-lg text-xs sm:text-base text-white bg-indigo-600 border-indigo-700 flex items-center gap-2">
+          <label class="text-white text-xs sm:text-base">Até:</label>
+          <input type="date" class="rounded px-2 py-1 text-xs sm:text-base bg-transparent text-white border-none focus:ring-0" [(ngModel)]="approvedAtEndIssue" (change)="loadIssueContributions()" placeholder="Data final" title="Selecione a data final" />
+        </div>
+      </div>
+      <p-table [value]="groupedIssueContributions" dataKey="name" [scrollable]="true" [scrollHeight]="'flex'" class="w-full min-h-60 h-60 sm:h-full rounded-lg sm:rounded-xl overflow-hidden flex-1 text-xs sm:text-base" [style]="{ borderRadius: '8px', overflow: 'hidden' }">
+        <ng-template pTemplate="header">
+          <tr class="bg-primary-500 text-surface-100 font-bold text-xs sm:text-base">
+            <th class="text-left">Contribuidor</th>
+            <th class="text-center m-1">Issues/Sugestões</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData>
+          <tr class="even:bg-surface-50 odd:bg-surface-100 hover:bg-surface-200 transition-colors text-xs sm:text-base">
+            <td class="flex items-center gap-1 sm:gap-2">
+              <button type="button" pButton pRipple (click)="toggleIssue(rowData.name)" [icon]="expandedIssue === rowData.name ? 'pi pi-chevron-down' : 'pi pi-chevron-right'" aria-label="Expandir Issues/Sugestões" text rounded plain class="mr-1 sm:mr-2 text-surface-900"></button>
+              <p-avatar [image]="rowData.profileImage" shape="circle" size="large"></p-avatar>
+              <div class="flex-col flex">
+                <p class="text-surface-900 font-medium text-xs sm:text-base">{{ rowData.name }}</p>
+                <p class="text-primary-400 font-medium text-xs sm:text-base">{{ `@${rowData.username}` }}</p>
+              </div>
+            </td>
+            <td class="text-center text-surface-900">{{ rowData.contributions.length }}</td>
+          </tr>
+          <tr *ngIf="expandedIssue === rowData.name">
+            <td colspan="2" class="text-left pl-6 sm:pl-13 bg-surface-50">
+              <ul class="list-disc marker:text-surface-900 inline-block text-left">
+                <li *ngFor="let issue of rowData.contributions">
+                  <ng-container *ngIf="issue.link; else noLink">
+                    <a [href]="issue.link" target="_blank" class="text-primary-400 hover:text-primary-900 underline text-xs sm:text-base">{{ issue.name }}</a>
+                    <p class="text-surface-900 text-xs sm:text-base">{{ issue.description }}</p>
+                  </ng-container>
+                  <ng-template #noLink>
+                    <span class="text-primary-400 text-xs sm:text-base">{{ issue.name }}</span>
+                    <p class="text-surface-900 text-xs sm:text-base">{{ issue.description }}</p>
+                  </ng-template>
+                </li>
+              </ul>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="2" class="text-center text-white bg-primary-700 py-4 rounded">
+              Nenhuma Issue/Sugestão encontrada para o período selecionado.<br />Tente selecionar outra data.
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</div>
