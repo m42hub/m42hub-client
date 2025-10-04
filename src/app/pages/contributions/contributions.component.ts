@@ -93,10 +93,38 @@ export class ContributionsComponent {
     }
   }
 
+  prPeriod: 'all' | '30' | '90' | 'custom' = 'all';
+  approvedAtStartPR: string | null = null;
+  approvedAtEndPR: string | null = null;
   prContributions: GeneralContribution[] = [];
 
+  setPRPeriod(period: 'all' | '30' | '90' | 'custom') {
+    this.prPeriod = period;
+    const now = new Date();
+    if (period === 'all') {
+      this.approvedAtStartPR = null;
+      this.approvedAtEndPR = null;
+      this.loadPRContributions();
+    } else if (period === '30') {
+      const start = new Date(now);
+      start.setDate(now.getDate() - 30);
+      this.approvedAtStartPR = start.toISOString().slice(0, 10);
+      this.approvedAtEndPR = now.toISOString().slice(0, 10);
+      this.loadPRContributions();
+    } else if (period === '90') {
+      const start = new Date(now);
+      start.setDate(now.getDate() - 90);
+      this.approvedAtStartPR = start.toISOString().slice(0, 10);
+      this.approvedAtEndPR = now.toISOString().slice(0, 10);
+      this.loadPRContributions();
+    }
+  }
+
   loadPRContributions(): void {
-    this.contributionService.findByParamsGroupedByUser({ type: 1, status: 5 }).subscribe({
+    const params: any = { type: 1, status: 5 };
+    if (this.approvedAtStartPR) params.approvedAtStart = this.approvedAtStartPR;
+    if (this.approvedAtEndPR) params.approvedAtEnd = this.approvedAtEndPR;
+    this.contributionService.findByParamsGroupedByUser(params).subscribe({
       next: (response) => {
         const items: ContributionsByUser[] = (response as any).items || response;
         this.prContributions = items.map((userGroup) => ({
@@ -116,10 +144,38 @@ export class ContributionsComponent {
     });
   }
 
+  issuePeriod: 'all' | '30' | '90' | 'custom' = 'all';
+  approvedAtStartIssue: string | null = null;
+  approvedAtEndIssue: string | null = null;
   issueContributions: GeneralContribution[] = [];
 
+  setIssuePeriod(period: 'all' | '30' | '90' | 'custom') {
+    this.issuePeriod = period;
+    const now = new Date();
+    if (period === 'all') {
+      this.approvedAtStartIssue = null;
+      this.approvedAtEndIssue = null;
+      this.loadIssueContributions();
+    } else if (period === '30') {
+      const start = new Date(now);
+      start.setDate(now.getDate() - 30);
+      this.approvedAtStartIssue = start.toISOString().slice(0, 10);
+      this.approvedAtEndIssue = now.toISOString().slice(0, 10);
+      this.loadIssueContributions();
+    } else if (period === '90') {
+      const start = new Date(now);
+      start.setDate(now.getDate() - 90);
+      this.approvedAtStartIssue = start.toISOString().slice(0, 10);
+      this.approvedAtEndIssue = now.toISOString().slice(0, 10);
+      this.loadIssueContributions();
+    }
+  }
+
   loadIssueContributions(): void {
-    this.contributionService.findByParamsGroupedByUser({ type: [2, 3], status: 5 }).subscribe({
+    const params: any = { type: [2, 3], status: 5 };
+    if (this.approvedAtStartIssue) params.approvedAtStart = this.approvedAtStartIssue;
+    if (this.approvedAtEndIssue) params.approvedAtEnd = this.approvedAtEndIssue;
+    this.contributionService.findByParamsGroupedByUser(params).subscribe({
       next: (response) => {
         const items: ContributionsByUser[] = response;
         this.issueContributions = items.map((userGroup) => ({
