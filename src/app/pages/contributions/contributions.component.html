@@ -10,6 +10,81 @@
       <h2 class="text-base sm:text-lg font-semibold text-white mb-1 sm:mb-2 text-center">
         Financeiras
       </h2>
+
+      <!-- Filtros de período -->
+      <div class="flex justify-center gap-2 mb-2">
+        <button
+          type="button"
+          pButton
+          pRipple
+          (click)="setDonationPeriod('all')"
+          [class.bg-primary-400]="donationPeriod === 'all'"
+          class="px-2 py-1 rounded text-xs sm:text-base text-white bg-indigo-600 border-indigo-700 hover:bg-primary-700"
+        >
+          Tudo
+        </button>
+        <button
+          type="button"
+          pButton
+          pRipple
+          (click)="setDonationPeriod('30')"
+          [class.bg-primary-400]="donationPeriod === '30'"
+          class="px-2 py-1 rounded text-xs sm:text-base text-white bg-indigo-600 border-indigo-700 hover:bg-primary-700"
+        >
+          30 dias
+        </button>
+        <button
+          type="button"
+          pButton
+          pRipple
+          (click)="setDonationPeriod('90')"
+          [class.bg-primary-400]="donationPeriod === '90'"
+          class="px-2 py-1 rounded text-xs sm:text-base text-white bg-indigo-600 border-indigo-700 hover:bg-primary-700"
+        >
+          90 dias
+        </button>
+        <button
+          type="button"
+          pButton
+          pRipple
+          (click)="setDonationPeriod('custom')"
+          [class.bg-primary-400]="donationPeriod === 'custom'"
+          class="px-2 py-1 rounded text-xs sm:text-base text-white bg-indigo-600 border-indigo-700 hover:bg-primary-700"
+        >
+          Personalizado
+        </button>
+      </div>
+      <div
+        *ngIf="donationPeriod === 'custom'"
+        class="flex items-center text-center gap-2 mx-auto mb-2"
+      >
+        <div
+          class="px-2 py-1 rounded-lg text-xs sm:text-base text-white bg-indigo-600 border-indigo-700 flex items-center gap-2"
+        >
+          <label class="text-white text-xs sm:text-base">De:</label>
+          <input
+            type="date"
+            class="rounded px-2 py-1 text-xs sm:text-base bg-transparent text-white border-none focus:ring-0"
+            [(ngModel)]="donatedAtStart"
+            (change)="loadFinancialContributions()"
+            placeholder="Data inicial"
+            title="Selecione a data inicial"
+          />
+        </div>
+        <div
+          class="px-2 py-1 rounded-lg text-xs sm:text-base text-white bg-indigo-600 border-indigo-700 flex items-center gap-2"
+        >
+          <label class="text-white text-xs sm:text-base">Até:</label>
+          <input
+            type="date"
+            class="rounded px-2 py-1 text-xs sm:text-base bg-transparent text-white border-none focus:ring-0"
+            [(ngModel)]="donatedAtEnd"
+            (change)="loadFinancialContributions()"
+            placeholder="Data final"
+            title="Selecione a data final"
+          />
+        </div>
+      </div>
       <p-table
         [value]="financialContributions"
         [resizableColumns]="true"
@@ -37,6 +112,15 @@
                   {{ `@${row.username}` }}
                 </p>
               </div>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="2" class="text-center text-white bg-primary-700 py-4 rounded">
+              Nenhuma doação encontrada para o período selecionado.
+              <br />
+              Tente selecionar outra data.
             </td>
           </tr>
         </ng-template>

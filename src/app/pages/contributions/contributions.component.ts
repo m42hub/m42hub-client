@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { TableModule } from 'primeng/table';
 import { AvatarModule } from 'primeng/avatar';
@@ -28,7 +29,7 @@ interface GeneralContribution {
 @Component({
   selector: 'app-contributions',
   standalone: true,
-  imports: [CommonModule, TableModule, AvatarModule, ButtonModule, RippleModule],
+  imports: [CommonModule, TableModule, AvatarModule, ButtonModule, RippleModule, FormsModule],
   providers: [DonationService],
   templateUrl: './contributions.component.html',
   styleUrl: './contributions.component.css',
@@ -37,6 +38,10 @@ export class ContributionsComponent {
   expandedPR: string | null = null;
   expandedIssue: string | null = null;
   financialContributions: FinancialContribution[] = [];
+
+  donationPeriod: 'all' | '30' | '90' | 'custom' = 'all';
+  donatedAtStart: string | null = null;
+  donatedAtEnd: string | null = null;
 
   constructor(
     private donationService: DonationService,
@@ -48,7 +53,10 @@ export class ContributionsComponent {
   }
 
   loadFinancialContributions(): void {
-    this.donationService.donationRanking().subscribe({
+    const params: any = {};
+    if (this.donatedAtStart) params.donatedAtStart = this.donatedAtStart;
+    if (this.donatedAtEnd) params.donatedAtEnd = this.donatedAtEnd;
+    this.donationService.donationRanking(params).subscribe({
       next: (users) => {
         this.financialContributions = users.map((user, idx) => ({
           name: `${user.firstName} ${user.lastName}`.trim(),
@@ -61,6 +69,28 @@ export class ContributionsComponent {
         this.financialContributions = [];
       },
     });
+  }
+
+  setDonationPeriod(period: 'all' | '30' | '90' | 'custom') {
+    this.donationPeriod = period;
+    const now = new Date();
+    if (period === 'all') {
+      this.donatedAtStart = null;
+      this.donatedAtEnd = null;
+      this.loadFinancialContributions();
+    } else if (period === '30') {
+      const start = new Date(now);
+      start.setDate(now.getDate() - 30);
+      this.donatedAtStart = start.toISOString().slice(0, 10);
+      this.donatedAtEnd = now.toISOString().slice(0, 10);
+      this.loadFinancialContributions();
+    } else if (period === '90') {
+      const start = new Date(now);
+      start.setDate(now.getDate() - 90);
+      this.donatedAtStart = start.toISOString().slice(0, 10);
+      this.donatedAtEnd = now.toISOString().slice(0, 10);
+      this.loadFinancialContributions();
+    }
   }
 
   prContributions: GeneralContribution[] = [];
