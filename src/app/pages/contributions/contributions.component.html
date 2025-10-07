@@ -85,46 +85,46 @@
           />
         </div>
       </div>
-      <p-table
-        [value]="financialContributions"
-        [resizableColumns]="true"
-        [scrollable]="true"
-        [scrollHeight]="'flex'"
-        class="w-full min-h-60 h-60 sm:h-full table rounded-lg sm:rounded-xl overflow-hidden flex-1 text-xs sm:text-base"
-        [style]="{ borderRadius: '8px', overflow: 'hidden' }"
-      >
-        <ng-template pTemplate="header">
-          <tr class="bg-primary-500 text-surface-100 font-bold text-xs sm:text-base">
-            <th class="text-center w-1">Ranking</th>
-            <th class="text-left">Contribuidor</th>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-row>
-          <tr
-            class="even:bg-surface-50 odd:bg-surface-100 hover:bg-surface-200 transition-colors text-xs sm:text-base"
-          >
-            <td class="font-bold text-surface-950 text-center">#{{ row.ranking }}</td>
-            <td class="flex items-center gap-1 sm:gap-2">
-              <p-avatar [image]="row.profileImage" shape="circle" size="large"></p-avatar>
-              <div class="flex-col flex">
-                <p class="text-surface-900 font-medium text-xs sm:text-base">{{ row.name }}</p>
-                <p class="text-primary-400 font-medium text-xs sm:text-base">
-                  {{ `@${row.username}` }}
-                </p>
-              </div>
-            </td>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="emptymessage">
-          <tr>
-            <td colspan="2" class="text-center text-white bg-primary-700 py-4 rounded">
-              Nenhuma doação encontrada para o período selecionado.
-              <br />
-              Tente selecionar outra data.
-            </td>
-          </tr>
-        </ng-template>
-      </p-table>
+      <ng-container *ngIf="financialContributions.length > 0; else noFinanceSSR">
+        <p-table
+          [value]="financialContributions"
+          [resizableColumns]="true"
+          [scrollable]="true"
+          [scrollHeight]="'flex'"
+          class="w-full min-h-60 h-60 sm:h-full table rounded-lg sm:rounded-xl overflow-hidden flex-1 text-xs sm:text-base"
+          [style]="{ borderRadius: '8px', overflow: 'hidden' }"
+        >
+          <ng-template pTemplate="header">
+            <tr class="bg-primary-500 text-surface-100 font-bold text-xs sm:text-base">
+              <th class="text-center w-1">Ranking</th>
+              <th class="text-left">Contribuidor</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-row>
+            <tr
+              class="even:bg-surface-50 odd:bg-surface-100 hover:bg-surface-200 transition-colors text-xs sm:text-base"
+            >
+              <td class="font-bold text-surface-950 text-center">#{{ row.ranking }}</td>
+              <td class="flex items-center gap-1 sm:gap-2">
+                <p-avatar [image]="row.profileImage" shape="circle" size="large"></p-avatar>
+                <div class="flex-col flex">
+                  <p class="text-surface-900 font-medium text-xs sm:text-base">{{ row.name }}</p>
+                  <p class="text-primary-400 font-medium text-xs sm:text-base">
+                    {{ `@${row.username}` }}
+                  </p>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </ng-container>
+      <ng-template #noFinanceSSR>
+        <div class="w-full">
+          <div class="text-center text-white bg-primary-700 py-4 rounded">
+            Nenhuma doação encontrada para o período selecionado.<br />Tente selecionar outra data.
+          </div>
+        </div>
+      </ng-template>
     </div>
 
     <!-- PRs -->
@@ -151,44 +151,52 @@
           <input type="date" class="rounded px-2 py-1 text-xs sm:text-base bg-transparent text-white border-none focus:ring-0" [(ngModel)]="approvedAtEndPR" (change)="loadPRContributions()" placeholder="Data final" title="Selecione a data final" />
         </div>
       </div>
-      <p-table [value]="groupedPRContributions" [scrollable]="true" [scrollHeight]="'flex'" class="w-full min-h-60 h-60 sm:h-full rounded-lg sm:rounded-xl overflow-hidden flex-1 text-xs sm:text-base" [style]="{ borderRadius: '8px', overflow: 'hidden' }">
-        <ng-template pTemplate="header">
-          <tr class="bg-primary-500 text-surface-100 font-bold text-xs sm:text-base">
-            <th class="text-left">Contribuidor</th>
-            <th class="text-center w-1">PRs Realizados</th>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-rowData>
-          <tr class="even:bg-surface-50 odd:bg-surface-100 hover:bg-surface-200 transition-colors text-xs sm:text-base">
-            <td class="flex items-center gap-1 sm:gap-2">
-              <button type="button" pButton pRipple (click)="togglePR(rowData.name)" [icon]="expandedPR === rowData.name ? 'pi pi-chevron-down' : 'pi pi-chevron-right'" aria-label="Expandir PRs" text rounded plain class="mr-1 sm:mr-2 text-surface-900"></button>
-              <p-avatar [image]="rowData.profileImage" shape="circle" size="large"></p-avatar>
-              <div class="flex-col flex">
-                <p class="text-surface-900 font-medium text-xs sm:text-base">{{ rowData.name }}</p>
-                <p class="text-primary-400 font-medium text-xs sm:text-base">{{ `@${rowData.username}` }}</p>
-              </div>
-            </td>
-            <td class="text-center text-surface-900">{{ rowData.contributions.length }}</td>
-          </tr>
-          <tr *ngIf="expandedPR === rowData.name">
-            <td colspan="2" class="text-left pl-6 sm:pl-13 bg-surface-50">
-              <ul class="list-disc marker:text-surface-900 inline-block text-left">
-                <li *ngFor="let pr of rowData.contributions">
-                  <a [href]="pr.link" target="_blank" class="text-primary-400 hover:text-primary-900 underline text-xs sm:text-base">{{ pr.name }}</a>
-                  <p class="text-surface-900 text-xs sm:text-base">{{ pr.description }}</p>
-                </li>
-              </ul>
-            </td>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="emptymessage">
-          <tr>
-            <td colspan="2" class="text-center text-white bg-primary-700 py-4 rounded">
-              Nenhum PR encontrado para o período selecionado.<br />Tente selecionar outra data.
-            </td>
-          </tr>
-        </ng-template>
-      </p-table>
+      <ng-container *ngIf="groupedPRContributions.length > 0; else noPRSSR">
+        <p-table [value]="groupedPRContributions" [scrollable]="true" [scrollHeight]="'flex'" class="w-full min-h-60 h-60 sm:h-full rounded-lg sm:rounded-xl overflow-hidden flex-1 text-xs sm:text-base" [style]="{ borderRadius: '8px', overflow: 'hidden' }">
+          <ng-template pTemplate="header">
+            <tr class="bg-primary-500 text-surface-100 font-bold text-xs sm:text-base">
+              <th class="text-left">Contribuidor</th>
+              <th class="text-center w-1">PRs</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rowData>
+            <tr class="even:bg-surface-50 odd:bg-surface-100 hover:bg-surface-200 transition-colors text-xs sm:text-base">
+              <td class="flex items-center gap-1 sm:gap-2">
+                <button type="button" pButton pRipple (click)="togglePR(rowData.name)" [icon]="expandedPR === rowData.name ? 'pi pi-chevron-down' : 'pi pi-chevron-right'" aria-label="Expandir PRs" text rounded plain class="mr-1 sm:mr-2 text-surface-900"></button>
+                <p-avatar [image]="rowData.profileImage" shape="circle" size="large"></p-avatar>
+                <div class="flex-col flex">
+                  <p class="text-surface-900 font-medium text-xs sm:text-base">{{ rowData.name }}</p>
+                  <p class="text-primary-400 font-medium text-xs sm:text-base">{{ `@${rowData.username}` }}</p>
+                </div>
+              </td>
+              <td class="text-center text-surface-900">{{ rowData.contributions.length }}</td>
+            </tr>
+            <tr *ngIf="expandedPR === rowData.name">
+              <td colspan="2" class="text-left pl-6 sm:pl-13 bg-surface-50">
+                <ul class="list-disc marker:text-surface-900 inline-block text-left">
+                  <li *ngFor="let pr of rowData.contributions">
+                    <ng-container *ngIf="pr.link; else noLink">
+                    <a [href]="pr.link" target="_blank" class="text-primary-400 hover:text-primary-900 underline text-xs sm:text-base">{{ pr.name }}</a>
+                      <p class="text-surface-900 text-xs sm:text-base">{{ pr.description }}</p>
+                    </ng-container>
+                    <ng-template #noLink>
+                      <span class="text-primary-400 text-xs sm:text-base">{{ pr.name }}</span>
+                      <p class="text-surface-900 text-xs sm:text-base">{{ pr.description }}</p>
+                    </ng-template>
+                  </li>
+                </ul>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </ng-container>
+      <ng-template #noPRSSR>
+        <div class="w-full">
+          <div class="text-center text-white bg-primary-700 py-4 rounded">
+            Nenhum PR encontrado para o período selecionado.<br />Tente selecionar outra data.
+          </div>
+        </div>
+      </ng-template>
     </div>
 
     <!-- Issues/Sugestões -->
@@ -215,50 +223,52 @@
           <input type="date" class="rounded px-2 py-1 text-xs sm:text-base bg-transparent text-white border-none focus:ring-0" [(ngModel)]="approvedAtEndIssue" (change)="loadIssueContributions()" placeholder="Data final" title="Selecione a data final" />
         </div>
       </div>
-      <p-table [value]="groupedIssueContributions" dataKey="name" [scrollable]="true" [scrollHeight]="'flex'" class="w-full min-h-60 h-60 sm:h-full rounded-lg sm:rounded-xl overflow-hidden flex-1 text-xs sm:text-base" [style]="{ borderRadius: '8px', overflow: 'hidden' }">
-        <ng-template pTemplate="header">
-          <tr class="bg-primary-500 text-surface-100 font-bold text-xs sm:text-base">
-            <th class="text-left">Contribuidor</th>
-            <th class="text-center m-1">Issues/Sugestões</th>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-rowData>
-          <tr class="even:bg-surface-50 odd:bg-surface-100 hover:bg-surface-200 transition-colors text-xs sm:text-base">
-            <td class="flex items-center gap-1 sm:gap-2">
-              <button type="button" pButton pRipple (click)="toggleIssue(rowData.name)" [icon]="expandedIssue === rowData.name ? 'pi pi-chevron-down' : 'pi pi-chevron-right'" aria-label="Expandir Issues/Sugestões" text rounded plain class="mr-1 sm:mr-2 text-surface-900"></button>
-              <p-avatar [image]="rowData.profileImage" shape="circle" size="large"></p-avatar>
-              <div class="flex-col flex">
-                <p class="text-surface-900 font-medium text-xs sm:text-base">{{ rowData.name }}</p>
-                <p class="text-primary-400 font-medium text-xs sm:text-base">{{ `@${rowData.username}` }}</p>
-              </div>
-            </td>
-            <td class="text-center text-surface-900">{{ rowData.contributions.length }}</td>
-          </tr>
-          <tr *ngIf="expandedIssue === rowData.name">
-            <td colspan="2" class="text-left pl-6 sm:pl-13 bg-surface-50">
-              <ul class="list-disc marker:text-surface-900 inline-block text-left">
-                <li *ngFor="let issue of rowData.contributions">
-                  <ng-container *ngIf="issue.link; else noLink">
-                    <a [href]="issue.link" target="_blank" class="text-primary-400 hover:text-primary-900 underline text-xs sm:text-base">{{ issue.name }}</a>
-                    <p class="text-surface-900 text-xs sm:text-base">{{ issue.description }}</p>
-                  </ng-container>
-                  <ng-template #noLink>
-                    <span class="text-primary-400 text-xs sm:text-base">{{ issue.name }}</span>
-                    <p class="text-surface-900 text-xs sm:text-base">{{ issue.description }}</p>
-                  </ng-template>
-                </li>
-              </ul>
-            </td>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="emptymessage">
-          <tr>
-            <td colspan="2" class="text-center text-white bg-primary-700 py-4 rounded">
-              Nenhuma Issue/Sugestão encontrada para o período selecionado.<br />Tente selecionar outra data.
-            </td>
-          </tr>
-        </ng-template>
-      </p-table>
+      <ng-container *ngIf="groupedIssueContributions.length > 0; else noIssuesSSR">
+        <p-table [value]="groupedIssueContributions" dataKey="name" [scrollable]="true" [scrollHeight]="'flex'" class="w-full min-h-60 h-60 sm:h-full rounded-lg sm:rounded-xl overflow-hidden flex-1 text-xs sm:text-base" [style]="{ borderRadius: '8px', overflow: 'hidden' }">
+          <ng-template pTemplate="header">
+            <tr class="bg-primary-500 text-surface-100 font-bold text-xs sm:text-base">
+              <th class="text-left">Contribuidor</th>
+              <th class="text-center m-1">Issues/Sugestões</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rowData>
+            <tr class="even:bg-surface-50 odd:bg-surface-100 hover:bg-surface-200 transition-colors text-xs sm:text-base">
+              <td class="flex items-center gap-1 sm:gap-2">
+                <button type="button" pButton pRipple (click)="toggleIssue(rowData.name)" [icon]="expandedIssue === rowData.name ? 'pi pi-chevron-down' : 'pi pi-chevron-right'" aria-label="Expandir Issues/Sugestões" text rounded plain class="mr-1 sm:mr-2 text-surface-900"></button>
+                <p-avatar [image]="rowData.profileImage" shape="circle" size="large"></p-avatar>
+                <div class="flex-col flex">
+                  <p class="text-surface-900 font-medium text-xs sm:text-base">{{ rowData.name }}</p>
+                  <p class="text-primary-400 font-medium text-xs sm:text-base">{{ `@${rowData.username}` }}</p>
+                </div>
+              </td>
+              <td class="text-center text-surface-900">{{ rowData.contributions.length }}</td>
+            </tr>
+            <tr *ngIf="expandedIssue === rowData.name">
+              <td colspan="2" class="text-left pl-6 sm:pl-13 bg-surface-50">
+                <ul class="list-disc marker:text-surface-900 inline-block text-left">
+                  <li *ngFor="let issue of rowData.contributions">
+                    <ng-container *ngIf="issue.link; else noLink">
+                      <a [href]="issue.link" target="_blank" class="text-primary-400 hover:text-primary-900 underline text-xs sm:text-base">{{ issue.name }}</a>
+                      <p class="text-surface-900 text-xs sm:text-base">{{ issue.description }}</p>
+                    </ng-container>
+                    <ng-template #noLink>
+                      <span class="text-primary-400 text-xs sm:text-base">{{ issue.name }}</span>
+                      <p class="text-surface-900 text-xs sm:text-base">{{ issue.description }}</p>
+                    </ng-template>
+                  </li>
+                </ul>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </ng-container>
+      <ng-template #noIssuesSSR>
+        <div class="w-full">
+          <div class="text-center text-white bg-primary-700 py-4 rounded">
+            Nenhuma Issue/Sugestão encontrada para o período selecionado.<br />Tente selecionar outra data.
+          </div>
+        </div>
+      </ng-template>
     </div>
   </div>
 </div>
