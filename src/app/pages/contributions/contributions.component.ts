@@ -23,7 +23,7 @@ interface GeneralContribution {
   name: string;
   username: string;
   profileImage: string;
-  contributions: { name: string; description: string; link: string }[];
+  contributions: { name: string; description: string; link: string | null }[];
 }
 
 @Component({
@@ -134,7 +134,7 @@ export class ContributionsComponent {
           contributions: userGroup.contributions.map((contribution: ContributionListItem) => ({
             name: contribution.name,
             description: contribution.description,
-            link: contribution.id ? `https://github.com/m42hub/pull/${contribution.id}` : '',
+            link: contribution.link || null,
           })),
         }));
       },
@@ -185,7 +185,7 @@ export class ContributionsComponent {
           contributions: userGroup.contributions.map((contribution: ContributionListItem) => ({
             name: contribution.name,
             description: contribution.description,
-            link: contribution.id ? `https://github.com/m42hub/issues/${contribution.id}` : '',
+            link: contribution.link || null,
           })),
         }));
       },

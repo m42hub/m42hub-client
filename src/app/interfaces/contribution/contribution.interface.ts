@@ -4,6 +4,7 @@ export interface ContributionListItem {
   id: string;
   name: string;
   description: string;
+  link?: string;
   statusName?: string;
   typeName?: string;
   submittedAt: string;
