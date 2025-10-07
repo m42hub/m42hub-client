@@ -98,7 +98,7 @@
   </div>
 
   <!-- FALLBACK -->
-  <div *ngIf="projects.length === 0" class="text-center py-16">
+  <div *ngIf="projects.length === 0 && !isLoading" class="text-center py-16">
     <div class="max-w-md mx-auto">
       <i class="pi pi-search text-6xl text-surface-300 mb-6"></i>
       <h3 class="text-xl font-semibold text-surface-600 mb-3">Nenhum projeto encontrado</h3>

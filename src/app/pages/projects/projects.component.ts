@@ -35,6 +35,7 @@ import { AuthService } from '../../services/auth/auth.service';
 })
 export class ProjectsComponent implements OnInit, OnDestroy {
   projects: Project[] = [];
+  isLoading: Boolean = true;
   pageSize = 3;
   currentPage = 1;
   totalPages = 1;
@@ -131,11 +132,13 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   }
 
   loadProjects(): void {
+    this.isLoading = true;
     if (!this.isBrowser()) return;
     const searchParams = this.buildSearchParams();
     this.projectService.search(searchParams).subscribe({
       next: (res) => this.handleProjectsResponse(res),
       error: (error) => this.handleProjectsError(error),
+      complete: () => (this.isLoading = false),
     });
   }
 
@@ -143,6 +146,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     this.projects = res.content;
     this.totalPages = res.pagination.totalPages;
     this.totalElements = res.pagination.totalElements;
+    this.isLoading = false;
   }
 
   private handleProjectsError(error: any): void {
