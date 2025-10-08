@@ -420,7 +420,13 @@
                 <ul class="list-disc marker:text-surface-900 inline-block text-left">
                   <li *ngFor="let issue of rowData.contributions">
                     <ng-container *ngIf="issue.link; else noLink">
-                      <a [href]="issue.link" target="_blank" class="text-primary-400 hover:text-primary-900 underline text-xs sm:text-base">{{ issue.name }}</a>
+                      <a
+                        [href]="issue.link"
+                        target="_blank"
+                        class="text-primary-400 hover:text-primary-900 underline text-xs sm:text-base"
+                      >
+                        {{ issue.name }}
+                      </a>
                       <p class="text-surface-900 text-xs sm:text-base">{{ issue.description }}</p>
                     </ng-container>
                     <ng-template #noLink>
