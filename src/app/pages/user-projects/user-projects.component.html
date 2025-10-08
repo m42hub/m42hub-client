@@ -14,11 +14,9 @@
   <div *ngIf="!loading && !error">
     <div
       *ngIf="requestedProjects.length > 0"
-      class="rounded-lg shadow-md p-4 mb-6 postit-card postit-yellow-light w-full dark:postit-yellow"
+      class="rounded-lg shadow-md p-4 mb-6 w-full postit-card bg-[#fffbe6] border-[#ffe066] dark:bg-[#2b2b1e] dark:border-[#bfae4a]"
     >
-      <h2
-        class="text-lg sm:text-2xl font-semibold text-center my-2 text-black dark:text-white"
-      >
+      <h2 class="text-lg sm:text-2xl font-semibold text-center my-2 text-black dark:text-white">
         Projetos Solicitados
       </h2>
       <app-user-projects-carousel
@@ -30,11 +28,9 @@
 
     <div
       *ngIf="ongoingProjects.length > 0"
-      class="rounded-lg shadow-md p-4 mb-6 postit-card postit-blue-light w-full dark:postit-blue"
+      class="rounded-lg shadow-md p-4 mb-6 w-full postit-card bg-[#e6f0ff] border-[#66aaff] dark:bg-[#1e2633] dark:border-[#4a8abf]"
     >
-      <h2
-        class="text-lg sm:text-2xl font-semibold text-center my-2 text-black dark:text-white"
-      >
+      <h2 class="text-lg sm:text-2xl font-semibold text-center my-2 text-black dark:text-white">
         Projetos em Andamento
       </h2>
       <app-user-projects-carousel
@@ -46,11 +42,9 @@
 
     <div
       *ngIf="finishedProjects.length > 0"
-      class="rounded-lg shadow-md p-4 mb-6 postit-card w-full postit-green-light dark: postit-green"
+      class="rounded-lg shadow-md p-4 mb-6 w-full postit-card bg-[#e6fff3] border-[#66ffb2] dark:bg-[#1e3327] dark:border-[#4abf7e]"
     >
-      <h2
-        class="text-2xl font-semibold text-center my-2 text-black dark:text-white"
-      >
+      <h2 class="text-2xl font-semibold text-center my-2 text-black dark:text-white">
         Projetos Concluídos
       </h2>
       <app-user-projects-carousel
