@@ -14,15 +14,9 @@
   <div *ngIf="!loading && !error">
     <div
       *ngIf="requestedProjects.length > 0"
-      [ngClass]="
-        isDarkMode ? 'postit-card postit-yellow w-full' : 'postit-card postit-yellow-light w-full'
-      "
-      class="rounded-lg shadow-md p-4 mb-6"
+      class="relative border-2 rounded-2xl shadow-xl p-4 mb-6 w-full bg-yellow-100 border-yellow-400 dark:!bg-yellow-950 dark:!border-yellow-400"
     >
-      <h2
-        [ngClass]="isDarkMode ? 'text-white' : 'text-black'"
-        class="text-lg sm:text-2xl font-semibold text-center my-2"
-      >
+      <h2 class="text-lg sm:text-2xl font-semibold text-center my-2 text-black dark:text-white">
         Projetos Solicitados
       </h2>
       <app-user-projects-carousel
@@ -34,15 +28,9 @@
 
     <div
       *ngIf="ongoingProjects.length > 0"
-      [ngClass]="
-        isDarkMode ? 'postit-card postit-blue w-full' : 'postit-card postit-blue-light w-full'
-      "
-      class="rounded-lg shadow-md p-4 mb-6"
+      class="relative border-2 rounded-2xl shadow-xl p-4 mb-6 w-full bg-blue-100 border-blue-400 dark:!bg-blue-950 dark:!border-blue-600"
     >
-      <h2
-        [ngClass]="isDarkMode ? 'text-white' : 'text-black'"
-        class="text-lg sm:text-2xl font-semibold text-center my-2"
-      >
+      <h2 class="text-lg sm:text-2xl font-semibold text-center my-2 text-black dark:text-white">
         Projetos em Andamento
       </h2>
       <app-user-projects-carousel
@@ -54,14 +42,9 @@
 
     <div
       *ngIf="finishedProjects.length > 0"
-      [ngClass]="
-        isDarkMode ? 'postit-card postit-green w-full' : 'postit-card postit-green-light w-full'
-      "
+      class="relative border-2 rounded-2xl shadow-xl p-4 mb-6 w-full bg-green-100 border-green-400 dark:!bg-green-950 dark:!border-green-600"
     >
-      <h2
-        [ngClass]="isDarkMode ? 'text-white' : 'text-black'"
-        class="text-2xl font-semibold text-center my-2"
-      >
+      <h2 class="text-2xl font-semibold text-center my-2 text-black dark:text-white">
         Projetos Concluídos
       </h2>
       <app-user-projects-carousel
