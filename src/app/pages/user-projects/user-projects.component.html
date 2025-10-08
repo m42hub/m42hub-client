@@ -14,7 +14,7 @@
   <div *ngIf="!loading && !error">
     <div
       *ngIf="requestedProjects.length > 0"
-      class="rounded-lg shadow-md p-4 mb-6 w-full postit-card bg-[#fffbe6] border-[#ffe066] dark:bg-[#2b2b1e] dark:border-[#bfae4a]"
+      class="relative border-4 rounded-2xl shadow-xl p-4 mb-6 w-full bg-yellow-100 border-yellow-400 dark:!bg-yellow-950 dark:!border-yellow-400"
     >
       <h2 class="text-lg sm:text-2xl font-semibold text-center my-2 text-black dark:text-white">
         Projetos Solicitados
@@ -28,7 +28,7 @@
 
     <div
       *ngIf="ongoingProjects.length > 0"
-      class="rounded-lg shadow-md p-4 mb-6 w-full postit-card bg-[#e6f0ff] border-[#66aaff] dark:bg-[#1e2633] dark:border-[#4a8abf]"
+      class="relative border-4 rounded-2xl shadow-xl p-4 mb-6 w-full bg-blue-100 border-blue-400 dark:!bg-blue-950 dark:!border-blue-600"
     >
       <h2 class="text-lg sm:text-2xl font-semibold text-center my-2 text-black dark:text-white">
         Projetos em Andamento
@@ -42,7 +42,7 @@
 
     <div
       *ngIf="finishedProjects.length > 0"
-      class="rounded-lg shadow-md p-4 mb-6 w-full postit-card bg-[#e6fff3] border-[#66ffb2] dark:bg-[#1e3327] dark:border-[#4abf7e]"
+      class="relative border-4 rounded-2xl shadow-xl p-4 mb-6 w-full bg-green-100 border-green-400 dark:!bg-green-950 dark:!border-green-600"
     >
       <h2 class="text-2xl font-semibold text-center my-2 text-black dark:text-white">
         Projetos Concluídos

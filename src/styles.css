@@ -3,6 +3,7 @@
 @import "tailwindcss";
 @plugin "tailwindcss-primeui";
 @custom-variant dark (&:where(.dark, .dark *));
+
 /* Markdown Styles - Using PrimeNG theme colors */
 
 body {
@@ -181,15 +182,4 @@ html.dark .prose th {
 input::placeholder,
 textarea::placeholder {
   opacity: 0.6;
-}
-
-.postit-card {
-  position: relative;
-  border-width: 1.5px;
-  border-style: solid;
-  border-radius: 18px;
-  box-shadow: 4px 8px 18px 0 rgba(0, 0, 0, 0.25);
-  padding: 1rem;
-  margin-bottom: 1.5rem;
-  transition: box-shadow 0.2s, background 0.2s, border-color 0.2s;
 }
