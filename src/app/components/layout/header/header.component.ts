@@ -20,35 +20,13 @@ import { MenuItem } from 'primeng/api';
 })
 export class HeaderComponent implements OnInit {
   darkMode = false;
+  isBrowser = false;
   user$: Observable<User | null>;
   showLogoutError = false;
   showProfileMenu = false;
   profileMenuItems: MenuItem[] = [];
 
   ngOnInit() {
-    if (isPlatformBrowser(this.platformId)) {
-      const savedTheme = localStorage.getItem('theme');
-      const html = document.documentElement;
-      if (savedTheme) {
-        if (savedTheme === 'dark') {
-          html.classList.add('dark');
-          this.darkMode = true;
-        } else {
-          html.classList.remove('dark');
-          this.darkMode = false;
-        }
-      } else {
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        if (prefersDark) {
-          html.classList.add('dark');
-          localStorage.setItem('theme', 'dark');
-          this.darkMode = true;
-        } else {
-          this.darkMode = false;
-        }
-      }
-    }
-
     this.user$.subscribe((user) => {
       if (user) {
         this.profileMenuItems = [
@@ -91,6 +69,30 @@ export class HeaderComponent implements OnInit {
     @Inject(PLATFORM_ID) private platformId: Object,
   ) {
     this.user$ = this.authService.user$;
+    this.isBrowser = isPlatformBrowser(this.platformId);
+    if (this.isBrowser) {
+      const savedTheme = localStorage.getItem('theme');
+      const html = document.documentElement;
+      if (savedTheme) {
+        if (savedTheme === 'dark') {
+          html.classList.add('dark');
+          this.darkMode = true;
+        } else {
+          html.classList.remove('dark');
+          this.darkMode = false;
+        }
+      } else {
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (prefersDark) {
+          html.classList.add('dark');
+          localStorage.setItem('theme', 'dark');
+          this.darkMode = true;
+        } else {
+          html.classList.remove('dark');
+          this.darkMode = false;
+        }
+      }
+    }
   }
   toggleProfileMenu() {
     this.showProfileMenu = !this.showProfileMenu;

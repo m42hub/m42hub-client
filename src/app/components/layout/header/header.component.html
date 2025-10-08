@@ -11,25 +11,29 @@
   </div>
 
   <div class="flex items-center gap-2 order-2 md:order-3">
-    <ng-container *ngIf="user$ | async as user; else loginButton">
-      <div class="relative flex items-center">
-        <p-avatar
-          [image]="user.profilePicUrl || '/default_avatar.png'"
-          shape="circle"
-          size="large"
-          styleClass="cursor-pointer border-2 border-gray-300 hover:border-primary transition"
-          (click)="profileMenu.toggle($event)"
-        ></p-avatar>
-      </div>
-    </ng-container>
 
+    <ng-container *ngIf="(user$ | async) === undefined">
+      <!-- Não mostra nada enquanto não resolver o observable -->
+    </ng-container>
+    <ng-container *ngIf="(user$ | async) as user">
+      <ng-container *ngIf="user; else loginButton">
+        <div class="relative flex items-center">
+          <p-avatar
+            [image]="user.profilePicUrl || '/default_avatar.png'"
+            shape="circle"
+            size="large"
+            styleClass="cursor-pointer border-2 border-gray-300 hover:border-primary transition"
+            (click)="profileMenu.toggle($event)"
+          ></p-avatar>
+        </div>
+      </ng-container>
+    </ng-container>
     <p-menu
       #profileMenu
       [popup]="true"
       [model]="profileMenuItems"
       styleClass="min-w-25 bg-gradient-to-br text-white rounded-xl shadow-xl border border-indigo-500 animate-fade-in"
     ></p-menu>
-
     <ng-template #loginButton>
       <p-button
         label="Entrar"
@@ -39,11 +43,13 @@
       ></p-button>
     </ng-template>
 
-    <p-button
-      [icon]="darkMode ? 'pi pi-moon' : 'pi pi-sun'"
-      (onClick)="toggleDarkMode()"
-      styleClass="p-button-rounded p-button-text"
-    ></p-button>
+    <ng-container *ngIf="isBrowser">
+      <p-button
+        [icon]="darkMode ? 'pi pi-moon' : 'pi pi-sun'"
+        (onClick)="toggleDarkMode()"
+        styleClass="p-button-rounded p-button-text"
+      ></p-button>
+    </ng-container>
   </div>
 
   <div class="w-full flex justify-center md:hidden order-3">
