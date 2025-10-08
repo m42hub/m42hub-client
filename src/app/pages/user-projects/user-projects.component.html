@@ -14,14 +14,10 @@
   <div *ngIf="!loading && !error">
     <div
       *ngIf="requestedProjects.length > 0"
-      [ngClass]="
-        isDarkMode ? 'postit-card postit-yellow w-full' : 'postit-card postit-yellow-light w-full'
-      "
-      class="rounded-lg shadow-md p-4 mb-6"
+      class="rounded-lg shadow-md p-4 mb-6 postit-card postit-yellow-light w-full dark:postit-yellow"
     >
       <h2
-        [ngClass]="isDarkMode ? 'text-white' : 'text-black'"
-        class="text-lg sm:text-2xl font-semibold text-center my-2"
+        class="text-lg sm:text-2xl font-semibold text-center my-2 text-black dark:text-white"
       >
         Projetos Solicitados
       </h2>
@@ -34,14 +30,10 @@
 
     <div
       *ngIf="ongoingProjects.length > 0"
-      [ngClass]="
-        isDarkMode ? 'postit-card postit-blue w-full' : 'postit-card postit-blue-light w-full'
-      "
-      class="rounded-lg shadow-md p-4 mb-6"
+      class="rounded-lg shadow-md p-4 mb-6 postit-card postit-blue-light w-full dark:postit-blue"
     >
       <h2
-        [ngClass]="isDarkMode ? 'text-white' : 'text-black'"
-        class="text-lg sm:text-2xl font-semibold text-center my-2"
+        class="text-lg sm:text-2xl font-semibold text-center my-2 text-black dark:text-white"
       >
         Projetos em Andamento
       </h2>
@@ -54,13 +46,10 @@
 
     <div
       *ngIf="finishedProjects.length > 0"
-      [ngClass]="
-        isDarkMode ? 'postit-card postit-green w-full' : 'postit-card postit-green-light w-full'
-      "
+      class="rounded-lg shadow-md p-4 mb-6 postit-card w-full postit-green-light dark: postit-green"
     >
       <h2
-        [ngClass]="isDarkMode ? 'text-white' : 'text-black'"
-        class="text-2xl font-semibold text-center my-2"
+        class="text-2xl font-semibold text-center my-2 text-black dark:text-white"
       >
         Projetos Concluídos
       </h2>

@@ -2,7 +2,7 @@
 @import "primeflex/primeflex.css";
 @import "tailwindcss";
 @plugin "tailwindcss-primeui";
-
+@custom-variant dark (&:where(.dark, .dark *));
 /* Markdown Styles - Using PrimeNG theme colors */
 
 body {

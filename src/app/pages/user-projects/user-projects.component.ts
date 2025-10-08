@@ -21,7 +21,6 @@ export class UserProjectsComponent implements OnInit {
   loading = true;
   error: string | null = null;
   numVisible = 3;
-  isDarkMode = false;
 
   constructor(
     private memberService: ProjectMemberService,
@@ -31,28 +30,6 @@ export class UserProjectsComponent implements OnInit {
 
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
-      const savedTheme = localStorage.getItem('theme');
-      const html = document.documentElement;
-      if (savedTheme) {
-        if (savedTheme === 'dark') {
-          html.classList.add('dark');
-          this.isDarkMode = true;
-        } else {
-          html.classList.remove('dark');
-          this.isDarkMode = false;
-        }
-      } else {
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        if (prefersDark) {
-          html.classList.add('dark');
-          localStorage.setItem('theme', 'dark');
-          this.isDarkMode = true;
-        } else {
-          this.isDarkMode = false;
-        }
-      }
-
-      // Responsividade
       this.numVisible = this.getNumVisibleForWidth(window.innerWidth);
       window.addEventListener('resize', () => {
         this.numVisible = this.getNumVisibleForWidth(window.innerWidth);
