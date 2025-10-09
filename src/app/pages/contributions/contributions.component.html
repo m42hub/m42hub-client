@@ -101,17 +101,28 @@
             </tr>
           </ng-template>
           <ng-template pTemplate="body" let-row>
-            <tr
-              class="even:bg-surface-50 odd:bg-surface-100 hover:bg-surface-200 transition-colors text-xs sm:text-base"
-            >
-              <td class="font-bold text-surface-950 text-center">#{{ row.ranking }}</td>
-              <td class="flex items-center gap-1 sm:gap-2">
-                <p-avatar [image]="row.profileImage" shape="circle" size="large"></p-avatar>
-                <div class="flex-col flex">
-                  <p class="text-surface-900 font-medium text-xs sm:text-base">{{ row.name }}</p>
-                  <p class="text-primary-400 font-medium text-xs sm:text-base">
-                    {{ `@${row.username}` }}
-                  </p>
+            <tr class="even:bg-surface-50 odd:bg-surface-100 hover:bg-surface-200 transition-colors text-xs sm:text-base relative overflow-hidden">
+              <td colspan="2" class="p-0 border-none">
+                <div class="relative flex items-center gap-1 sm:gap-2 p-2 sm:p-3 min-h-[64px]">
+                  <div
+                    class="absolute inset-0 w-full h-full z-0"
+                    [ngStyle]="{
+                      'background-image': row.profileBannerUrl ? 'url(' + row.profileBannerUrl + ')' : '',
+                      'background-size': 'cover',
+                      'background-position': 'center',
+                    }"
+                  >
+                    <div *ngIf="row.profileBannerUrl" class="absolute inset-0 w-full h-full bg-black/70"></div>
+                    <div *ngIf="!row.profileBannerUrl" class="absolute inset-0 w-full h-full"></div>
+                  </div>
+                  <div class="relative z-10 flex items-center gap-1 sm:gap-2 w-full">
+                    <span class="font-bold text-white text-center mr-2">#{{ row.ranking }}</span>
+                    <p-avatar [image]="row.profileImage" shape="circle" size="large"></p-avatar>
+                    <div class="flex-col flex flex-1 min-w-0">
+                      <p class="text-white font-medium text-xs sm:text-base truncate">{{ row.name }}</p>
+                      <p class="text-primary-400 font-medium text-xs sm:text-base truncate">{{ `@${row.username}` }}</p>
+                    </div>
+                  </div>
                 </div>
               </td>
             </tr>
@@ -223,34 +234,43 @@
           </ng-template>
           <ng-template pTemplate="body" let-rowData>
             <tr
-              class="even:bg-surface-50 odd:bg-surface-100 hover:bg-surface-200 transition-colors text-xs sm:text-base"
+              class="even:bg-surface-50 odd:bg-surface-100 hover:bg-surface-200 transition-colors text-xs sm:text-base relative overflow-hidden"
             >
-              <td class="flex items-center gap-1 sm:gap-2">
-                <button
-                  type="button"
-                  pButton
-                  pRipple
-                  (click)="togglePR(rowData.name)"
-                  [icon]="
-                    expandedPR === rowData.name ? 'pi pi-chevron-down' : 'pi pi-chevron-right'
-                  "
-                  aria-label="Expandir PRs"
-                  text
-                  rounded
-                  plain
-                  class="mr-1 sm:mr-2 text-surface-900"
-                ></button>
-                <p-avatar [image]="rowData.profileImage" shape="circle" size="large"></p-avatar>
-                <div class="flex-col flex">
-                  <p class="text-surface-900 font-medium text-xs sm:text-base">
-                    {{ rowData.name }}
-                  </p>
-                  <p class="text-primary-400 font-medium text-xs sm:text-base">
-                    {{ `@${rowData.username}` }}
-                  </p>
+              <td colspan="2" class="p-0 border-none">
+                <div class="relative flex items-center gap-1 sm:gap-2 p-2 sm:p-3 min-h-[64px]">
+                  <div
+                    class="absolute inset-0 w-full h-full z-0"
+                    [ngStyle]="{
+                      'background-image': rowData.profileBannerUrl ? 'url(' + rowData.profileBannerUrl + ')' : '',
+                      'background-size': 'cover',
+                      'background-position': 'center',
+                    }"
+                  >
+                    <div *ngIf="rowData.profileBannerUrl" class="absolute inset-0 w-full h-full bg-black/70"></div>
+                    <div *ngIf="!rowData.profileBannerUrl" class="absolute inset-0 w-full h-full"></div>
+                  </div>
+                  <div class="relative z-10 flex items-center gap-1 sm:gap-2 w-full">
+                    <button
+                      type="button"
+                      pButton
+                      pRipple
+                      (click)="togglePR(rowData.name)"
+                      [icon]="expandedPR === rowData.name ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
+                      aria-label="Expandir PRs"
+                      text
+                      rounded
+                      plain
+                      class="mr-1 sm:mr-2 text-surface-900"
+                    ></button>
+                    <p-avatar [image]="rowData.profileImage" shape="circle" size="large"></p-avatar>
+                    <div class="flex-col flex flex-1 min-w-0">
+                      <p class="text-white font-medium text-xs sm:text-base truncate">{{ rowData.name }}</p>
+                      <p class="text-primary-400 font-medium text-xs sm:text-base truncate">{{ `@${rowData.username}` }}</p>
+                    </div>
+                    <span class="text-center text-white font-bold text-xs sm:text-base flex-shrink-0">{{ rowData.contributions.length }}</span>
+                  </div>
                 </div>
               </td>
-              <td class="text-center text-surface-900">{{ rowData.contributions.length }}</td>
             </tr>
             <tr *ngIf="expandedPR === rowData.name">
               <td colspan="2" class="text-left pl-6 sm:pl-13 bg-surface-50">
@@ -386,34 +406,43 @@
           </ng-template>
           <ng-template pTemplate="body" let-rowData>
             <tr
-              class="even:bg-surface-50 odd:bg-surface-100 hover:bg-surface-200 transition-colors text-xs sm:text-base"
+              class="even:bg-surface-50 odd:bg-surface-100 hover:bg-surface-200 transition-colors text-xs sm:text-base relative overflow-hidden"
             >
-              <td class="flex items-center gap-1 sm:gap-2">
-                <button
-                  type="button"
-                  pButton
-                  pRipple
-                  (click)="toggleIssue(rowData.name)"
-                  [icon]="
-                    expandedIssue === rowData.name ? 'pi pi-chevron-down' : 'pi pi-chevron-right'
-                  "
-                  aria-label="Expandir Issues/Sugestões"
-                  text
-                  rounded
-                  plain
-                  class="mr-1 sm:mr-2 text-surface-900"
-                ></button>
-                <p-avatar [image]="rowData.profileImage" shape="circle" size="large"></p-avatar>
-                <div class="flex-col flex">
-                  <p class="text-surface-900 font-medium text-xs sm:text-base">
-                    {{ rowData.name }}
-                  </p>
-                  <p class="text-primary-400 font-medium text-xs sm:text-base">
-                    {{ `@${rowData.username}` }}
-                  </p>
+              <td colspan="2" class="p-0 border-none">
+                <div class="relative flex items-center gap-1 sm:gap-2 p-2 sm:p-3 min-h-[64px]">
+                  <div
+                    class="absolute inset-0 w-full h-full z-0"
+                    [ngStyle]="{
+                      'background-image': rowData.profileBannerUrl ? 'url(' + rowData.profileBannerUrl + ')' : '',
+                      'background-size': 'cover',
+                      'background-position': 'center',
+                    }"
+                  >
+                    <div *ngIf="rowData.profileBannerUrl" class="absolute inset-0 w-full h-full bg-black/70"></div>
+                    <div *ngIf="!rowData.profileBannerUrl" class="absolute inset-0 w-full h-full"></div>
+                  </div>
+                  <div class="relative z-10 flex items-center gap-1 sm:gap-2 w-full">
+                    <button
+                      type="button"
+                      pButton
+                      pRipple
+                      (click)="toggleIssue(rowData.name)"
+                      [icon]="expandedIssue === rowData.name ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
+                      aria-label="Expandir Issues/Sugestões"
+                      text
+                      rounded
+                      plain
+                      class="mr-1 sm:mr-2 text-surface-900"
+                    ></button>
+                    <p-avatar [image]="rowData.profileImage" shape="circle" size="large"></p-avatar>
+                    <div class="flex-col flex flex-1 min-w-0">
+                      <p class="text-white font-medium text-xs sm:text-base truncate">{{ rowData.name }}</p>
+                      <p class="text-primary-400 font-medium text-xs sm:text-base truncate">{{ `@${rowData.username}` }}</p>
+                    </div>
+                    <span class="text-center text-white font-bold text-xs sm:text-base flex-shrink-0">{{ rowData.contributions.length }}</span>
+                  </div>
                 </div>
               </td>
-              <td class="text-center text-surface-900">{{ rowData.contributions.length }}</td>
             </tr>
             <tr *ngIf="expandedIssue === rowData.name">
               <td colspan="2" class="text-left pl-6 sm:pl-13 bg-surface-50">

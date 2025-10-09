@@ -16,6 +16,7 @@ interface FinancialContribution {
   name: string;
   username: string;
   profileImage: string;
+  profileBannerUrl?: string;
   ranking: number;
 }
 
@@ -23,6 +24,7 @@ interface GeneralContribution {
   name: string;
   username: string;
   profileImage: string;
+  profileBannerUrl: string;
   contributions: { name: string; description: string; link: string | null }[];
 }
 
@@ -62,6 +64,7 @@ export class ContributionsComponent {
           name: `${user.firstName} ${user.lastName}`.trim(),
           username: user.username,
           profileImage: user.profilePicUrl || '/default_avatar.png',
+          profileBannerUrl: user.profileBannerUrl,
           ranking: idx + 1,
         }));
       },
@@ -131,6 +134,7 @@ export class ContributionsComponent {
           name: `${userGroup.userInfo.firstName} ${userGroup.userInfo.lastName}`.trim(),
           username: userGroup.userInfo.username,
           profileImage: userGroup.userInfo.profilePicUrl || '/default_avatar.png',
+          profileBannerUrl: userGroup.userInfo.profileBannerUrl,
           contributions: userGroup.contributions.map((contribution: ContributionListItem) => ({
             name: contribution.name,
             description: contribution.description,
@@ -182,6 +186,7 @@ export class ContributionsComponent {
           name: `${userGroup.userInfo.firstName} ${userGroup.userInfo.lastName}`.trim(),
           username: userGroup.userInfo.username,
           profileImage: userGroup.userInfo.profilePicUrl || '/default_avatar.png',
+          profileBannerUrl: userGroup.userInfo.profileBannerUrl,
           contributions: userGroup.contributions.map((contribution: ContributionListItem) => ({
             name: contribution.name,
             description: contribution.description,
@@ -203,6 +208,7 @@ export class ContributionsComponent {
           name: pr.name,
           username: pr.username,
           profileImage: pr.profileImage,
+          profileBannerUrl: pr.profileBannerUrl,
           contributions: [...pr.contributions],
         });
       } else {
@@ -231,6 +237,7 @@ export class ContributionsComponent {
           name: issue.name,
           username: issue.username,
           profileImage: issue.profileImage,
+          profileBannerUrl: issue.profileBannerUrl,
           contributions: [...issue.contributions],
         });
       } else {
