@@ -11,7 +11,7 @@ import { ENVIRONMENT } from '../../../environments/environment';
 })
 export class AuthService {
   protected readonly apiUrl = ENVIRONMENT.apiUrl;
-  private userSubject = new BehaviorSubject<User | null>(null);
+  private userSubject = new BehaviorSubject<User | null | undefined>(undefined);
   user$ = this.userSubject.asObservable();
   private _isInitialized = false;
   private redirectUrl: string | null = null;
@@ -49,7 +49,7 @@ export class AuthService {
     );
   }
 
-  initializeAuth(): Observable<User | null> {
+  initializeAuth(): Observable<User | null | undefined> {
     if (!isPlatformBrowser(this.platformId) || this._isInitialized) {
       return of(this.userSubject.value);
     }
@@ -64,10 +64,10 @@ export class AuthService {
   }
 
   get isLoggedIn(): boolean {
-    return this.userSubject.value !== null;
+    return !!this.userSubject.value;
   }
 
-  get currentUser(): User | null {
+  get currentUser(): User | null | undefined {
     return this.userSubject.value;
   }
 

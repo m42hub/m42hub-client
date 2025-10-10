@@ -101,26 +101,39 @@
             </tr>
           </ng-template>
           <ng-template pTemplate="body" let-row>
-            <tr class="even:bg-surface-50 odd:bg-surface-100 hover:bg-surface-200 transition-colors text-xs sm:text-base relative overflow-hidden">
+            <tr
+              class="even:bg-surface-50 odd:bg-surface-100 hover:bg-surface-200 transition-colors text-xs sm:text-base relative overflow-hidden"
+            >
               <td colspan="2" class="p-0 border-none">
                 <div class="relative flex items-center gap-1 sm:gap-2 p-2 sm:p-3 min-h-[64px]">
                   <div
                     class="absolute inset-0 w-full h-full z-0"
                     [ngStyle]="{
-                      'background-image': row.profileBannerUrl ? 'url(' + row.profileBannerUrl + ')' : '',
+                      'background-image': row.profileBannerUrl
+                        ? 'url(' + row.profileBannerUrl + ')'
+                        : '',
                       'background-size': 'cover',
                       'background-position': 'center',
                     }"
                   >
-                    <div *ngIf="row.profileBannerUrl" class="absolute inset-0 w-full h-full bg-black/70"></div>
+                    <div
+                      *ngIf="row.profileBannerUrl"
+                      class="absolute inset-0 w-full h-full bg-black/70"
+                    ></div>
                     <div *ngIf="!row.profileBannerUrl" class="absolute inset-0 w-full h-full"></div>
                   </div>
                   <div class="relative z-10 flex items-center gap-1 sm:gap-2 w-full">
-                    <span class="font-bold text-white text-center mr-3 px-4">#{{ row.ranking }}</span>
+                    <span class="font-bold text-white text-center mr-3 px-4">
+                      #{{ row.ranking }}
+                    </span>
                     <p-avatar [image]="row.profileImage" shape="circle" size="large"></p-avatar>
                     <div class="flex-col flex flex-1 min-w-0">
-                      <p class="text-white font-medium text-xs sm:text-base truncate">{{ row.name }}</p>
-                      <p class="text-primary-400 font-medium text-xs sm:text-base truncate">{{ `@${row.username}` }}</p>
+                      <p class="text-white font-medium text-xs sm:text-base truncate">
+                        {{ row.name }}
+                      </p>
+                      <p class="text-primary-400 font-medium text-xs sm:text-base truncate">
+                        {{ `@${row.username}` }}
+                      </p>
                     </div>
                     <button
                       pButton
@@ -252,13 +265,21 @@
                   <div
                     class="absolute inset-0 w-full h-full z-0"
                     [ngStyle]="{
-                      'background-image': rowData.profileBannerUrl ? 'url(' + rowData.profileBannerUrl + ')' : '',
+                      'background-image': rowData.profileBannerUrl
+                        ? 'url(' + rowData.profileBannerUrl + ')'
+                        : '',
                       'background-size': 'cover',
                       'background-position': 'center',
                     }"
                   >
-                    <div *ngIf="rowData.profileBannerUrl" class="absolute inset-0 w-full h-full bg-black/70"></div>
-                    <div *ngIf="!rowData.profileBannerUrl" class="absolute inset-0 w-full h-full"></div>
+                    <div
+                      *ngIf="rowData.profileBannerUrl"
+                      class="absolute inset-0 w-full h-full bg-black/70"
+                    ></div>
+                    <div
+                      *ngIf="!rowData.profileBannerUrl"
+                      class="absolute inset-0 w-full h-full"
+                    ></div>
                   </div>
                   <div class="relative z-10 flex items-center gap-1 sm:gap-2 w-full">
                     <button
@@ -266,7 +287,9 @@
                       pButton
                       pRipple
                       (click)="togglePR(rowData.name)"
-                      [icon]="expandedPR === rowData.name ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
+                      [icon]="
+                        expandedPR === rowData.name ? 'pi pi-chevron-down' : 'pi pi-chevron-right'
+                      "
                       text
                       rounded
                       plain
@@ -274,8 +297,12 @@
                     ></button>
                     <p-avatar [image]="rowData.profileImage" shape="circle" size="large"></p-avatar>
                     <div class="flex-col flex flex-1 min-w-0">
-                      <p class="text-white font-medium text-xs sm:text-base truncate">{{ rowData.name }}</p>
-                      <p class="text-primary-400 font-medium text-xs sm:text-base truncate">{{ `@${rowData.username}` }}</p>
+                      <p class="text-white font-medium text-xs sm:text-base truncate">
+                        {{ rowData.name }}
+                      </p>
+                      <p class="text-primary-400 font-medium text-xs sm:text-base truncate">
+                        {{ `@${rowData.username}` }}
+                      </p>
                     </div>
                     <button
                       pButton
@@ -288,7 +315,11 @@
                     >
                       <i class="pi pi-eye text-black"></i>
                     </button>
-                    <span class="text-center text-white font-bold text-xs sm:text-base p-2 flex-shrink-0">{{ rowData.contributions.length }}</span>
+                    <span
+                      class="text-center text-white font-bold text-xs sm:text-base p-2 flex-shrink-0"
+                    >
+                      {{ rowData.contributions.length }}
+                    </span>
                   </div>
                 </div>
               </td>
@@ -434,13 +465,21 @@
                   <div
                     class="absolute inset-0 w-full h-full z-0"
                     [ngStyle]="{
-                      'background-image': rowData.profileBannerUrl ? 'url(' + rowData.profileBannerUrl + ')' : '',
+                      'background-image': rowData.profileBannerUrl
+                        ? 'url(' + rowData.profileBannerUrl + ')'
+                        : '',
                       'background-size': 'cover',
                       'background-position': 'center',
                     }"
                   >
-                    <div *ngIf="rowData.profileBannerUrl" class="absolute inset-0 w-full h-full bg-black/70"></div>
-                    <div *ngIf="!rowData.profileBannerUrl" class="absolute inset-0 w-full h-full"></div>
+                    <div
+                      *ngIf="rowData.profileBannerUrl"
+                      class="absolute inset-0 w-full h-full bg-black/70"
+                    ></div>
+                    <div
+                      *ngIf="!rowData.profileBannerUrl"
+                      class="absolute inset-0 w-full h-full"
+                    ></div>
                   </div>
                   <div class="relative z-10 flex items-center gap-1 sm:gap-2 w-full">
                     <button
@@ -448,7 +487,11 @@
                       pButton
                       pRipple
                       (click)="toggleIssue(rowData.name)"
-                      [icon]="expandedIssue === rowData.name ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
+                      [icon]="
+                        expandedIssue === rowData.name
+                          ? 'pi pi-chevron-down'
+                          : 'pi pi-chevron-right'
+                      "
                       text
                       rounded
                       plain
@@ -456,8 +499,12 @@
                     ></button>
                     <p-avatar [image]="rowData.profileImage" shape="circle" size="large"></p-avatar>
                     <div class="flex-col flex flex-1 min-w-0">
-                      <p class="text-white font-medium text-xs sm:text-base truncate">{{ rowData.name }}</p>
-                      <p class="text-primary-400 font-medium text-xs sm:text-base truncate">{{ `@${rowData.username}` }}</p>
+                      <p class="text-white font-medium text-xs sm:text-base truncate">
+                        {{ rowData.name }}
+                      </p>
+                      <p class="text-primary-400 font-medium text-xs sm:text-base truncate">
+                        {{ `@${rowData.username}` }}
+                      </p>
                     </div>
                     <button
                       pButton
@@ -470,7 +517,11 @@
                     >
                       <i class="pi pi-eye text-black"></i>
                     </button>
-                    <span class="text-center text-white font-bold text-xs sm:text-base pl-2 pr-1 flex-shrink-0">{{ rowData.contributions.length }}</span>
+                    <span
+                      class="text-center text-white font-bold text-xs sm:text-base pl-2 pr-1 flex-shrink-0"
+                    >
+                      {{ rowData.contributions.length }}
+                    </span>
                   </div>
                 </div>
               </td>

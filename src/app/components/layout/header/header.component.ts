@@ -21,44 +21,49 @@ import { MenuItem } from 'primeng/api';
 export class HeaderComponent implements OnInit {
   darkMode = false;
   isBrowser = false;
-  user$: Observable<User | null>;
+  user$: Observable<User | null | undefined>;
   showLogoutError = false;
   showProfileMenu = false;
   profileMenuItems: MenuItem[] = [];
+  isUserLoaded = false;
 
   ngOnInit() {
     this.user$.subscribe((user) => {
-      if (user) {
-        this.profileMenuItems = [
-          {
-            label: 'Perfil',
-            icon: 'pi pi-user',
-            command: () => this.handleClick(`/user/${user.username}`),
-          },
-          {
-            label: 'Meus Projetos',
-            icon: 'pi pi-folder',
-            command: () => this.handleClick(`/projects/user/${user.username}`),
-          },
-          {
-            label: 'Logout',
-            icon: 'pi pi-sign-out',
-            command: () => this.onLogout(),
-          },
-        ];
-      } else {
-        this.profileMenuItems = [
-          {
-            label: 'Perfil',
-            icon: 'pi pi-user',
-            command: () => this.handleClick(`/user-profile`),
-          },
-          {
-            label: 'Logout',
-            icon: 'pi pi-sign-out',
-            command: () => this.onLogout(),
-          },
-        ];
+      // Só considera carregado se não for undefined
+      if (user !== undefined) {
+        this.isUserLoaded = true;
+        if (user) {
+          this.profileMenuItems = [
+            {
+              label: 'Perfil',
+              icon: 'pi pi-user',
+              command: () => this.handleClick(`/user/${user.username}`),
+            },
+            {
+              label: 'Meus Projetos',
+              icon: 'pi pi-folder',
+              command: () => this.handleClick(`/projects/user/${user.username}`),
+            },
+            {
+              label: 'Logout',
+              icon: 'pi pi-sign-out',
+              command: () => this.onLogout(),
+            },
+          ];
+        } else {
+          this.profileMenuItems = [
+            {
+              label: 'Perfil',
+              icon: 'pi pi-user',
+              command: () => this.handleClick(`/user-profile`),
+            },
+            {
+              label: 'Logout',
+              icon: 'pi pi-sign-out',
+              command: () => this.onLogout(),
+            },
+          ];
+        }
       }
     });
   }
