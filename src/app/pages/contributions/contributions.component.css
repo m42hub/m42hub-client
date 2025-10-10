@@ -1,0 +1,12 @@
+th {
+	background-color: #7891EC;
+  color: #1F1F1F
+}
+
+td {
+	background-color: #2A2A2A;
+}
+
+tr:nth-child(even) td {
+  background-color: #1F1F1F;
+}
