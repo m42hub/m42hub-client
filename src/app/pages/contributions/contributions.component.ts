@@ -5,6 +5,7 @@ import { TableModule } from 'primeng/table';
 import { AvatarModule } from 'primeng/avatar';
 import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
+import { TooltipModule } from 'primeng/tooltip';
 import { DonationService } from '../../services/donation/contribution.service';
 import { ContributionService } from '../../services/contribution/contribution.service';
 import {
@@ -31,7 +32,15 @@ interface GeneralContribution {
 @Component({
   selector: 'app-contributions',
   standalone: true,
-  imports: [CommonModule, TableModule, AvatarModule, ButtonModule, RippleModule, FormsModule],
+  imports: [
+    CommonModule,
+    TableModule,
+    AvatarModule,
+    ButtonModule,
+    RippleModule,
+    FormsModule,
+    TooltipModule,
+  ],
   providers: [DonationService],
   templateUrl: './contributions.component.html',
   styleUrl: './contributions.component.css',
@@ -250,7 +259,7 @@ export class ContributionsComponent {
     return Array.from(map.values());
   }
 
-  viewProfile(row: { name: string }): void {
-    window.open(`/perfil/${row.name}`, '_blank');
+  viewProfile(username: string): void {
+    window.open(`/user/${username}`, '_blank');
   }
 }

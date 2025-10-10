@@ -96,7 +96,7 @@
         >
           <ng-template pTemplate="header">
             <tr class="bg-primary-500 text-surface-100 font-bold text-xs sm:text-base">
-              <th class="text-center w-1">Ranking</th>
+              <th class="text-left w-1">Ranking</th>
               <th class="text-left">Contribuidor</th>
             </tr>
           </ng-template>
@@ -116,7 +116,7 @@
                     <div *ngIf="!row.profileBannerUrl" class="absolute inset-0 w-full h-full"></div>
                   </div>
                   <div class="relative z-10 flex items-center gap-1 sm:gap-2 w-full">
-                    <span class="font-bold text-white text-center mr-2">#{{ row.ranking }}</span>
+                    <span class="font-bold text-white text-center mr-3 px-4">#{{ row.ranking }}</span>
                     <p-avatar [image]="row.profileImage" shape="circle" size="large"></p-avatar>
                     <div class="flex-col flex flex-1 min-w-0">
                       <p class="text-white font-medium text-xs sm:text-base truncate">{{ row.name }}</p>
@@ -228,8 +228,8 @@
         >
           <ng-template pTemplate="header">
             <tr class="bg-primary-500 text-surface-100 font-bold text-xs sm:text-base">
-              <th class="text-left">Contribuidor</th>
-              <th class="text-center w-1">PRs</th>
+              <th class="text-left pl-8">Contribuidor</th>
+              <th class="text-right w-1">PRs</th>
             </tr>
           </ng-template>
           <ng-template pTemplate="body" let-rowData>
@@ -256,7 +256,6 @@
                       pRipple
                       (click)="togglePR(rowData.name)"
                       [icon]="expandedPR === rowData.name ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
-                      aria-label="Expandir PRs"
                       text
                       rounded
                       plain
@@ -267,7 +266,7 @@
                       <p class="text-white font-medium text-xs sm:text-base truncate">{{ rowData.name }}</p>
                       <p class="text-primary-400 font-medium text-xs sm:text-base truncate">{{ `@${rowData.username}` }}</p>
                     </div>
-                    <span class="text-center text-white font-bold text-xs sm:text-base flex-shrink-0">{{ rowData.contributions.length }}</span>
+                    <span class="text-center text-white font-bold text-xs sm:text-base pr-2 flex-shrink-0">{{ rowData.contributions.length }}</span>
                   </div>
                 </div>
               </td>
@@ -400,8 +399,8 @@
         >
           <ng-template pTemplate="header">
             <tr class="bg-primary-500 text-surface-100 font-bold text-xs sm:text-base">
-              <th class="text-left">Contribuidor</th>
-              <th class="text-center m-1">Issues/Sugestões</th>
+              <th class="text-left pl-8">Contribuidor</th>
+              <th class="text-right m-1">I/S</th>
             </tr>
           </ng-template>
           <ng-template pTemplate="body" let-rowData>
@@ -428,7 +427,6 @@
                       pRipple
                       (click)="toggleIssue(rowData.name)"
                       [icon]="expandedIssue === rowData.name ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
-                      aria-label="Expandir Issues/Sugestões"
                       text
                       rounded
                       plain
@@ -439,7 +437,7 @@
                       <p class="text-white font-medium text-xs sm:text-base truncate">{{ rowData.name }}</p>
                       <p class="text-primary-400 font-medium text-xs sm:text-base truncate">{{ `@${rowData.username}` }}</p>
                     </div>
-                    <span class="text-center text-white font-bold text-xs sm:text-base flex-shrink-0">{{ rowData.contributions.length }}</span>
+                    <span class="text-center text-white font-bold text-xs sm:text-base pr-1 flex-shrink-0">{{ rowData.contributions.length }}</span>
                   </div>
                 </div>
               </td>
