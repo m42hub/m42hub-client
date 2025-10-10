@@ -122,6 +122,17 @@
                       <p class="text-white font-medium text-xs sm:text-base truncate">{{ row.name }}</p>
                       <p class="text-primary-400 font-medium text-xs sm:text-base truncate">{{ `@${row.username}` }}</p>
                     </div>
+                    <button
+                      pButton
+                      type="button"
+                      class="p-button-sm p-button p-button-info ml-2"
+                      (click)="viewProfile(row.username)"
+                      [pTooltip]="'Ver perfil'"
+                      tooltipPosition="top"
+                      tooltipStyleClass="text-xs"
+                    >
+                      <i class="pi pi-eye"></i>
+                    </button>
                   </div>
                 </div>
               </td>
@@ -266,7 +277,18 @@
                       <p class="text-white font-medium text-xs sm:text-base truncate">{{ rowData.name }}</p>
                       <p class="text-primary-400 font-medium text-xs sm:text-base truncate">{{ `@${rowData.username}` }}</p>
                     </div>
-                    <span class="text-center text-white font-bold text-xs sm:text-base pr-2 flex-shrink-0">{{ rowData.contributions.length }}</span>
+                    <button
+                      pButton
+                      type="button"
+                      class="p-button-sm p-button p-button-info"
+                      (click)="viewProfile(rowData.username)"
+                      [pTooltip]="'Ver perfil'"
+                      tooltipPosition="top"
+                      tooltipStyleClass="text-xs"
+                    >
+                      <i class="pi pi-eye"></i>
+                    </button>
+                    <span class="text-center text-white font-bold text-xs sm:text-base p-2 flex-shrink-0">{{ rowData.contributions.length }}</span>
                   </div>
                 </div>
               </td>
@@ -437,7 +459,18 @@
                       <p class="text-white font-medium text-xs sm:text-base truncate">{{ rowData.name }}</p>
                       <p class="text-primary-400 font-medium text-xs sm:text-base truncate">{{ `@${rowData.username}` }}</p>
                     </div>
-                    <span class="text-center text-white font-bold text-xs sm:text-base pr-1 flex-shrink-0">{{ rowData.contributions.length }}</span>
+                    <button
+                      pButton
+                      type="button"
+                      class="p-button-sm p-button p-button-info"
+                      (click)="viewProfile(rowData.username)"
+                      [pTooltip]="'Ver perfil'"
+                      tooltipPosition="top"
+                      tooltipStyleClass="text-xs"
+                    >
+                      <i class="pi pi-eye"></i>
+                    </button>
+                    <span class="text-center text-white font-bold text-xs sm:text-base pl-2 pr-1 flex-shrink-0">{{ rowData.contributions.length }}</span>
                   </div>
                 </div>
               </td>
